@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+      <ion-buttons start>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+        </ion-buttons>
+    <ion-title>
+      {{'OFFERS' | translate}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding id="page1">
+  <form id="page-form1">
+    <ion-searchbar placeholder="" name="" id="page-search1"></ion-searchbar>
+  </form>
+  <ion-list id="page-list1">
+    <ion-item color="none" id="page-list-item10" *ngFor="let item of items" >
+      <ion-thumbnail item-left>
+        <img src="../../assets/imgs/logo_transparent.jpg"/>
+      </ion-thumbnail>
+      <h2>
+        {{item.details}}
+      </h2>
+      <!-- <button ion-button outline item-end>{{item.status}}</button> -->
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,30 @@
+<ion-split-pane>
+    <ion-menu side="start" [content]="content">
+        <ion-header>
+            <ion-toolbar>
+                <ion-title>{{'ADMINTITLE' | translate}}</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <ion-list>
+                <ion-item (click)="go_to_TrucksListPage()" menuClose>
+                    {{'TRUCKS' | translate}}
+                </ion-item>
+                <ion-item (click)="go_to_TruckOwnersListPage()" menuClose>
+                    {{'TRUCKOWNERS' | translate}}
+                </ion-item>
+                <ion-item (click)="go_to_CustomersListPage()" menuClose>
+                    {{'CUSTOMERS' | translate}}
+                </ion-item>
+                <ion-item (click)="go_to_TripsListPage()" menuClose>
+                    {{'TRIPS' | translate}}
+                </ion-item>
+                <ion-item (click)="logout_go_to_App()" menuClose>
+                    {{'LOGOUT' | translate}}
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-menu>
+
+    <ion-nav [root]="rootPage" #content main swipeBackEnabled="false"></ion-nav>
+</ion-split-pane>

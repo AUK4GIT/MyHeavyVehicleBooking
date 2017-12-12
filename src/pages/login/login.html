@@ -1,0 +1,62 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>{{ 'LOGIN' | translate }}</ion-title>
+      <ion-buttons end>
+        <button ion-button (click)="closeLogin()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  
+  
+  <ion-content padding>
+      <form [formGroup]="loginForm"  (ngSubmit)="onLogin(loginForm.value)" name="loginForm">
+  
+          <ion-list>
+  
+              <ion-row>
+                  <ion-col align="center">
+                      <img src="../../assets/imgs/logo.png" />
+                  </ion-col>
+                </ion-row>
+                <p>{{'LOGINHINT' | translate}}</p>
+                
+                <ion-item item-start>
+                  <ion-label floating>{{ 'USERNAME' | translate }}</ion-label>
+                  <ion-input (ionFocus)="focusFunction()" name="name" id="name" type="text" ngModel1 formControlName="username"></ion-input>
+                </ion-item>
+              
+                <ion-item item-start>
+                  <ion-label floating>{{ 'PASSWORD' | translate }}</ion-label>
+                  <ion-input (ionFocus)="focusFunction()" name="password" id="password" type="password" ngModel1 formControlName="password"></ion-input>
+                </ion-item>
+  
+              </ion-list>
+              <p  *ngIf="loginForm.controls.username.errors?.pattern" class="error">{{'USERNAMEINVALID' | translate}}</p>            
+              <!-- <p padding *ngIf="loginForm.controls.password.errors" class="error">Password cannot be blank.</p>             -->
+              <p  class="error">{{serverError}}</p>                     
+              <div padding>
+                  <button block ion-button type="submit" [disabled]="!loginForm.valid">{{'LOGINBUTTON' | translate}}</button>                  
+              </div>
+              <div padding>
+                <button block ion-button type="button" (click)="navigateToRegistrationPage()"  >{{'REGISTERHINT' | translate}}</button>                  
+            </div>
+            <ion-row>
+                <ion-buttons end>
+                  <button  ion-button outline type="button" ><u>{{'FORGOTPWD' | translate}}</u></button>
+                  <button  ion-button outline type="button" ><u>{{'FORGOTUSN' | translate}}</u></button>                                    
+              </ion-buttons>
+                </ion-row>   
+        </form> 
+             
+  </ion-content>
+
+  <ion-footer>
+      <ion-toolbar>
+        <!-- <ion-title text-start float-start>
+          <p float-start></p>
+          </ion-title> -->
+          <p style="color: #fff">© {{'COPYRIGHT' | translate}}<p>
+      </ion-toolbar>
+    </ion-footer> 

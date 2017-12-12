@@ -1,14 +1,262 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
+        <ion-navbar>
+            <ion-title>
+                {{"RENTATRUCK" | translate}}
+            </ion-title>
+            <ion-buttons end>
+                <button ion-button (click)="presentPopover($event)">
+                    <ion-icon name="menu"></ion-icon>
+                </button>
+            </ion-buttons>
+        </ion-navbar>
+        <ion-navbar color="light">
+                <img src="../../assets/imgs/logo.png" height="44px"/>
+                <!-- <ion-segment end>
+                    <ion-segment-button value="new">
+                      New
+                    </ion-segment-button>
+                    <ion-segment-button value="hot">
+                      Hot
+                    </ion-segment-button>
+                  </ion-segment> -->
+                  <ion-buttons end style="max-width: 50%;" margin-right>
+                      <button ion-button text-wrap>
+                            <u>Contact: support@zamilrenttruck.com</u>
+                      </button>
+                    </ion-buttons>
+        </ion-navbar>
+    </ion-header>
+    
+    <ion-content>
+    <div padding class="truckbg" [ngClass]="bgclass">
+        <ion-row>
+            <ion-col padding-top text-center>
+                <h3><b> {{ 'HOMEHEADER' | translate }} </b></h3>
+                <h3> {{ 'BOOKTRIPHEADERTEXT' | translate }} </h3>
+            </ion-col>
+        </ion-row>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-item margin-top class="item-leave-height">
+                        <ion-label>{{'TRUCKTYPE' | translate}}</ion-label>
+                        <ion-select name="trucktypes" [(ngModel)]="trucktype">
+                            <ion-option value="{{truck.type}}" *ngFor="let truck of trucks">{{ truck.type }} - {{ truck.capacity }}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                        <ion-item margin-top class="item-leave-height">
+                                <ion-label>{{'PICKUPCITY' | translate}}</ion-label>
+                                <ion-select name="pickupcity" [(ngModel)]="pickupcity">
+                                    <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
+                                </ion-select>
+                            </ion-item>
+                </ion-col>
+                <ion-col>
+                
+                    <ion-item margin-top class="item-leave-height">
+                        <ion-label>{{'DROPCITY' | translate}}</ion-label>
+                        <ion-select name="dropcity" [(ngModel)]="dropcity">
+                            <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+                <ion-col>
+                
+                    <ion-item margin-top class="item-leave-height">
+                        <ion-label>{{'MATERIAL' | translate}}</ion-label>
+                        <ion-input (ionFocus)="focusFunction()" placeholder="freight" name="material" id="material" type="text" [(ngModel)]="frieght"></ion-input>                        
+                    </ion-item>    
+                </ion-col>
+                <ion-col>
+                
+                    <ion-item margin-top class="item-leave-height">
+                        <ion-label>{{'STARTDATE' | translate}}</ion-label>
+                        <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="startdate"></ion-datetime>
+                    </ion-item>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
-</ion-content>
+                </ion-col>
+                </ion-row>
+            <ion-row padding-top >
+                <ion-col text-center>
+                    <button (click)="requestQuote()" ion-button medium >{{ 'REQUESTQUOTE' | translate }}</button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+    <ion-slides padding effect="slide" autoplay="3000" loop='true' pager="true" #slider>
+        <ion-slide>
+            <h1>Promo 1</h1>
+        </ion-slide>
+        <ion-slide>
+            <h1>Promo 2</h1>
+        </ion-slide>
+        <ion-slide>
+            <h1>Promo 3</h1>
+        </ion-slide>
+    </ion-slides>
+        <!-- Segment in content -->
+        <ion-segment padding [(ngModel)]="segment" color="primary" (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="aboutus">
+                {{ 'ABOUTUS' | translate }}
+            </ion-segment-button>
+            <ion-segment-button value="overview">
+                {{ 'COMPANYOVERVIEW' | translate }}
+            </ion-segment-button>
+        </ion-segment>
+        <div margin [ngSwitch]="segment">
+            <div padding-top *ngSwitchCase="'aboutus'">
+                    <ion-row>
+                            <h4> {{"ABOUTUS" | translate}} </h4>
+                            <p>
+                                <img margin-bottom margin-end float-start src="../../assets/imgs/logo.png" /> Zamilrenttruck.com is an online, easy, simple & modern portal acting as a facilitator between Shippers &
+                                Transporters in Kingdom of Saudi Arabia (KSA) in widely unorganized logistic industry. We have understood
+                                needs & requirements of key people involved in this industry and have revolutionized it by offering a one-stop-shop
+                                hassle free product in the most efficient manner. Zamilrenttruck.com is an online marketplace where shippers
+                                list deliveries and select transporters to service those deliveries efficiently.
+                                <br/>
+                                <br/>
+                                <b>What we do ? </b>
+                                <br/>
+                                <br/> Our portal facilitates demand & supply in the most efficient manner using modern tools in multiple application
+                                format making the user experience simple and easy. We have verified customer base resulting in higher efficiency
+                                in business transactions, majorly serving the B2B – Commercial Freight & Vehicles markets. We seamlessly
+                                connect customers for Freight Brokers to Business Shippers and Consupers: With feedback-rate Transporters.
+                                Yes, everything is real time and online. Simplifying Logistics.
+                                <br/>
+                                <br/>
+                                <b> Why Us ! </b>
+                                <br/>
+                                <br/> We are dedicated to providing high quality experience in simple form through this portal for all of our
+                                customers & stakeholders. Nothing beats simplicity & bringing high efficiency in hard and involved workld
+                                of logistics. Our endeavor is to make it better, together.
+                                <br/>
+                                <br/>
+                                <b>How we do ?</b>
+                                <br/>
+                                <br/>
+                                <strong>Our Involvement or Limitations:</strong>
+                                <br/>
+                                <br/> Zamilrenttruck.com is not a carrier, freight forwarder or broker. Our site zamilrenttruck.com acts as a
+                                neutral venue where “Consignor” “Consignee” “ Customer” ( hereinafter referred to as “ Shipper”0 and Transport
+                                Service Provider ( hereinafter referred to as “ TSP” And/or “ Transporters” ) can meet and enter into agreements.
+                                <br/>
+                                <br/> We are not and will not be involved in the actual transaction between users and TSPs. Consequently, we have
+                                no control over the quality, safety, or legality of the transactions themselves. Although every care is taken
+                                to verify the identity of TSPs Zamilrenttruck.com does not guarantee, prequalify or validate the claims of
+                                drivers related to their license, insurance or certification.
+                                <br/>
+                                <br/> Therefore, we strongly recommend users to verify licenses, insurance and any other professional certifications
+                                that TSPs claim to have once the quote is accepted, but prior to pick up.
+                                <br/>
+                                <br/>
+                                <strong>Additionally…Zamilrenttuck.com</strong>
+                                <br/>
+                                <br/> IT is important to keep all the above in mind when you’re considering entering into a transaction with another
+                                member of the site. IF you have additional questions, kindly contact our Customer Support team.
+                            </p>
+                        </ion-row>
+                
+                        <ion-row>
+                            <h4>{{"CONTACTUS" | translate}} :</h4>
+                            <p>
+                                <b float-start>EMAIL:</b> support@zamilrentruck.com
+                                <br/>
+                                <br/>
+                                <b float-start>Address:</b> Zamil Group, DAMMAM, Kingdom of Saudi Arabia.
+                            </p>
+                        </ion-row>
+            </div>
+            <div padding-top *ngSwitchCase="'overview'">
+                <ion-row>
+                        <h4>{{"COMPANYOVERVIEW" | translate}} :</h4>
+                        <p>
+                            Zamil Group Holding Company is a global investment company with diverse interests and capabilities. Across the continents
+                            we provide innovative, high quality and price competitive products and services as well as investment opportunities
+                            for investors, partners and stakeholders in the industrial, petrochemicals and services sectors.
+                            <br/>
+                            <br/> Our range of products and services is expansive and spans air-conditioning manufacturing to plastics to
+                            steel fabrication and paints and cranes to heavy process equipment. We are also engaged in shipbuilding and
+                            repair, port operations and maintenance, petrochemicals and chemicals, industrial investment and general
+                            construction.
+                            <br/>
+                            <br/> The energy driving our more than 60 sector businesses is our 21,000 strong workforce in more than 60 countries,
+                            vast manufacturing facilities and strong affiliations with numerous international partners
+                            <br/>
+                            <br/> Zamil Group has always been a pioneer and a leader within the business community in the Kingdom of Saudi
+                            Arabia. With a carefully planned and actively implemented entrepreneurial and diversification strategy we
+                            have capitalized upon the Kingdom’s favorable economic conditions and the government’s support for the private
+                            sector, to harness new and promising opportunities.
+                            <br/>
+                            <br/> Zamil Group began investing in the plastics industry nearly three decades ago. Our strategic path heralded
+                            our entry into capital intensive chemical and petrochemical projects in the early 1990s. These continue to
+                            provide rewarding growth opportunities.
+                            <br/>
+                            <br/> Zamil Group continues to build successful ventures with technology and market leaders, as well as with regional
+                            private companies. Our expertise, experience and strengths ensure we are well placed to continue offering
+                            our partners very exciting investment prospects.
+                        </p>
+                </ion-row>
+                <ion-row>
+                    <h4>{{"HISTORY" | translate}}</h4>
+                    <p>
+                        Zamil Group Holding Company was founded by the late Sheikh Abdullah Al-Hamad Al Zamil (1897-1961), an aspiring Saudi Arabian
+                        entrepreneur, who established a modest trading entity selling food items and textiles in the Kingdom
+                        of Bahrain in the 1930s. Later, he expanded his business successfully into real estate investments in
+                        Saudi Arabia.
+                        <br/>
+                        <br/> The start of the industrialization program of Saudi Arabia in the early 1970’s, the Kingdom’s favorable
+                        economic conditions and the government’s support for the private sector provided an ideal environment
+                        for his sons to further their father’s pioneering spirit . A carefully planned strategic program to establish
+                        the core industrial base of the Zamil Group and accelerate the diversification of its activities was
+                        implemented and included harnessing opportunities in new and promising areas poised for sustainable growth.
+                        <br/>
+                        <br/> Meticulous planning and sound management practices have made Zamil Group Holding Company a renowned
+                        and internationally respected, multi-million dollar global investment company known for its diversified
+                        industrial operations and commercial interests.
+                        <br/>
+                        <br/> Through more than 60 sector businesses a range of industrial, commercial, services and consumer solutions
+                        meet the needs of worldwide operators in the industrial, commercial petrochemical and services sectors.
+                        These solutions range from air-conditioning manufacturing to food processing, plastics to steel fabrication and
+                        travel services. The Group is also involved in banking and industrial investment, paint, fencing systems
+                        and packaging.
+                        <br/>
+                        <br/> A vast network of manufacturing facilities, joint ventures, affiliations, alliances and strategic acquisitions
+                        combined with a 21,000 strong workforce in more than 60 countries enables the consistent delivery of
+                        innovative high quality products and services and ensures investment opportunities for investors, partners
+                        and stakeholders.
+                    </p>
+                </ion-row>
+                <ion-row>
+                    <h4>Founder</h4>
+                    <p>
+                        The origins of Zamil Group can be traced back to the small agricultural town of Onaiza in the Central Region of Saudi Arabia,
+                        where our founder Sheikh Abdullah Al-Hamad Al Zamil was born (1897 – 1961). An aspiring businessman,
+                        he operated his first commercial business in Bahrain at the age of 19. By the 1920s he had established
+                        a successful trading entity in the Kingdom of Bahrain. His successes were followed by investments in
+                        real estate, and in 1959 to the construction of the tallest building of its time in Al Khobar in the
+                        Kingdom of Saudi Arabia.
+                        <br/>
+                        <br/> Favourable economic conditions in the Kingdom, government support for the private sector and a well
+                        entrenched industrialization program provided the foundation for Zamil Group to establish a core industrial
+                        base in the 1970s. Strategic programs were subsequently implemented to accelerate and diversify activities
+                        into new areas poised for sustainable growth. This pace continues unabated today through an ever increasing
+                        program of diversification into petrochemical and chemical industries and international expansion.
+                        <br/>
+                        <br/> Today a vast network of manufacturing facilities, joint ventures, affiliations, alliances and strategic
+                        acquisitions ensure our presence in more than 60 countries on six continents. The consistent delivery
+                        of innovative high quality products and services and the creation of investment opportunities for investors,
+                        partners and stakeholders is the legacy instilled within us by our founder and is the spirit that drives
+                        each of our more than 60 sector businesses.
+                        <br/>
+                        <br/> Zamil Group Holding Company’s Board of Directors comprises 12 sons who – in continuing the legacy of
+                        their father – are actively involved in charting the ongoing strategic expansion, diversification and
+                        international presence and leadership of the Group.
+                    </p>
+                </ion-row>
+            </div>
+        </div>
+    </ion-content>

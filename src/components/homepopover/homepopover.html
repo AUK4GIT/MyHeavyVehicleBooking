@@ -1,0 +1,14 @@
+<ion-list radio-group [(ngModel)]="itemSelected" (ionChange)="changeSelection()" class="popover-page">
+  <ion-item class="text-san-francisco">
+    <ion-label>{{ 'LOGIN' | translate}}</ion-label>
+    <ion-radio value="login"></ion-radio>
+  </ion-item>
+  <ion-item class="text-san-francisco">
+      <ion-label>{{ 'ENGLISH' | translate}}</ion-label>
+      <ion-radio value="english"></ion-radio>
+    </ion-item>
+    <ion-item class="text-seravek">
+      <ion-label>{{ 'ARABIC' | translate}}</ion-label>
+      <ion-radio value="arabic"></ion-radio>
+    </ion-item>
+</ion-list>

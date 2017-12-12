@@ -1,0 +1,78 @@
+<!--
+  Generated template for the RegistrationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  
+    <ion-navbar>
+      <ion-title>{{'REGISTRATIONTITLE' | translate}}</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+      <form [formGroup]="registrationForm"  (ngSubmit)="onRegistration(registrationForm.value)" name="registrationForm">
+  
+          <ion-list>
+  
+              <ion-row>
+                  <ion-col align="center">
+                      <img src="../../assets/imgs/logo.png" />
+                  </ion-col>
+                </ion-row>
+                <p>{{'LOGINHINT' | translate}}</p>
+                
+                <ion-item>
+                  <ion-label floating>{{'USERNAME' | translate}}</ion-label>
+                  <ion-input (ionFocus)="focusFunction()" name="name" id="name" type="text" ngModel1 formControlName="username"></ion-input>
+                </ion-item>
+              
+                <ion-item>
+                  <ion-label floating>{{'PASSWORD' | translate}}</ion-label>
+                  <ion-input (ionFocus)="focusFunction()" name="password" id="password" type="password" ngModel1 formControlName="password"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label floating>{{'EMAILID' | translate}}</ion-label>
+                  <ion-input (ionFocus)="focusFunction()" name="email" id="email" type="email" ngModel1 formControlName="email"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label floating>{{'PHONENUMBER' | translate}}</ion-label>
+                  <ion-input (ionFocus)="focusFunction()" name="phonenumber" id="phonenumber" type="number" ngModel1 formControlName="phonenumber"></ion-input>
+                </ion-item>
+
+                <ion-item padding-top class="item-leave-height">
+                  <ion-label>{{'ROLE' | translate}}</ion-label>
+                  <ion-select name="role" formControlName="role">
+                      <!-- <ion-option value="admin">{{'ADMIN' | translate}}</ion-option> -->
+                      <ion-option value="owner">{{'TRUCKPROVIDER' | translate}}</ion-option>
+                      <!-- <ion-option value="driver">{{'DRIVER' | translate}}</ion-option> -->
+                      <ion-option value="customer">{{'CUSTOMER' | translate}}</ion-option>
+                  </ion-select>
+              </ion-item>
+  
+              </ion-list>
+              <p  *ngIf="registrationForm.controls.username.errors?.pattern" class="error">{{'USERNAMEINVALID' | translate}}</p>            
+              <!-- <p padding *ngIf="registrationForm.controls.password.errors" class="error">Password cannot be blank.</p>             -->
+              <p  class="error">{{serverError}}</p>                        
+              <div padding>
+                  <button block ion-button type="submit" [disabled]="!registrationForm.valid">{{'REGISTERBUTTON' | translate}}</button>                  
+              </div>
+              <div padding>
+                <button block ion-button type="button" (click)="navigateToLoginPage()">{{'LOGINGUIDE' | translate}}</button>                  
+            </div>
+        </form> 
+             
+  </ion-content>
+  <ion-footer>
+      <ion-toolbar>
+        <!-- <ion-title text-left float-left>
+          <p float-left></p>
+          </ion-title> -->
+          <p style="color: #fff">© {{'COPYRIGHT' | translate }}<p>
+      </ion-toolbar>
+    </ion-footer> 

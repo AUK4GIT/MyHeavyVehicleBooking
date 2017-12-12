@@ -2,5 +2,7 @@
   "name": "ZamilRentTruck",
   "app_id": "25421284",
   "type": "ionic-angular",
-  "integrations": {}
+  "integrations": {
+    "cordova": {}
+  }
 }

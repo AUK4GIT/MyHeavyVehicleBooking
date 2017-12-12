@@ -1,0 +1,76 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>CustomerAddNewTripPage</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col>
+        <ion-item margin-top class="item-leave-height">
+          <ion-label>{{'TRUCKTYPE' | translate}}</ion-label>
+          <ion-select name="trucktypes" [(ngModel)]="trucktype">
+            <ion-option value="{{truck.regno}}" *ngFor="let truck of trucks">{{ truck.type }} - {{ truck.capacity }}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col>
+
+        <ion-item margin-top class="item-leave-height">
+          <ion-label>{{'PICKUPCITY' | translate}}</ion-label>
+          <ion-select name="pickupcity" [(ngModel)]="pickupcity">
+            <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
+          </ion-select>
+        </ion-item>
+
+      </ion-col>
+
+      <ion-col>
+
+        <ion-item margin-top class="item-leave-height">
+          <ion-label>{{'DROPCITY' | translate}}</ion-label>
+          <ion-select name="dropcity" [(ngModel)]="dropcity">
+            <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
+          </ion-select>
+        </ion-item>
+
+      </ion-col>
+
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+
+          <ion-item margin-top class="item-leave-height">
+            <ion-label>{{'MATERIAL' | translate}}</ion-label>
+            <ion-input (ionFocus)="focusFunction()" placeholder="freight" name="material" id="material" type="text" [(ngModel)]="frieght"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+
+          <ion-item margin-top class="item-leave-height">
+            <ion-label>{{'STARTDATE' | translate}}</ion-label>
+            <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="startdate"></ion-datetime>
+          </ion-item>
+
+        </ion-col>
+      </ion-row>
+      
+      <ion-row padding-top>
+        <ion-col text-center>
+          <button (click)="requestQuote()" ion-button medium>{{ 'REQUESTQUOTE' | translate }}</button>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+</ion-content>
