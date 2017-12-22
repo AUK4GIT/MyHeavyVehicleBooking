@@ -16,10 +16,12 @@ import { BookingsListPage } from '../bookings-list/bookings-list';
 })
 export class TruckOwnerPage {
 
-  rootPage:any = OwnerTrucksListPage;
+  rootPage:any = OwnerTripsListPage;
+  user: any;
   @ViewChild(Nav) nav: Nav;
 
   constructor(public appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
+    this.user = this.appService.currentUser;    
   }
 
   ionViewDidLoad() {

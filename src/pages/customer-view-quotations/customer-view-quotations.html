@@ -9,11 +9,8 @@
 
 
 <ion-content padding id="pageQuotations">
-    <!-- <form id="page-form1">
-      <ion-searchbar placeholder="" name="" id="page-search1"></ion-searchbar>
-    </form> -->
     <ion-list id="pageQuotations-list">
-      <ion-item id="page-list-item10" *ngFor="let quotation of quotations">
+      <ion-item (click)="navigateToQuotationDetails(quotation)" id="page-list-item10" *ngFor="let quotation of quotations">
         <ion-thumbnail item-left>
           <img src="../../assets/imgs/logo_transparent.jpg"/>
         </ion-thumbnail>

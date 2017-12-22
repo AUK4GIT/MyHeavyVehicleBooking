@@ -5,12 +5,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DriverPage } from './driver';
 import { DriverTripsListPage } from '../driver-trips-list/driver-trips-list';
 import { DriverBookingsListPage } from '../driver-bookings-list/driver-bookings-list';
+import { DriverTripDetailsPage } from '../driver-trip-details/driver-trip-details'
 
 @NgModule({
   declarations: [
     DriverPage,
     DriverTripsListPage,
-    DriverBookingsListPage
+    DriverBookingsListPage,
+    DriverTripDetailsPage
   ],
   imports: [
     IonicPageModule.forChild(DriverPage),
@@ -19,7 +21,8 @@ import { DriverBookingsListPage } from '../driver-bookings-list/driver-bookings-
   entryComponents: [
     DriverPage,
     DriverTripsListPage,
-    DriverBookingsListPage
+    DriverBookingsListPage,
+    DriverTripDetailsPage
   ]
 })
 export class DriverPageModule {}

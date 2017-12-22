@@ -12,7 +12,7 @@ export class OwnerTripsListPage {
   constructor(private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.items = this.appService.getTrips();            
     console.log('ionViewDidLoad OwnerTripsListPage');
   }

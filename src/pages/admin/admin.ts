@@ -1,18 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, Events } from 'ionic-angular';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { AppModelServiceProvider } from '../../providers/app-model-service/app-model-service'
 
 import { TrucksListPage } from '../trucks-list/trucks-list';
 import { TruckOwnersListPage } from '../truck-owners-list/truck-owners-list';
 import { CustomersListPage } from '../customers-list/customers-list';
 import { TripsListPage } from '../trips-list/trips-list';
-
-/**
- * Generated class for the AdminPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -21,9 +15,11 @@ import { TripsListPage } from '../trips-list/trips-list';
 })
 export class AdminPage {
   rootPage:any = TrucksListPage;
+  user: any;
   @ViewChild(Nav) nav: Nav;
-  constructor(public events: Events, translate: TranslateService,public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private appService: AppModelServiceProvider, public events: Events, translate: TranslateService,public navCtrl: NavController, public navParams: NavParams) {
     // translate.setDefaultLang('ar-sa');
+    this.user = this.appService.currentUser;
   }
 
   ionViewDidLoad() {

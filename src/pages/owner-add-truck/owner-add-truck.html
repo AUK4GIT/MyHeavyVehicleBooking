@@ -7,12 +7,39 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>OwnerAddTruck</ion-title>
+    <ion-title>{{'ADDTRUCK' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+  <ion-row>
+      <ion-item margin-top class="item-leave-height">
+          <ion-label>{{'TRUCKTYPE' | translate}}</ion-label>
+          <ion-input (ionFocus)="focusFunction()" placeholder="trucktype" name="trucktype" id="trucktype" type="text" [(ngModel)]="trucktype"></ion-input>                        
+      </ion-item> 
+  </ion-row>
+
+  <ion-row>
+      <ion-item margin-top class="item-leave-height">
+          <ion-label>{{'CAPACITY' | translate}}</ion-label>
+          <ion-input (ionFocus)="focusFunction()" placeholder="capacity" name="capacity" id="capacity" type="text" [(ngModel)]="capacity"></ion-input>                        
+      </ion-item> 
+  </ion-row>
+
+  <ion-row>
+      <ion-item margin-top class="item-leave-height">
+          <ion-label>{{'REGNUM' | translate}}</ion-label>
+          <ion-input (ionFocus)="focusFunction()" placeholder="regnum" name="regnum" id="regnum" type="text" [(ngModel)]="regnum"></ion-input>                        
+      </ion-item> 
+  </ion-row>
+    
+  <ion-row padding-top >
+      <ion-col text-center>
+          <button (click)="addTruck()" ion-button medium >{{ 'ADDTRUCK' | translate }}</button>
+      </ion-col>
+  </ion-row>
 
 </ion-content>

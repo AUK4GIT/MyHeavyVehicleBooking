@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,  ModalController, Modal, Events } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
+import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 
 @Component({
   selector: 'page-customer-add-new-trip',
@@ -19,7 +20,7 @@ export class CustomerAddNewTripPage {
   trucks : any[];
   cities: [any];
 
-  constructor(private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor( private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -53,7 +54,9 @@ export class CustomerAddNewTripPage {
         offers: null,
         freight: this.frieght,
         userid: this.appService.currentUser.userid,
-        createddate: this.mindate
+        createddate: this.mindate,
+        rating: "0",
+        ispredefined: "false"
       };
         this.appService.createTripWithCustomerid(this.tempTrip);
         this.tempTrip = {};
@@ -63,6 +66,23 @@ export class CustomerAddNewTripPage {
   }
 
   focusFunction() {
+  }
+
+  presentAutoComplete(type) {
+    const autoCompleteModal: Modal = this.modal.create(AutoCompleteSearchPage, {
+      dataContext: this.cities,
+      autocomplete: this,
+      ispopover: true,
+    });
+    autoCompleteModal.present();
+    autoCompleteModal.onDidDismiss((data) => {
+      if(type == 'pickup'){
+        this.pickupcity = data ? data.description : '';
+      } else {
+        this.dropcity = data ? data.description : '';
+      }
+    });
+    
   }
 
 }

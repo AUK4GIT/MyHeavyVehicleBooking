@@ -8,6 +8,7 @@ import { CustomerBookingsListPage } from '../customer-bookings-list/customer-boo
 
 import { CustomerAddNewTripPage } from '../customer-add-new-trip/customer-add-new-trip';
 import { CustomerViewQuotationsPage } from '../customer-view-quotations/customer-view-quotations';
+import { CustomerQuotationsDetailsPage } from '../customer-quotations-details/customer-quotations-details';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { CustomerViewQuotationsPage } from '../customer-view-quotations/customer
     CustomerTripsListPage,
     CustomerBookingsListPage,
     CustomerAddNewTripPage,
-    CustomerViewQuotationsPage
+    CustomerViewQuotationsPage,
+    CustomerQuotationsDetailsPage
   ],
   imports: [
     IonicPageModule.forChild(CustomerPage),
@@ -25,7 +27,8 @@ import { CustomerViewQuotationsPage } from '../customer-view-quotations/customer
     CustomerTripsListPage,
     CustomerBookingsListPage,
     CustomerAddNewTripPage,
-    CustomerViewQuotationsPage
+    CustomerViewQuotationsPage,
+    CustomerQuotationsDetailsPage
   ]
 })
 export class CustomerPageModule {}

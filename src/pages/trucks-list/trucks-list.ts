@@ -1,27 +1,85 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTruck } from '../../providers/app-model-service/app-model-service'
-
-/**
- * Generated class for the TrucksListPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-trucks-list',
   templateUrl: 'trucks-list.html',
 })
 export class TrucksListPage {
-  items: AppTruck[];
-  constructor(private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  truckGroups: any[];
+  constructor(private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    this.items = this.appService.getTrucks();  
-    console.log('ionViewDidLoad TrucksListPage: '+this.items.length);
+  ionViewDidEnter() {
+    this.groupItems();
+    }
+
+  groupItems() {
+    var trucks = this.appService.getTrucks();  
+    this.truckGroups = this.appService.groupByreturningArray(trucks, "status", false);
+  }
+
+  deleteItem(item, gindex, iindex) {
+    this.presentConfirm('Do you want to delete this item ?.', () => {
+      this.appService.deleteTruck(item, (response) => {
+        if(response.result == "success"){
+          let group = this.truckGroups[gindex].list;
+          group.splice(iindex,1);
+        } else {
+          this.presentConfirm('Error deleting item', null);
+        }
+      })
+    });
+  }
+  approveItem(item, gindex, iindex) {
+    this.appService.approveTruck(item, (response) => {
+      if(response.result == "success"){
+        let group = this.truckGroups[gindex].list;
+        let truck = group[iindex];    
+        truck.status = "approved";
+        this.groupItems();
+      } else {
+        this.presentConfirm('Error updating item', null);
+      }
+    })
+  }
+  blockItem(item, gindex, iindex) {
+    this.appService.blockTruck(item, (response) => {
+      if(response.result == "success"){
+        let group = this.truckGroups[gindex].list;
+        let truck = group[iindex];    
+        truck.status = "blocked";
+        this.groupItems();
+      } else {
+        this.presentConfirm('Error updating item', null);
+      }
+    })
     
   }
 
+  presentConfirm(message, callback) {
+    var buttons = [
+      {
+        text: "NO",
+        role: 'cancel',
+        handler: () => {
+          // this.navCtrl.pop();
+        }
+      }
+    ];
+    if(callback){
+      buttons.push({
+        text: "YES",
+        role: 'cancel',
+        handler: callback
+      });
+    }
+    let alert = this.alertCtrl.create({
+      title: 'Rent a Truck',
+      message: message,
+      buttons: buttons
+    });
+    alert.present();
+  }
 }

@@ -3,6 +3,7 @@ import { Slides, App, PopoverController, NavParams, NavController, ModalControll
 import { HomepopoverComponent } from '../../components/homepopover/homepopover';
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
 import { Popover } from 'ionic-angular/components/popover/popover';
+import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 
 @Component({
   selector: 'page-home',
@@ -65,7 +66,8 @@ export class HomePage {
         offers: null,
         freight: this.frieght,
         userid: "",
-        createddate: this.mindate
+        createddate: this.mindate,
+        ispredefined: "false"
       };
       this.presentLoginView();
     }
@@ -135,15 +137,19 @@ export class HomePage {
     });
   }
 
-  presentAutoComplete() {
-    const autoCompleteModal: Popover = this.popoverCtrl.create('AutoCompleteSearchPage', {
+  presentAutoComplete(type) {
+    const autoCompleteModal: Modal = this.modal.create(AutoCompleteSearchPage, {
       dataContext: this.cities,
       autocomplete: this,
       ispopover: true,
     });
     autoCompleteModal.present();
     autoCompleteModal.onDidDismiss((data) => {
-      
+      if(type == 'pickup'){
+        this.pickupcity = data ? data.description : '';
+      } else {
+        this.dropcity = data ? data.description : '';
+      }
     });
     
   }

@@ -12,7 +12,7 @@ export class OwnerTrucksListPage {
   constructor(private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.items = this.appService.getTrucksForOwnerid(this.appService.currentUser.userid);        
     console.log('ionViewDidLoad OwnerTrucksListPage');
   }

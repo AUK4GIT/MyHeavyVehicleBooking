@@ -13,8 +13,12 @@ export class DriversListPage {
   }
 
   ionViewDidLoad() {
-    this.items = this.appService.getUsersByRole("driver");            
     console.log('ionViewDidLoad DriversListPage');
+  }
+
+  ionViewDidEnter() {
+    // this.items = this.appService.getUsersByRole("driver");                
+    this.items = this.appService.getDriversForOwner(this.appService.currentUser.userid);                
   }
 
   addDriver(){

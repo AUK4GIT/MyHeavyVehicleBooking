@@ -11,17 +11,20 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding id="page1">
-  <form id="page-form1">
-    <ion-searchbar placeholder="" name="" id="page-search1"></ion-searchbar>
-  </form>
   <ion-list id="page-list1">
-    <ion-item color="none" id="page-list-item10" *ngFor="let item of items" >
+    <ion-item (click)="showTripDetails(item)" color="none" id="page-list-item10" *ngFor="let item of items" >
       <ion-thumbnail item-left>
         <img src="../../assets/imgs/logo_transparent.jpg"/>
       </ion-thumbnail>
       <h2>
         {{item.startlocation}} - {{item.endlocation}}
       </h2>
+      <h3>
+        {{item.startdate}}
+      </h3>
+      <h4>
+          {{item.freight}}
+      </h4>
     </ion-item>
   </ion-list>
 </ion-content>

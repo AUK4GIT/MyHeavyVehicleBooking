@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, Events } from 'ionic-angular';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { AppModelServiceProvider } from '../../providers/app-model-service/app-model-service'
 
 import { CustomerTripsListPage } from '../customer-trips-list/customer-trips-list';
 import { CustomerBookingsListPage } from '../customer-bookings-list/customer-bookings-list';
@@ -13,9 +14,11 @@ import { CustomerBookingsListPage } from '../customer-bookings-list/customer-boo
 export class CustomerPage {
 
   rootPage:any = CustomerTripsListPage;
+  user: any;
   @ViewChild(Nav) nav: Nav;
 
-  constructor(public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
+    this.user = this.appService.currentUser;    
   }
 
   ionViewDidLoad() {

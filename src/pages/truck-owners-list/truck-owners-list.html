@@ -10,20 +10,42 @@
       </ion-title>
     </ion-navbar>
   </ion-header>
-  <ion-content padding id="page1">
-    <form id="page-form1">
-      <ion-searchbar placeholder="" name="" id="page-search1"></ion-searchbar>
-    </form>
+  <ion-content id="page1">
     <ion-list id="page-list1">
-      <ion-item color="none" id="page-list-item10" *ngFor="let owner of owners" >
-        <ion-thumbnail item-left>
-          <img src="../../assets/imgs/logo_transparent.jpg"/>
-        </ion-thumbnail>
-        <h2>
-          {{owner.name}}
-        </h2>
-        <button ion-button outline item-end>{{owner.status}}</button>
-      </ion-item>
+        <ion-item-group *ngFor="let group of userGroups;  let gindex = index" >
+            <ion-item-divider color="light" text-capitalize>{{group.group}}</ion-item-divider> 
+            <ion-item-sliding *ngFor="let owner of group.list; let iindex = index">       
+            <ion-item color="none" id="page-list-item10">
+              <ion-thumbnail item-left>
+                <img src="../../assets/imgs/logo_transparent.jpg" />
+              </ion-thumbnail>
+              <h2><b>
+                  {{owner.name}}
+                  </b>
+              </h2>
+              <h3>
+                {{ owner.email }}
+              </h3>
+              <h2>
+                  {{ owner.phonenumber }}
+                </h2>
+            </ion-item>
+            <ion-item-options side="end">
+                <button ion-button color="danger" (click)="deleteItem(owner, gindex, iindex)">
+                  <ion-icon name="delete"></ion-icon>
+                  Delete
+                </button>
+                <button *ngIf="group.group != 'approved'" ion-button color="primary" (click)="approveItem(owner, gindex, iindex)">
+                    <ion-icon name="approve"></ion-icon>
+                    Approve
+                </button>
+                <button *ngIf="group.group != 'blocked'" ion-button color="secondary" (click)="blockItem(owner, gindex, iindex)">
+                      <ion-icon name="block"></ion-icon>
+                      Block
+                </button>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-item-group>
     </ion-list>
   </ion-content>
   

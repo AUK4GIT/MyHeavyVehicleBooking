@@ -29,9 +29,11 @@
 
         <ion-item margin-top class="item-leave-height">
           <ion-label>{{'PICKUPCITY' | translate}}</ion-label>
-          <ion-select name="pickupcity" [(ngModel)]="pickupcity">
+          <!-- <ion-select name="pickupcity" [(ngModel)]="pickupcity">
             <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
-          </ion-select>
+          </ion-select> -->
+          <ion-input placeholder="Search location" [readonly]=true (click)="presentAutoComplete('pickup')" name="pickupcity" [(ngModel)]="pickupcity">
+          </ion-input>
         </ion-item>
 
       </ion-col>
@@ -40,9 +42,11 @@
 
         <ion-item margin-top class="item-leave-height">
           <ion-label>{{'DROPCITY' | translate}}</ion-label>
-          <ion-select name="dropcity" [(ngModel)]="dropcity">
+          <!-- <ion-select name="dropcity" [(ngModel)]="dropcity">
             <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
-          </ion-select>
+          </ion-select> -->
+          <ion-input placeholder="Search location" [readonly]=true (click)="presentAutoComplete('drop')" name="dropcity" [(ngModel)]="dropcity">
+          </ion-input>
         </ion-item>
 
       </ion-col>

@@ -6,7 +6,19 @@
             </ion-toolbar>
         </ion-header>
         <ion-content>
+                <ion-card text-center class="profile-card">
+                        <img src="http://placehold.it/50x50" class="custom-avatar"/>
+                        <h2>{{user.name}}</h2>
+                        <p>{{user.phonenumber}}</p>
+                        <p>{{user.email}}</p>
+                        <hr>
+                    </ion-card>
             <ion-list>
+                <!-- <ion-item  class="item item-avatar">
+                    <img src="//ionicframework.com/img/docs/spengler.jpg">
+                    <h2>Pretty Hate Machine</h2>
+                    <p>Nine Inch Nails</p>
+                </ion-item > -->
                 <ion-item (click)="go_to_TrucksListPage()" menuClose>
                     {{'TRUCKS' | translate}}
                 </ion-item>

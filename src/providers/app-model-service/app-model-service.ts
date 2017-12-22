@@ -11,6 +11,7 @@ export class AppModelServiceProvider {
   offers: AppOffer[];
   quotations: AppQuotation[];
   
+  // status: pending, approved, rejected
   constructor(public http: HttpClient) {
     console.log('Hello AppModelServiceProvider Provider');
     this.users = [new AppUser("admin1", "admin1@gmail.com", "admin", "1234567890", "admin", "1", "pending", ""),
@@ -22,19 +23,19 @@ export class AppModelServiceProvider {
                    new AppUser("customer1", "customer1@gmail.com", "customer", "1234567890", "customer", "7", "pending", ""),
                    new AppUser("customer2", "customer2@gmail.com", "customer", "1234567890", "customer", "8", "pending", "")];
   
-  this.trucks = [new AppTruck("Flatbed","2000cc","12345",[""],"4", "1"),
-                  new AppTruck("Lowbed","3000cc","67890",[""],"5", "1"),
-                  new AppTruck("Curtainside","4000cc","10293",[""],"3", "2"),
-                  new AppTruck("Reefer","2000cc","11111",[""],"4", "2"),
-                  new AppTruck("Car Transporter","3000cc","22222",[""],"5", "3"),
-                  new AppTruck("Tipper","4000cc","33333",[""],"3", "3"),
-                  new AppTruck("Tanker","2000cc","44444",[""],"4", "4"),
-                  new AppTruck("Container","3000cc","55555",[""],"5", "4"),
-                  new AppTruck("Pickup","4000cc","66666",[""],"3", "5"),
-                  new AppTruck("Bus","2000cc","77777",[""],"4", "5")];
+  this.trucks = [new AppTruck("Flatbed","2000cc","12345",[""],"4", "1", "approved", "1"),
+                  new AppTruck("Lowbed","3000cc","67890",[""],"5", "1", "approved", "2"),
+                  new AppTruck("Curtainside","4000cc","10293",[""],"3", "2", "approved", "3"),
+                  new AppTruck("Reefer","2000cc","11111",[""],"4", "2", "approved", "4"),
+                  new AppTruck("Car Transporter","3000cc","22222",[""],"5", "3", "approved", "5"),
+                  new AppTruck("Tipper","4000cc","33333",[""],"3", "3", "approved", "6"),
+                  new AppTruck("Tanker","2000cc","44444",[""],"4", "4", "approved", "7"),
+                  new AppTruck("Container","3000cc","55555",[""],"5", "4", "approved", "8"),
+                  new AppTruck("Pickup","4000cc","66666",[""],"3", "5", "approved", "9"),
+                  new AppTruck("Bus","2000cc","77777",[""],"4", "5", "approved", "10")];
 
     this.trips = new Array<AppTrip>();
-         this.quotations = new Array<AppQuotation>();         
+    this.quotations = new Array<AppQuotation>();         
   
     this.offers = [new AppOffer(null,null,"Special offer","1"),
                     new AppOffer(null,null,"Super offer","2"),
@@ -47,7 +48,7 @@ export class AppModelServiceProvider {
 
   addUser(item) {
     return this.users[this.users.push(
-      new AppUser(item.name, item.email, item.password, item.phonenumber, item.role, String(this.users.length), "pending", item.ownerid)
+      new AppUser(item.name, item.email, item.password, item.phonenumber, item.role, String(this.users.length), item.status, item.ownerid)
     )-1];
   }
 
@@ -87,6 +88,15 @@ export class AppModelServiceProvider {
     return <any>users;
   }
 
+  getUserById(userid) {
+    let users = this.users.filter((user: AppUser) => user.userid == userid);
+    if(users.length > 0){
+      return users[0];
+    } else {
+      return null;
+    }
+  }
+
   getDriversForOwner(ownerid) {
     let users = this.users.filter((user: AppUser) => user.owneridfordriver == ownerid);
     return <any>users;
@@ -101,6 +111,11 @@ export class AppModelServiceProvider {
     return trucks;
   }
 
+  getTruckForTripId(truckid) {
+    let trucks = this.trucks.filter((truck: AppTruck) => truck.truckid == truckid);    
+    return trucks.length > 0 ? trucks[0] : null;
+  }
+  
   getTrips() {
     return this.trips;
   }
@@ -117,7 +132,7 @@ export class AppModelServiceProvider {
 
   createTripWithCustomerid(item) {
     return this.trips[this.trips.push(
-      new AppTrip(item.trucktype, item.startlocation, item.endlocation, item.status, item.startdate, item.comments, item.offers, String(this.trips.length), item.freight, item.userid, item.createddate)
+      new AppTrip(item.trucktype, item.startlocation, item.endlocation, item.status, item.startdate, item.comments, item.offers, String(this.trips.length), item.freight, item.userid, item.createddate, item.rating, item.ispredefined)
     )-1];
   }
 
@@ -136,7 +151,8 @@ export class AppModelServiceProvider {
         String(this.quotations.length),
         item.tripid,
         item.ownerid,
-        item.truckregno)
+        item.ownername,
+        item.truckid)
     )-1];
   }
 
@@ -152,6 +168,127 @@ export class AppModelServiceProvider {
   getQuotationsForTripId(tripid) {
     let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.tripid == tripid);    
     return quotations;
+  }
+
+  getConfirmedQuotationForTripId(tripid){
+    let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.tripid) == tripid && (quotation.status == "confirmed")));    
+    return quotations.length > 0 ? quotations[0] : null;
+  }
+
+  confirmQuotation(quotationid) {
+    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == quotationid);    
+    let quotation = quotations[0];
+    let trips = this.trips.filter((trip: AppTrip) => trip.tripid == quotation.tripid);    
+    let trip = trips[0];
+    trip.status = "confirmed";
+    quotation.status = "confirmed";
+  }
+
+  completeTripWithId(tripid, quotationid) {
+    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == quotationid);    
+    let quotation = quotations[0];
+    let trips = this.trips.filter((trip: AppTrip) => trip.tripid == quotation.tripid);    
+    let trip = trips[0];
+    trip.status = "completed";
+    quotation.status = "completed";
+  }
+
+  addTruck(item) {
+    return this.trucks[this.trucks.push(
+      new AppTruck(item.trucktype, item.capacity, item.regnum, item.photos, item.rating, item.ownerid, item.status, String(this.trucks.length))
+    )-1];
+  }
+
+//custoer admin
+deleteuser(item, callback) {
+  const index: number = this.users.indexOf(item);
+  if (index !== -1) {
+      this.trucks.splice(index, 1);
+      callback({result: 'success'});
+  } else {
+    callback({result: 'failure', error: 'user not found'});
+  }
+}
+approveuser(item, callback) {
+  let trucks = this.users.filter((user: AppUser) => user.userid == item.userid);    
+  if(trucks.length > 0){
+    let truck = trucks[0];
+    truck.status = "approved";
+    callback({result: "success"});
+  } else {
+    callback({result: "failure", error: "user not found"});
+  }
+}
+blockuser(item, callback) {
+  let users = this.users.filter((user: AppUser) => user.userid == item.userid);    
+  if(users.length > 0){
+    let user = users[0];
+    user.status = "blocked";
+    callback({result: "success"});
+  } else {
+    callback({result: "failure", error: "user not found"});
+  }
+}
+
+  // Trucks admin
+  deleteTruck(item, callback) {
+    const index: number = this.trucks.indexOf(item);
+    if (index !== -1) {
+        this.trucks.splice(index, 1);
+        callback({result: 'success'});
+    } else {
+      callback({result: 'failure', error: 'truck not found'});
+    }
+  }
+  approveTruck(item, callback) {
+    let trucks = this.trucks.filter((truck: AppTruck) => truck.truckid == item.truckid);    
+    if(trucks.length > 0){
+      let truck = trucks[0];
+      truck.status = "approved";
+      callback({result: "success"});
+    } else {
+      callback({result: "failure", error: "truck not found"});
+    }
+  }
+  blockTruck(item, callback) {
+    let trucks = this.trucks.filter((truck: AppTruck) => truck.truckid == item.truckid);    
+    if(trucks.length > 0){
+      let truck = trucks[0];
+      truck.status = "blocked";
+      callback({result: "success"});
+    } else {
+      callback({result: "failure", error: "truck not found"});
+    }
+  }
+
+
+  //mark - Utility methods
+
+  groupByreturningObject(array, key) {
+    return array.reduce(function(arr, obj) {
+      (arr[obj[key]] = arr[obj[key]] || []).push(obj);
+      return arr;
+    }, {});
+  };
+
+  groupByreturningArray(array, key, order) {
+    array.sort((a, b) =>
+    order ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key])
+    );
+    let currentgroup = "";
+    let groupedArray = [];
+    array.forEach((object, index) =>  {
+                 if(object[key] != currentgroup){
+                     currentgroup = object[key];
+                     let newGroup = {
+                         group: currentgroup,
+                         list: []
+                     };
+                     groupedArray.push(newGroup);
+                 } 
+                 groupedArray[groupedArray.length-1].list.push(object);
+             });
+             return groupedArray;
   }
 }
 
@@ -176,7 +313,9 @@ export class AppUser {
                   public regno: string,
                   public photos: [string],
                   public rating: string,
-                  public ownerid: string) {
+                  public ownerid: string,
+                  public status: string,
+                  public truckid: string) {
       }
     
     }
@@ -193,7 +332,9 @@ export class AppUser {
                     public tripid: string,
                     public freight: string,
                     public userid: string,
-                    public createddate: string) {
+                    public createddate: string,
+                    public rating: string,
+                    public ispredefined: string) {
         }
       
       }
@@ -208,12 +349,13 @@ export class AppUser {
         public starttime: string,
         public closetime: string,
         public additionalcharges: string,
-        public comments: [string],
+        public comments: string,
         public offers: [string],
         public quotationid: string,
         public tripid: string,
         public ownerid: string,
-        public truckregno: string) {
+        public ownername: string,
+        public truckid: string) {
 }
     }
     

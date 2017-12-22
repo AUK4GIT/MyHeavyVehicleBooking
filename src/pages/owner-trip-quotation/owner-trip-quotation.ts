@@ -13,7 +13,7 @@ starttime: string;
 closetime: string;
 comments: string;
 charges: string;
-truckdetails: string;
+truckid: string;
 tripid: string;
 trucktype: string;
 duration: string;
@@ -21,8 +21,8 @@ drivers: AppUser[];
 trucks: AppTruck[];
 
   constructor(private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
-    this.tripid = this.navParams["tripid"];
-    this.trucktype = this.navParams["trucktype"];
+    this.tripid = this.navParams.get("tripid");
+    this.trucktype = this.navParams.get("trucktype");
     this.drivers = this.appService.getDriversForOwner(this.appService.currentUser.userid);
     this.trucks = this.appService.getTrucksForOwnerid(this.appService.currentUser.userid);
     
@@ -50,9 +50,11 @@ trucks: AppTruck[];
         offers: null,
         tripid: this.tripid,
         ownerid: this.appService.currentUser.userid,
-        truckregno: this.truckdetails
+        ownername: this.appService.currentUser.name,
+        truckid: this.truckid
     });
-    }      
+    }   
+    this.navCtrl.pop();   
   }
 
 }

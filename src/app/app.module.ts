@@ -18,13 +18,13 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { HomepopoverComponent } from '../components/homepopover/homepopover';
 import { AppModelServiceProvider } from '../providers/app-model-service/app-model-service';
-
+import { AutoCompleteSearchPage } from '../pages/auto-complete-search/auto-complete-search'
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    
+    AutoCompleteSearchPage
   ],
   imports: [
     BrowserModule,
@@ -49,7 +49,8 @@ import { AppModelServiceProvider } from '../providers/app-model-service/app-mode
   entryComponents: [
     MyApp,
     HomePage,
-    HomepopoverComponent
+    HomepopoverComponent,
+    AutoCompleteSearchPage
   ],
   providers: [
     StatusBar,

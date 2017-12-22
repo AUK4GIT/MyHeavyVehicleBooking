@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
-
-/**
- * Generated class for the DriverTripsListPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { DriverTripDetailsPage } from '../driver-trip-details/driver-trip-details'
 
 @Component({
   selector: 'page-driver-trips-list',
@@ -21,6 +15,12 @@ export class DriverTripsListPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad DriverTripsListPage');
     this.items = this.appService.getTrips();        
+  }
+
+  showTripDetails(trip){
+    this.navCtrl.push(DriverTripDetailsPage, {
+      trip: trip
+    });
   }
 
 }

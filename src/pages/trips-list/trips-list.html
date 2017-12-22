@@ -10,12 +10,10 @@
       </ion-title>
     </ion-navbar>
   </ion-header>
-  <ion-content padding id="page1">
-      <form id="page-form1">
-        <ion-searchbar placeholder="" name="" id="page-search1"></ion-searchbar>
-      </form>
+  <ion-content  id="page1">
+
       <ion-list id="page-list1">
-        <ion-item (click)="viewQuotationsForTrip(item)" color="none" id="page-list-item10" *ngFor="let item of items">
+        <ion-item id="page-list-item10" *ngFor="let item of items">
           <ion-thumbnail item-left>
             <img src="../../assets/imgs/logo_transparent.jpg"/>
           </ion-thumbnail>

@@ -16,9 +16,6 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding id="page1">
-  <form id="page-form1">
-    <ion-searchbar placeholder="" name="" id="page-search1"></ion-searchbar>
-  </form>
   <ion-list id="page-list1">
     <ion-item color="none" id="page-list-item10" *ngFor="let item of items">
       <ion-thumbnail item-left>
@@ -27,6 +24,7 @@
       <h2>
         {{item.type}}
       </h2>
+      <button ion-button outline item-end>{{item.status}}</button>      
       <p>{{item.capacity}}</p>
       <rating [(ngModel)]="item.rating" readOnly="true" max="5"
         emptyStarIconName="star-outline"

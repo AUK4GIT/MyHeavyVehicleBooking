@@ -51,7 +51,7 @@ export class RegistrationPage {
         return;
       }
 
-      this.appService.registrationService({email: loginItem.email, password: loginItem.password, name: loginItem.username, phonenumber: loginItem.phonenumber, role: loginItem.role},
+      this.appService.registrationService({email: loginItem.email, password: loginItem.password, name: loginItem.username, phonenumber: loginItem.phonenumber, role: loginItem.role, status: "pending"},
         (response) => {
          if(response.result == 'success') {
           this.presentConfirm();
@@ -62,6 +62,7 @@ export class RegistrationPage {
       // this.storage.set('login', 'success');
       // this.viewCtrl.dismiss({ result: 'success', userType: 'user' });
     }
+    
 
     presentConfirm() {
       let alert = this.alertCtrl.create({

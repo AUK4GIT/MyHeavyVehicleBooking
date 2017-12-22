@@ -14,7 +14,7 @@ export class CustomerTripsListPage {
   constructor(private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     console.log('ionViewDidLoad CustomerTripsListPage');
     this.items = this.appService.getTripsForCustomerid(this.appService.currentUser.userid);    
   }
@@ -24,7 +24,8 @@ export class CustomerTripsListPage {
   }
 
   viewQuotationsForTrip(trip) {
-    this.navCtrl.push(CustomerViewQuotationsPage, { tripid: trip.tripid});    
+    console.log("trip: "+trip);
+    this.navCtrl.push(CustomerViewQuotationsPage, { trip: trip});    
   }
 
 }

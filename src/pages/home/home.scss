@@ -11,12 +11,13 @@ page-home p {
 
 page-home .truckbg {
     background-repeat: no-repeat;
-    background-size: auto 100%;
+    background-size: cover;
     background-color: #000;
     background-attachment: fixed;
     background-position: center;
     position: relative;
 }
+
 page-home .truckbg:before {
     position: absolute;
     content:" ";
@@ -29,7 +30,7 @@ page-home .truckbg:before {
     background-color: rgba(0,150,0,0.2);
  }
 
-page-home .truckbg h3{
+page-home .truckbg h3, page-home .truckbg h1{
     color: #fff;
 }
 
@@ -57,9 +58,19 @@ page-home ion-slides {
 
 page-home ion-slides ion-slide{
     background-color: green;
-    border-radius : 10px;
+    // border-radius : 10px;
 }
 
 page-home ion-navbar ion-buttons span.button-inner {
     font-size: 1.2rem;
+}
+
+@media only screen and (max-width: 500px) {
+    
+    page-home .truckbg {
+        background-size: auto 100% !important;
+    }
+    page-home .truckbg h1{
+        font-size: 2rem;
+    }
 }
