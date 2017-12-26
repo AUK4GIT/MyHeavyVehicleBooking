@@ -30,12 +30,11 @@
     "@ngx-translate/core": "^8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "com.synconset.imagepicker": "~2.1.8",
-    "cordova-android": "6.3.0",
+    "cordova-android": "~6.3.0",
     "cordova-browser": "~5.0.1",
     "cordova-ios": "4.5.4",
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-fcm": "^2.1.2",
-    "cordova-plugin-firebase": "^0.1.25",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-splashscreen": "^4.1.0",
     "cordova-plugin-telerik-imagepicker": "^2.1.8",
@@ -63,7 +62,6 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-firebase": {},
       "com.synconset.imagepicker": {
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": "To upload profile and truck images."
       },

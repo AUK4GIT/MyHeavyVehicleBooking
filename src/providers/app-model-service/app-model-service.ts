@@ -178,7 +178,7 @@ export class AppModelServiceProvider {
 
   getOffers() {
     let offers = this.offers.filter((offer: AppOffer) => offer.status == 'approved');    
-    return offers;
+    return this.offers;
   }
 
   createTripWithCustomerid(item) {
