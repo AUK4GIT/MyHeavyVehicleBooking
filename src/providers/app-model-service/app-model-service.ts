@@ -7,13 +7,37 @@ export class AppModelServiceProvider {
   currentUser: AppUser;
   users : AppUser[];
   trucks: AppTruck[];
+  trucktypes: AppTruckType[];  
   trips: AppTrip[];
   offers: AppOffer[];
   quotations: AppQuotation[];
+  predefinedlistofplaces: String[];
   
   // status: pending, approved, rejected
   constructor(public http: HttpClient) {
     console.log('Hello AppModelServiceProvider Provider');
+    this.predefinedlistofplaces = [
+      "Riyadh",
+      "Jeddah",
+      "Mecca",
+      "Medina",
+      "Al-Ahsa",
+      "Ta'if",
+      "Dammam",
+      "Buraidah",
+      "Khobar",
+      "Tabuk",
+      "Qatif",
+      "Khamis Mushait",
+      "Ha'il",
+      "Hafar Al-Batin",
+      "Jubail",
+      "Al-Kharj",
+      "Abha",
+      "Najran",
+      "Yanbu",
+      "Al Qunfudhah"
+    ];
     this.users = [new AppUser("admin1", "admin1@gmail.com", "admin", "1234567890", "admin", "1", "pending", ""),
                    new AppUser("admin2", "admin2@gmail.com", "admin", "1234567890", "admin", "2", "pending", ""),
                    new AppUser("driver1", "driver1@gmail.com", "driver", "1234567890", "driver", "3", "pending", "5"),
@@ -23,23 +47,31 @@ export class AppModelServiceProvider {
                    new AppUser("customer1", "customer1@gmail.com", "customer", "1234567890", "customer", "7", "pending", ""),
                    new AppUser("customer2", "customer2@gmail.com", "customer", "1234567890", "customer", "8", "pending", "")];
   
-  this.trucks = [new AppTruck("Flatbed","2000cc","12345",[""],"4", "1", "approved", "1"),
-                  new AppTruck("Lowbed","3000cc","67890",[""],"5", "1", "approved", "2"),
-                  new AppTruck("Curtainside","4000cc","10293",[""],"3", "2", "approved", "3"),
-                  new AppTruck("Reefer","2000cc","11111",[""],"4", "2", "approved", "4"),
-                  new AppTruck("Car Transporter","3000cc","22222",[""],"5", "3", "approved", "5"),
-                  new AppTruck("Tipper","4000cc","33333",[""],"3", "3", "approved", "6"),
-                  new AppTruck("Tanker","2000cc","44444",[""],"4", "4", "approved", "7"),
-                  new AppTruck("Container","3000cc","55555",[""],"5", "4", "approved", "8"),
-                  new AppTruck("Pickup","4000cc","66666",[""],"3", "5", "approved", "9"),
-                  new AppTruck("Bus","2000cc","77777",[""],"4", "5", "approved", "10")];
+    this.trucktypes = [new AppTruckType("1","Flatbed",""),
+                        new AppTruckType("2","Lowbed",""),
+                        new AppTruckType("3","Curtainside",""),
+                        new AppTruckType("4","Reefer",""),
+                        new AppTruckType("5","Car Transporter",""),
+                        new AppTruckType("6","Tipper",""),
+                        new AppTruckType("7","Tanker",""),
+                        new AppTruckType("8","Container","")];
 
-    this.trips = new Array<AppTrip>();
-    this.quotations = new Array<AppQuotation>();         
-  
-    this.offers = [new AppOffer(null,null,"Special offer","1"),
-                    new AppOffer(null,null,"Super offer","2"),
-                    new AppOffer(null,null,"Travel offer","3")];
+  // this.trucks = new Array<AppTruck>();
+
+    // this.trips = new Array<AppTrip>();
+    // this.quotations = new Array<AppQuotation>(); 
+    
+    this.trucks = [new AppTruck("Flatbed","2000 cc","SA15A6600",null,"0","5","pending","1","red","12/12/2016","1"),
+                    new AppTruck("Lowbed","2200 cc","SA15A5500",null,"0","5","pending","1","gren","12/12/2016","2")];
+
+    this.quotations = [new AppQuotation("","","12 hrs","1500 sar", "pending", "", "", "", "", "", "", "1", "1", "5", "owner1", ""),
+                        new AppQuotation("","","15 hrs","2000 sar", "pending", "", "", "", "", "", "", "2", "2", "5", "owner1", "")];         
+
+    this.trips = [new AppTrip("","Flatbed","Jedda","Mecca","pending","","","1","","5","","0","true","1",""),
+                  new AppTrip("","Lowbed","Medina","Mecca","pending","","","1","","5","","0","true","2","")];
+
+    this.offers = [new AppOffer("1","Promotional Offer","1","1","Flatbed","Jedda","Mecca","","15%","12/12/2017","29/12/2017","pending"),
+                    new AppOffer("2","Promotional Offer","2","2","Lowbed","Jedda","Mecca","","20%","12/12/2017","29/12/2017","pending")];
   }
 
   setCurrentUser(item){
@@ -102,6 +134,10 @@ export class AppModelServiceProvider {
     return <any>users;
   }
 
+  getTruckTypes() {
+    return this.trucktypes;
+  }
+
   getTrucks() {
     return this.trucks;
   }
@@ -125,14 +161,63 @@ export class AppModelServiceProvider {
     return trips;
   }
 
+  getAvailableTrips(){
+    let trips = this.trips.filter((trip: AppTrip) => trip.ispredefined == 'true');    
+    return trips;
+  }
+
+  getOwnerAvailableTrips(userid){
+    let trips = this.trips.filter((trip: AppTrip) => (trip.ispredefined == 'true' && trip.userid == userid));    
+    return trips;
+  }
+
+  getRequestedTrips() {
+    let trips = this.trips.filter((trip: AppTrip) => trip.ispredefined == 'false');    
+    return trips;
+  }
 
   getOffers() {
-    return this.offers;
+    let offers = this.offers.filter((offer: AppOffer) => offer.status == 'approved');    
+    return offers;
   }
 
   createTripWithCustomerid(item) {
     return this.trips[this.trips.push(
-      new AppTrip(item.trucktype, item.startlocation, item.endlocation, item.status, item.startdate, item.comments, item.offers, String(this.trips.length), item.freight, item.userid, item.createddate, item.rating, item.ispredefined)
+      new AppTrip(item.truckid, 
+                  item.trucktype,
+                  item.startlocation, 
+                  item.endlocation, 
+                  item.status, 
+                  item.startdate, 
+                  item.comments, 
+                  String(this.trips.length), 
+                  item.freight, 
+                  item.userid, 
+                  item.createddate, 
+                  item.rating, 
+                  item.ispredefined,
+                  item.quotationidforpredefinedtrip,
+                  item.remarks)
+    )-1];
+  }
+
+  createTripWithOwnerid(item) {
+    return this.trips[this.trips.push(
+      new AppTrip(item.truckid, 
+                  item.trucktype,
+                  item.startlocation, 
+                  item.endlocation, 
+                  item.status, 
+                  item.startdate, 
+                  item.comments, 
+                  String(this.trips.length), 
+                  item.freight, 
+                  item.userid, 
+                  item.createddate, 
+                  item.rating, 
+                  item.ispredefined,
+                  item.quotationidforpredefinedtrip,
+                  item.remarks)
     )-1];
   }
 
@@ -147,7 +232,8 @@ export class AppModelServiceProvider {
         item.closetime,
         item.additionalcharges,
         item.comments,
-        item.offers,
+        item.appliedofferid,
+        item.discount,
         String(this.quotations.length),
         item.tripid,
         item.ownerid,
@@ -169,6 +255,11 @@ export class AppModelServiceProvider {
     let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.tripid == tripid);    
     return quotations;
   }
+
+  // createQuotationForPredefinedTripId(tripid) {
+  //   let quotation = new AppQuotation();
+  //   return quotations;
+  // }
 
   getConfirmedQuotationForTripId(tripid){
     let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.tripid) == tripid && (quotation.status == "confirmed")));    
@@ -195,7 +286,17 @@ export class AppModelServiceProvider {
 
   addTruck(item) {
     return this.trucks[this.trucks.push(
-      new AppTruck(item.trucktype, item.capacity, item.regnum, item.photos, item.rating, item.ownerid, item.status, String(this.trucks.length))
+      new AppTruck(item.trucktype, 
+                    item.capacity, 
+                    item.regnum, 
+                    item.photos, 
+                    item.rating, 
+                    item.ownerid, 
+                    item.status, 
+                    String(this.trucks.length),
+                    item.color, 
+                    item.modeldate, 
+                    item.trucktypeid,)
     )-1];
   }
 
@@ -315,26 +416,40 @@ export class AppUser {
                   public rating: string,
                   public ownerid: string,
                   public status: string,
-                  public truckid: string) {
+                  public truckid: string,
+                  public color: string,
+                  public modeldate: string,
+                  public trucktypeid: string) {
       }
     
     }
 
+    export class AppTruckType {
+      
+        constructor(public trucktypeid: string,
+                    public type: string,
+                    public truckdescription: string) {
+        }
+      
+      }
+
     export class AppTrip {
       
-        constructor(public trucktype: string, 
+        constructor(public truckid: string, 
+                    public trucktype: string,
                     public startlocation: string, 
                     public endlocation: string,
                     public status: string,
                     public startdate: string,
-                    public comments: [string],
-                    public offers: [string],
+                    public comments: string,
                     public tripid: string,
                     public freight: string,
                     public userid: string,
                     public createddate: string,
                     public rating: string,
-                    public ispredefined: string) {
+                    public ispredefined: string,
+                    public quotationidforpredefinedtrip: string,
+                    public customerremarks: string) {
         }
       
       }
@@ -350,7 +465,8 @@ export class AppUser {
         public closetime: string,
         public additionalcharges: string,
         public comments: string,
-        public offers: [string],
+        public appliedofferid: string,
+        public discount: string,
         public quotationid: string,
         public tripid: string,
         public ownerid: string,
@@ -361,10 +477,27 @@ export class AppUser {
     
     export class AppOffer {
 
-      constructor(public days: [string],
-                  public trips: [string],
-                  public details: string,
-                  public offerid: string){
-        
+      constructor(public tripid: string,
+                  public message: string,
+                  public offerid: string,
+                  public truckid: string,
+                  public trucktype: string,
+                  public fromlocation: string,
+                  public tolocation: string,
+                  public price: string, 
+                  public discount: string, 
+                  public startdate: string, 
+                  public enddate: string,
+                  public status: string){
       }
     }
+
+   export enum status {
+      pending = "pending",
+      approved = "approved",
+      rejected = "rejected",
+      blocked = "blocked",
+      cancelled = "cancelled",
+      confirmed = "confirmed",
+      completed = "completed"
+  }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { AppModelServiceProvider, AppTruck } from '../../providers/app-model-service/app-model-service'
+import { AppModelServiceProvider, AppTruck, AppTruckType } from '../../providers/app-model-service/app-model-service'
 import { TranslateService } from '@ngx-translate/core';
 
 
@@ -10,12 +10,22 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class OwnerAddTruckPage {
 
-  trucktype: String;
+  truckid: String;
   capacity: string;
   regnum: string;
-
+  color:string;
+  modeldate: string;
   OK: string;
+  maxdate: string;
+  trucks : AppTruckType[];
+
   constructor(private translate: TranslateService, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var day = d.getDate();
+    this.maxdate = this.getMaxDate(day, month, year);
+    
     this.translate.get('OK').subscribe(
       value => {
         this.OK = value;
@@ -23,23 +33,34 @@ export class OwnerAddTruckPage {
     )
   }
 
+  private getMaxDate(day: number, month: number, year: number): string {
+    return year.toString() + "-" + month.toString() + "-" + day.toString();
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad OwnerAddTruckPage');
+    this.trucks = this.appService.getTruckTypes();     
   }
 
   addTruck() {
-    if(this.trucktype && this.capacity && this.regnum){
+    if(this.truckid && this.capacity && this.regnum  && this.color  && this.modeldate && true){
+      var trucks: AppTruckType[] = this.trucks.filter((truck: AppTruckType) => truck.trucktypeid == this.truckid);
+      
       this.appService.addTruck({
-        trucktype: this.trucktype,
+        trucktype: trucks[0].type,
         capacity: this.capacity,
         regnum: this.regnum,
         photos: null,
         rating: "0",
         ownerid: this.appService.currentUser.userid,
-        status: 'approved'
+        status: 'pending',
+        color: this.color,
+        modeldate: this.modeldate
       });
+      this.presentConfirm();      
+    } else {
+
     }
-    this.presentConfirm();
   }
 
   focusFunction() {

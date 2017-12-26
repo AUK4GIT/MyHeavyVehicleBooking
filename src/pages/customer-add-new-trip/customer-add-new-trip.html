@@ -15,8 +15,8 @@
       <ion-col>
         <ion-item margin-top class="item-leave-height">
           <ion-label>{{'TRUCKTYPE' | translate}}</ion-label>
-          <ion-select name="trucktypes" [(ngModel)]="trucktype">
-            <ion-option value="{{truck.regno}}" *ngFor="let truck of trucks">{{ truck.type }} - {{ truck.capacity }}</ion-option>
+          <ion-select name="trucktypes" [(ngModel)]="truckid">
+            <ion-option value="{{truck.trucktypeid}}" *ngFor="let truck of trucks">{{ truck.type }}</ion-option>
           </ion-select>
         </ion-item>
       </ion-col>
@@ -25,27 +25,27 @@
 
     <ion-row>
 
-      <ion-col>
+      <ion-col col-12 col-sm>
 
         <ion-item margin-top class="item-leave-height">
           <ion-label>{{'PICKUPCITY' | translate}}</ion-label>
           <!-- <ion-select name="pickupcity" [(ngModel)]="pickupcity">
             <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
           </ion-select> -->
-          <ion-input placeholder="Search location" [readonly]=true (click)="presentAutoComplete('pickup')" name="pickupcity" [(ngModel)]="pickupcity">
+          <ion-input placeholder="Search location" [readonly]=true (click)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
           </ion-input>
         </ion-item>
 
       </ion-col>
 
-      <ion-col>
+      <ion-col col-12 col-sm>
 
         <ion-item margin-top class="item-leave-height">
           <ion-label>{{'DROPCITY' | translate}}</ion-label>
           <!-- <ion-select name="dropcity" [(ngModel)]="dropcity">
             <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
           </ion-select> -->
-          <ion-input placeholder="Search location" [readonly]=true (click)="presentAutoComplete('drop')" name="dropcity" [(ngModel)]="dropcity">
+          <ion-input placeholder="Search location" [readonly]=true (click)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
           </ion-input>
         </ion-item>
 
@@ -54,14 +54,14 @@
       </ion-row>
 
       <ion-row>
-        <ion-col>
+        <ion-col col-12 col-sm>
 
           <ion-item margin-top class="item-leave-height">
             <ion-label>{{'MATERIAL' | translate}}</ion-label>
             <ion-input (ionFocus)="focusFunction()" placeholder="freight" name="material" id="material" type="text" [(ngModel)]="frieght"></ion-input>
           </ion-item>
         </ion-col>
-        <ion-col>
+        <ion-col col-12 col-sm>
 
           <ion-item margin-top class="item-leave-height">
             <ion-label>{{'STARTDATE' | translate}}</ion-label>

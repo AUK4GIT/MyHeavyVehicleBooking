@@ -12,6 +12,7 @@ import { BookingsListPage } from '../bookings-list/bookings-list';
 import { OwnerTripQuotationPage } from '../owner-trip-quotation/owner-trip-quotation';
 import { OwnerAddDriverPage } from '../owner-add-driver/owner-add-driver';
 import { OwnerAddTruckPage } from '../owner-add-truck/owner-add-truck';
+import { OwnerCreateTripPage } from '../owner-create-trip/owner-create-trip'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { OwnerAddTruckPage } from '../owner-add-truck/owner-add-truck';
     OwnerTripsListPage,
     OwnerTripQuotationPage,
     OwnerAddDriverPage,
-    OwnerAddTruckPage
+    OwnerAddTruckPage,
+    OwnerCreateTripPage
   ],
   imports: [
     IonicPageModule.forChild(TruckOwnerPage),
@@ -39,7 +41,8 @@ import { OwnerAddTruckPage } from '../owner-add-truck/owner-add-truck';
     OwnerTripsListPage,
     OwnerTripQuotationPage,
     OwnerAddDriverPage,
-    OwnerAddTruckPage
+    OwnerAddTruckPage,
+    OwnerCreateTripPage
   ]
 })
 export class TruckOwnerPageModule {}

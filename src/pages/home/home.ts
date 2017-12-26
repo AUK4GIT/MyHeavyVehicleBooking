@@ -1,19 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
 import { Slides, App, PopoverController, NavParams, NavController, ModalController, Modal, Events } from 'ionic-angular';
 import { HomepopoverComponent } from '../../components/homepopover/homepopover';
-import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
+import { AppModelServiceProvider, AppTrip, AppTruckType, AppOffer } from '../../providers/app-model-service/app-model-service'
 import { Popover } from 'ionic-angular/components/popover/popover';
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
+import { PlacespickerComponent } from '../../components/placespicker/placespicker';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-@ViewChild(Slides) slider: Slides;
+// @ViewChild(Slides) slider: Slides;
 
   segment: string;
-  trucks : any[];
+  trucks : AppTruckType[];
   cities: [any];
   bgclass: any;
   bgclasses: [string];
@@ -21,10 +22,12 @@ export class HomePage {
   mindate : string;
   dropcity: string;
   pickupcity: string;
-  trucktype: string;
+  truckid: string;
   frieght: string;
   startdate: string;
   tempTrip: any;
+  offers: AppOffer[];
+  hideSlide: boolean;
 
   constructor(private appService: AppModelServiceProvider, public appCtrl: App, public events: Events, private popoverCtrl: PopoverController, public navCtrl: NavController, private modal: ModalController) {
     this.segment = 'aboutus';
@@ -42,6 +45,7 @@ export class HomePage {
     this.maxdate = c.getFullYear().toString();
     this.mindate = this.getMinDate(day, month, year);
     this.tempTrip = {};
+    this.hideSlide = true;
   }
 
   private getMinDate(day: number, month: number, year: number): string {
@@ -50,45 +54,69 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad tabsparent');
-    this.trucks = this.appService.getTrucks(); 
+    this.trucks = this.appService.getTruckTypes(); 
     this.cities = ["Riyadh", "Jeddah", "Mecca", "Medina", "Al-Ahsa", "Taif", "Dammam", "Buraidah", "Khobar", "Tabuk"]; 
+    this.offers = this.appService.getOffers();
+    if(this.offers && this.offers.length>0) {
+      this.hideSlide = false;
+    } else {
+      this.hideSlide = true;
+    }
+  }
+
+  dismiss() {
   }
 
   requestQuote(){
-    if(this.trucktype && this.dropcity && this.pickupcity && this.frieght && this.startdate){
+    if(this.truckid && this.dropcity && this.pickupcity && this.frieght && this.startdate && true){
+      var trucks: AppTruckType[] = this.trucks.filter((truck: AppTruckType) => truck.trucktypeid == this.truckid);
+       
       this.tempTrip = {
-        trucktype: this.trucktype,
+        trucktype: trucks[0].type,
+        truckid: this.truckid,
         startlocation: this.pickupcity,
         endlocation: this.dropcity,
         status: "pending",
         startdate: this.startdate,
         comments: "",
-        offers: null,
         freight: this.frieght,
         userid: "",
         createddate: this.mindate,
-        ispredefined: "false"
+        rating: "0",
+        ispredefined: "false",
+        quotationidforpredefinedtrip: "",
+        remarks: ""
       };
       this.presentLoginView();
+    } else {
+      console.log("fail");
     }
   }
 
     navigateToRolebasedModule(role) {
       switch(role){
         case 'admin': {
-          this.appCtrl.getRootNav().setRoot("AdminPage");                         
+          this.appCtrl.getRootNav().setRoot("AdminPage");  
+          // this.appCtrl.getRootNav().push("AdminPage");                         
+          
           break;
         } 
         case 'owner': {
-          this.appCtrl.getRootNav().setRoot("TruckOwnerPage");                         
+          this.appCtrl.getRootNav().setRoot("TruckOwnerPage");  
+          // this.appCtrl.getRootNav().push("TruckOwnerPage");                         
+          
           break;
         } 
         case 'driver': {
-          this.appCtrl.getRootNav().setRoot("DriverPage");                         
+          this.appCtrl.getRootNav().setRoot("DriverPage");  
+          // this.appCtrl.getRootNav().push("DriverPage");                         
+          
           break;
         } 
         case 'customer': {
-          this.appCtrl.getRootNav().setRoot("CustomerPage");                         
+          this.appCtrl.getRootNav().setRoot("CustomerPage");  
+          // this.appCtrl.getRootNav().push("CustomerPage");                         
+          
           break;
         } 
         default: { 
@@ -114,6 +142,28 @@ export class HomePage {
   }
 
   segmentChanged() {
+  }
+
+  presentPredefinedPlaces(ev, type) {
+    let popover = this.popoverCtrl.create(PlacespickerComponent, {
+      callback: (_data) => {
+        console.log(JSON.stringify(_data+" - "+this))
+        if(_data == 'others'){
+          this.presentAutoComplete(type)
+        } else {
+          if(type == 'pickup'){
+            this.pickupcity = _data;
+          } else {
+            this.dropcity = _data;
+          }
+        }
+      },
+      currentSelection: 'login'
+    });
+
+    popover.present({
+      ev: ev
+    });
   }
 
   presentPopover(ev) {

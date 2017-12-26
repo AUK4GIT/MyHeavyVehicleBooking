@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,  ModalController, Modal, Events, PopoverController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, Modal, PopoverController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip, AppTruck, AppTruckType } from '../../providers/app-model-service/app-model-service'
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
 
 @Component({
-  selector: 'page-customer-add-new-trip',
-  templateUrl: 'customer-add-new-trip.html',
+  selector: 'page-owner-create-trip',
+  templateUrl: 'owner-create-trip.html',
 })
-export class CustomerAddNewTripPage {
+export class OwnerCreateTripPage {
 
   maxdate : string;
   mindate : string;
@@ -17,11 +17,11 @@ export class CustomerAddNewTripPage {
   truckid: string;
   frieght: string;
   startdate: string;
-  tempTrip: any;
   trucks : AppTruckType[];
-  cities: [any];
+  cost: string;
+  duration: string;
 
-  constructor(private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private popoverCtrl: PopoverController, public modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -29,47 +29,50 @@ export class CustomerAddNewTripPage {
     var c = new Date(year + 1, month, day)
     this.maxdate = c.getFullYear().toString();
     this.mindate = this.getMinDate(day, month, year);
-    this.tempTrip = {};
   }
-
   private getMinDate(day: number, month: number, year: number): string {
     return year.toString() + "-" + month.toString() + "-" + day.toString();
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CustomerAddNewTripPage');
+    console.log('ionViewDidLoad OwnerCreateTripPage');
     this.trucks = this.appService.getTruckTypes(); 
-    this.cities = ["Riyadh", "Jeddah", "Mecca", "Medina", "Al-Ahsa", "Taif", "Dammam", "Buraidah", "Khobar", "Tabuk"]; 
   }
 
-  requestQuote(){
-    if(this.truckid && this.dropcity && this.pickupcity && this.frieght && this.startdate && true){
-      var trucks: AppTruckType[] = this.trucks.filter((truck: AppTruckType) => truck.trucktypeid == this.truckid);
+  createTrip() {
+    if(this.pickupcity && this.dropcity && this.cost && this.duration) {
+      var trucktype="";
+      var truckid = this.truckid ? this.truckid : "";
+      if(this.truckid) {
+        var trucks: AppTruckType[] = this.trucks.filter((truck: AppTruckType) => truck.trucktypeid == this.truckid);
+        trucktype = trucks[0].type;
+      }
       
-      this.tempTrip = {
-        truckid: this.truckid,
-        trucktype: trucks[0].type,
+      var tempTrip = {
+        truckid: truckid ,
+        trucktype: trucktype,
         startlocation: this.pickupcity,
         endlocation: this.dropcity,
         status: "pending",
-        startdate: this.startdate,
+        startdate: this.startdate ? this.startdate : "",
         comments: "",
-        freight: this.frieght,
+        remarks: "",
+        freight: this.frieght ? this.frieght : "",
         userid: this.appService.currentUser.userid,
-        createddate: this.mindate,
+        createddate: this.mindate ? this.mindate : "",
         rating: "0",
-        ispredefined: "false",
-        quotationidforpredefinedtrip: "",
-        remarks: ""
+        ispredefined: "true",
+        quotationidforpredefinedtrip: ""
       };
-        this.appService.createTripWithCustomerid(this.tempTrip);
-        this.tempTrip = {};
-      
+      this.appService.createTripWithOwnerid(tempTrip);
       this.navCtrl.pop();
-    }
+    } else {
+
+    }      
   }
 
   focusFunction() {
+    
   }
 
   presentPredefinedPlaces(ev, type) {
@@ -96,7 +99,6 @@ export class CustomerAddNewTripPage {
 
   presentAutoComplete(type) {
     const autoCompleteModal: Modal = this.modal.create(AutoCompleteSearchPage, {
-      dataContext: this.cities,
       autocomplete: this,
       ispopover: true,
     });

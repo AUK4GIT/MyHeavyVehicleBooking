@@ -10,15 +10,26 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding id="page1">
-  <ion-list id="page-list1">
-    <ion-item color="none" id="page-list-item10" *ngFor="let item of items" >
-      <ion-thumbnail item-left>
-        <img src="../../assets/imgs/logo_transparent.jpg"/>
-      </ion-thumbnail>
-      <h2>
-        {{item.startlocation}} - {{item.endlocation}}
-      </h2>
-    </ion-item>
-  </ion-list>
-</ion-content>
+<ion-content padding id="page">
+    <ion-list id="page-list">
+      <ion-item (click)="giveQuotationsForTrip(item)" color="none" id="page-list-item10" *ngFor="let item of items">
+        <ion-thumbnail item-left>
+          <img src="../../assets/imgs/logo_transparent.jpg"/>
+        </ion-thumbnail>
+        <h2><b>
+            {{item.startlocation}} - {{item.endlocation}}
+            </b>
+        </h2>
+        <h3>
+          {{ item.trucktype }}
+        </h3>
+        <h4>
+            {{ item.startdate }}
+        </h4>
+        <h5>
+            {{ item.freight }}  
+        </h5>
+        <button ion-button outline item-end>{{item.status}}</button>              
+      </ion-item>
+    </ion-list>
+  </ion-content>

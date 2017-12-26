@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
+import { OwnerTripQuotationPage } from '../owner-trip-quotation/owner-trip-quotation';
+import { OwnerCreateTripPage } from '../owner-create-trip/owner-create-trip'
 
 /**
  * Generated class for the BookingsListPage page.
@@ -18,9 +20,13 @@ export class BookingsListPage {
   constructor(private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    this.items = this.appService.getTrips();            
-    console.log('ionViewDidLoad BookingsListPage');
+  ionViewDidEnter() {
+    this.items = this.appService.getRequestedTrips();            
+    console.log('ionViewDidLoad OwnerTripsListPage');
+  }
+
+  giveQuotationsForTrip(trip) {
+    this.navCtrl.push(OwnerTripQuotationPage, { tripid: trip.tripid, trucktype: trip.trucktype});    
   }
 
 }

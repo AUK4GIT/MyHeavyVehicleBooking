@@ -16,7 +16,7 @@ import { BookingsListPage } from '../bookings-list/bookings-list';
 })
 export class TruckOwnerPage {
 
-  rootPage:any = OwnerTripsListPage;
+  rootPage:any = BookingsListPage;
   user: any;
   @ViewChild(Nav) nav: Nav;
 

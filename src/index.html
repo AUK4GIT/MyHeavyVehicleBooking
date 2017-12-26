@@ -19,14 +19,28 @@
   <script src="cordova.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyWDFd62gngKLISLHgl_TTMwYAIP71vHU&libraries=places"></script>
   
-  <!-- un-comment this code to enable service worker
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBRYrxT6GMOb3dc8dxRt4wvvMMd4w6pJmE",
+    authDomain: "rentatruck-19f85.firebaseapp.com",
+    databaseURL: "https://rentatruck-19f85.firebaseio.com",
+    projectId: "rentatruck-19f85",
+    storageBucket: "rentatruck-19f85.appspot.com",
+    messagingSenderId: "961022127057"
+  };
+  firebase.initializeApp(config);
+  </script>
+  <!-- un-comment this code to enable service worker -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(() => console.log('service worker installed'))
         .catch(err => console.error('Error', err));
     }
-  </script>-->
+  </script>
+  
 
   <link href="build/main.css" rel="stylesheet">
 

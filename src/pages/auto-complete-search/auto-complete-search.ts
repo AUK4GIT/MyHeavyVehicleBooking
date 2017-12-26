@@ -49,9 +49,14 @@ export class AutoCompleteSearchPage {
     this.acService.getPlacePredictions(config, function (predictions, status) {
       console.log('modal > getPlacePredictions > status > ', status);
       self.autocompleteItems = [];
+      if(predictions) {
       predictions.forEach(function (prediction) {
         self.autocompleteItems.push(prediction);
       });
+    } else {
+      // this.present
+      console.log("check internet connection");
+    }
     });
   }
 

@@ -19,6 +19,7 @@ import { HomePage } from '../pages/home/home';
 import { HomepopoverComponent } from '../components/homepopover/homepopover';
 import { AppModelServiceProvider } from '../providers/app-model-service/app-model-service';
 import { AutoCompleteSearchPage } from '../pages/auto-complete-search/auto-complete-search'
+import { PlacespickerComponent } from '../components/placespicker/placespicker';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { AutoCompleteSearchPage } from '../pages/auto-complete-search/auto-compl
     MyApp,
     HomePage,
     HomepopoverComponent,
-    AutoCompleteSearchPage
+    AutoCompleteSearchPage,
+    PlacespickerComponent
   ],
   providers: [
     StatusBar,

@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from '@ngx-translate/core';
 
 import { HomePage } from '../pages/home/home';
+import { FCM } from '@ionic-native/fcm';
 
 @Component({
   templateUrl: 'app.html'
@@ -15,7 +16,7 @@ export class MyApp {
   platform: Platform;
   translate: TranslateService;
 
-  constructor(translate: TranslateService, public events: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(private fcm: FCM, translate: TranslateService, public events: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
@@ -32,9 +33,30 @@ export class MyApp {
     });
 
     events.subscribe('logout', (param) => { 
-      console.log("logout: "+" ... "+this.rootPage+" - "+this.appNav.getActive()); 
-      this.appNav.setRoot(HomePage);
+      this.appNav.setRoot(HomePage).then(() =>{
     });
+    });
+
+    fcm.subscribeToTopic('alerts');
+
+    fcm.getToken().then(token=>{
+      // backend.registerToken(token);
+    })
+
+    fcm.onNotification().subscribe(data=>{
+      if(data.wasTapped){
+       console.log("Received in background");
+      } else {
+       console.log("Received in foreground");
+      };
+    })
+
+    fcm.onTokenRefresh().subscribe(token=>{
+      // backend.registerToken(token);
+    })
+
+    // fcm.unsubscribeFromTopic('marketing');
+
   }
   
   onLanguageChanged(lang) {

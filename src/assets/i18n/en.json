@@ -68,6 +68,13 @@
     "CONFIRMQUOTE" : "Confirm Quotation",
     "TRUCKDETAILS" : "Truck Details",
     "CUSTOMERDETAILS" : "Customer Details",
-    "CLOSETRIP" : "Close Trip"
+    "CLOSETRIP" : "Close Trip",
+    "CREATETRIP" : "Create a Trip",
 
+    "AVAILABLETRIPS" : "Available Trips",
+    "CUSTOMTRIPS" : "Custom Trips",
+    "MYTRIPS" : "My Trips",
+    "MODELDATE" : "Model Date",
+    "COLOR" : "Color"
+ 
 }

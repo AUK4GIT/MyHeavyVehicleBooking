@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
-import { OwnerTripQuotationPage } from '../owner-trip-quotation/owner-trip-quotation';
+// import { OwnerTripQuotationPage } from '../owner-trip-quotation/owner-trip-quotation';
+import { OwnerCreateTripPage } from '../owner-create-trip/owner-create-trip'
 
 @Component({
   selector: 'page-owner-trips-list',
@@ -13,12 +14,15 @@ export class OwnerTripsListPage {
   }
 
   ionViewDidEnter() {
-    this.items = this.appService.getTrips();            
+    this.items = this.appService.getOwnerAvailableTrips(this.appService.currentUser.userid);            
     console.log('ionViewDidLoad OwnerTripsListPage');
   }
 
-  giveQuotationsForTrip(trip) {
-    this.navCtrl.push(OwnerTripQuotationPage, { tripid: trip.tripid, trucktype: trip.trucktype});    
+  editTrip(trip) {
+    // this.navCtrl.push(OwnerTripQuotationPage, { tripid: trip.tripid, trucktype: trip.trucktype});    
   }
 
+  createTrip() {
+    this.navCtrl.push(OwnerCreateTripPage);
+  }
 }

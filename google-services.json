@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "961022127057",
+    "firebase_url": "https://rentatruck-19f85.firebaseio.com",
+    "project_id": "rentatruck-19f85",
+    "storage_bucket": "rentatruck-19f85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961022127057:android:b69bb046800926eb",
+        "android_client_info": {
+          "package_name": "com.zamilrenttruck.RentATruck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961022127057-geqq2epotjpgatfcaom0rgq2r0gmh4f0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-x0d9UMj6V4dHlOi6gj7lbjEPxpPsD4s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

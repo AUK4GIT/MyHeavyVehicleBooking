@@ -15,25 +15,85 @@
       </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content padding id="page1">
-  <ion-list id="page-list1">
-    <ion-item (click)="viewQuotationsForTrip(item)" color="none" id="page-list-item10" *ngFor="let item of items">
-      <ion-thumbnail item-left>
-        <img src="../../assets/imgs/logo_transparent.jpg"/>
-      </ion-thumbnail>
-      <h2><b>
-          {{item.startlocation}} - {{item.endlocation}}
-          </b>
-      </h2>
-      <h3>
-        {{ item.trucktype }}
-      </h3>
-      <h4>
-          {{ item.startdate }}
-      </h4>
-      <h5>
-          {{ item.freight }}  
-      </h5>
-    </ion-item>
-  </ion-list>
+<ion-content id="page1">
+
+    <ion-segment [(ngModel)]="segment" color="primary" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="availabletrips">
+            {{ 'AVAILABLETRIPS' | translate }}
+        </ion-segment-button>
+        <ion-segment-button value="customtrips">
+            {{ 'CUSTOMTRIPS' | translate }}
+        </ion-segment-button>
+    </ion-segment>
+
+    <div margin-left margin-right [ngSwitch]="segment">
+        <div padding-top *ngSwitchCase="'availabletrips'">
+            <ion-searchbar [(ngModel)]="search.query" [showCancelButton]="true" (ionInput)="updateSearch()" (ionCancel)="dismiss()"
+            placeholder="Start searching based on location">
+          </ion-searchbar>
+            <ion-list id="page-list1">
+                <ion-item-sliding *ngFor="let item of items">                 
+                <ion-item (click)="viewQuotationsForTrip(item)" color="none" id="page-list-item" >
+                  <ion-thumbnail item-left>
+                    <img src="../../assets/imgs/logo_transparent.jpg"/>
+                  </ion-thumbnail>
+                  <h2><b>
+                      {{item.startlocation}} - {{item.endlocation}}
+                      </b>
+                  </h2>
+                  <h3>
+                    {{ item.trucktype }}
+                  </h3>
+                  <h4>
+                      {{ item.cost }}
+                  </h4>
+                  <h5>
+                      {{ item.duration }}  
+                  </h5>
+                </ion-item>
+                <ion-item-options side="end">
+                    <button ion-button color="danger" (click)="deleteTrip(trip, gindex, iindex)">
+                      <ion-icon name="delete"></ion-icon>
+                      Delete
+                    </button>
+                  </ion-item-options>
+                </ion-item-sliding>
+              </ion-list>
+        </div>
+    </div>
+
+    <div margin [ngSwitch]="segment">
+        <div padding-top *ngSwitchCase="'customtrips'">
+            <ion-list id="page-list2">
+                <ion-item-sliding *ngFor="let item of items">                 
+                <ion-item (click)="viewQuotationsForTrip(item)" color="none" id="page-list-item" >
+                  <ion-thumbnail item-left>
+                    <img src="../../assets/imgs/logo_transparent.jpg"/>
+                  </ion-thumbnail>
+                  <h2><b>
+                      {{item.startlocation}} - {{item.endlocation}}
+                      </b>
+                  </h2>
+                  <h3>
+                    {{ item.trucktype }}
+                  </h3>
+                  <h4>
+                      {{ item.startdate }}
+                  </h4>
+                  <h5>
+                      {{ item.freight }}  
+                  </h5>
+                </ion-item>
+                <ion-item-options side="end">
+                    <button ion-button color="danger" (click)="cancelTrip(trip, gindex, iindex)">
+                      <ion-icon name="delete"></ion-icon>
+                      Cancel
+                    </button>
+                  </ion-item-options>
+                </ion-item-sliding>
+              </ion-list>
+        </div>
+    </div>
+
+  
 </ion-content>

@@ -1,0 +1,10 @@
+<ion-list radio-group [(ngModel)]="itemSelected" (ionChange)="changeSelection()" class="popover-page">
+    <ion-item>
+        <ion-label>Other Places</ion-label>
+        <ion-radio value="others"></ion-radio>
+      </ion-item>  
+  <ion-item *ngFor="let place of places">
+      <ion-label>{{place}} </ion-label>
+      <ion-radio value="{{place}}"></ion-radio>
+    </ion-item>
+  </ion-list>
