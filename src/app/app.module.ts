@@ -4,6 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { FCM } from '@ionic-native/fcm';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -57,6 +58,7 @@ import { PlacespickerComponent } from '../components/placespicker/placespicker';
   providers: [
     StatusBar,
     SplashScreen,
+    FCM,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AppModelServiceProvider
   ]

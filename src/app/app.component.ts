@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from '@ngx-translate/core';
 
 import { HomePage } from '../pages/home/home';
-// import { FCM } from '@ionic-native/fcm';
+import { FCM } from '@ionic-native/fcm';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,8 +16,8 @@ export class MyApp {
   platform: Platform;
   translate: TranslateService;
 
-  // constructor(private fcm: FCM, translate: TranslateService, public events: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
-    constructor(translate: TranslateService, public events: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(private fcm: FCM, translate: TranslateService, public events: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+    // constructor(translate: TranslateService, public events: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
       
    platform.ready().then(() => {
       statusBar.styleDefault();
@@ -28,6 +28,7 @@ export class MyApp {
       // this.platform.setDir('rtl', true);
       translate.setDefaultLang('en');
       this.platform.setDir('ltr', true);
+      this.configureFCM();
     });
 
     events.subscribe('language:changed', (lang) => {    
@@ -38,29 +39,33 @@ export class MyApp {
       this.appNav.setRoot(HomePage).then(() =>{
     });
     });
-
-    // fcm.subscribeToTopic('alerts');
-
-    // fcm.getToken().then(token=>{
-    //   // backend.registerToken(token);
-    // })
-
-    // fcm.onNotification().subscribe(data=>{
-    //   if(data.wasTapped){
-    //    console.log("Received in background");
-    //   } else {
-    //    console.log("Received in foreground");
-    //   };
-    // })
-
-    // fcm.onTokenRefresh().subscribe(token=>{
-    //   // backend.registerToken(token);
-    // })
-
-    // fcm.unsubscribeFromTopic('marketing');
-
   }
   
+  configureFCM() {
+
+    if (this.platform.is('cordova')) {
+      this.fcm.subscribeToTopic('alerts');
+
+      this.fcm.getToken().then(token => {
+        // backend.registerToken(token);
+      })
+
+      this.fcm.onNotification().subscribe(data => {
+        if (data.wasTapped) {
+          console.log("Received in background");
+        } else {
+          console.log("Received in foreground");
+        };
+      })
+
+      this.fcm.onTokenRefresh().subscribe(token => {
+        // backend.registerToken(token);
+      })
+
+      // fcm.unsubscribeFromTopic('marketing');
+    }
+  }
+
   onLanguageChanged(lang) {
     console.log("onLanguageChanged: "+lang);
     

@@ -10,8 +10,8 @@
         </ion-buttons>
     </ion-navbar>
     <ion-navbar color="light">
-        <!-- <img src="../../assets/imgs/logo.png" height="44px" /> -->
-        <img src="../../assets/imgs/bar_truck_logo.png" height="44px" />
+        <!-- <img src="assets/imgs/logo.png" height="44px" /> -->
+        <img src="assets/imgs/bar_truck_logo.png" height="44px" />
         <ion-buttons end style="max-width: 50%;" margin-right>
             <button ion-button text-wrap href="mailto:support@zamilrenttruck.com">
                 <u>Contact: support@zamilrenttruck.com</u>
@@ -45,7 +45,7 @@
                 <ion-col col-12 col-sm>
                     <ion-item margin-top class="item-leave-height">
                         <ion-label stacked>{{'PICKUPCITY' | translate}}</ion-label>
-                        <ion-input placeholder="Search pickup location" [readonly]=true (click)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
+                        <ion-input placeholder="Search pickup location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
                         </ion-input>
                     </ion-item>
                 </ion-col>
@@ -53,7 +53,7 @@
 
                     <ion-item margin-top class="item-leave-height">
                         <ion-label stacked>{{'DROPCITY' | translate}}</ion-label>
-                        <ion-input placeholder="Search drop location" [readonly]=true (click)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
+                        <ion-input placeholder="Search drop location" [readonly]=true (tap)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
                         </ion-input>
                     </ion-item>
                 </ion-col>
@@ -103,7 +103,7 @@
             <ion-row>
                 <h4> {{"ABOUTUS" | translate}} </h4>
                 <p>
-                    <img class="logoimg" margin-bottom margin-end float-start src="../../assets/imgs/logo.png" /> Zamilrenttruck.com is an online, easy, simple & modern portal acting as a facilitator between Shippers
+                    <img class="logoimg" margin-bottom margin-end float-start src="assets/imgs/logo.png" /> Zamilrenttruck.com is an online, easy, simple & modern portal acting as a facilitator between Shippers
                     & Transporters in Kingdom of Saudi Arabia (KSA) in widely unorganized logistic industry. We have understood
                     needs & requirements of key people involved in this industry and have revolutionized it by offering a
                     one-stop-shop hassle free product in the most efficient manner. Zamilrenttruck.com is an online marketplace
