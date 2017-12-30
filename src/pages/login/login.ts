@@ -5,13 +5,6 @@ import { Storage } from '@ionic/storage';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { AppModelServiceProvider } from '../../providers/app-model-service/app-model-service'
 
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -41,6 +34,35 @@ export class LoginPage {
     // this.loginForm.controls['password'].setValue("12345");
   }
 
+  loginWithRole(role) {
+    switch(role){
+      case 1: {
+        this.loginForm.controls['username'].setValue("admin1@gmail.com");
+        this.loginForm.controls['password'].setValue("admin");
+        break;
+      }
+      case 2: {
+        this.loginForm.controls['username'].setValue("owner1@gmail.com");
+        this.loginForm.controls['password'].setValue("owner");
+        break;
+      }
+      case 3: {
+        this.loginForm.controls['username'].setValue("customer1@gmail.com");
+        this.loginForm.controls['password'].setValue("customer");
+        break;
+      }
+      case 4: {
+        this.loginForm.controls['username'].setValue("driver1@gmail.com");
+        this.loginForm.controls['password'].setValue("driver");
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    // this.closeLogin();
+  }
+
   closeLogin() {
     this.viewCtrl.dismiss();              
   }
@@ -66,13 +88,13 @@ export class LoginPage {
           this.serverError = response.error;
         }
     });
-      // set a key/value
-    this.storage.set('name', 'Max');
+    //   // set a key/value
+    // this.storage.set('name', 'Max');
   
-    // Or to get a key/value pair
-    this.storage.get('age').then((val) => {
-      console.log('Your age is', val);
-    });
+    // // Or to get a key/value pair
+    // this.storage.get('age').then((val) => {
+    //   console.log('Your age is', val);
+    // });
   }
 
 }

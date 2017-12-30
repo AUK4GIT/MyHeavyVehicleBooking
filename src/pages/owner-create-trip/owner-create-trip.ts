@@ -62,7 +62,10 @@ export class OwnerCreateTripPage {
         createddate: this.mindate ? this.mindate : "",
         rating: "0",
         ispredefined: "true",
-        quotationidforpredefinedtrip: ""
+        quotationidforpredefinedtrip: "",
+        cost:this.cost,
+        duration:this.duration,
+        ownerid:this.appService.currentUser.userid
       };
       this.appService.createTripWithOwnerid(tempTrip);
       this.navCtrl.pop();

@@ -3,7 +3,7 @@
     <ion-title>Search address</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content >
   <ion-searchbar [(ngModel)]="autocomplete.query" [showCancelButton]="true" (ionInput)="updateSearch()" (ionCancel)="dismiss()"
     placeholder="Start typing and select ...">
   </ion-searchbar>

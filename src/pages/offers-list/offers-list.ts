@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AppModelServiceProvider, AppOffer } from '../../providers/app-model-service/app-model-service'
+import { OwnerAddEditOfferPage } from '../owner-add-edit-offer/owner-add-edit-offer'
 
 /**
  * Generated class for the OffersListPage page.
@@ -21,6 +22,16 @@ export class OffersListPage {
   ionViewDidLoad() {
     this.items = this.appService.getOffers();            
     console.log('ionViewDidLoad OffersListPage');
+  }
+
+  createOffer() {
+    this.navCtrl.push(OwnerAddEditOfferPage);
+  }
+
+  editOffer(offer) {
+    this.navCtrl.push(OwnerAddEditOfferPage, {
+      offer: offer
+    });
   }
 
 }

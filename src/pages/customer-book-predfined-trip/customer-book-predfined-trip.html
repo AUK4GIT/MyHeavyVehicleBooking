@@ -2,7 +2,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>DriverTripDetailsPage</ion-title>
+    <ion-title>{{'TRIPDETAILS'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -18,12 +18,22 @@
           <ion-card-title>
               {{trip?.startlocation}} - {{trip?.endlocation}}
           </ion-card-title>
-          <h4>
+
+          <ion-item item-start class="editable">
+            <ion-label>{{ 'STARTDATE' | translate }}</ion-label>
+            <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="trip.startdate"></ion-datetime>
+          </ion-item>
+        
+          <ion-item item-start class="editable">
+            <ion-label>{{ 'FREIGHT' | translate }}</ion-label>
+            <ion-input  name="freight" id="freight" type="text" [(ngModel)]="trip.freight"></ion-input>
+          </ion-item>
+          <!-- <h4>
               {{ trip?.startdate }}
           </h4>
           <h5>
               {{ trip?.freight }}  
-          </h5>
+          </h5> -->
         </ion-card-content>
       </ion-card>
 
@@ -45,62 +55,45 @@
             <h5>
                 {{ quotation?.duration }} hrs
             </h5>
-            <ion-row>
-                <ion-col>
-                  <ion-item margin-top class="item-leave-height">
-                    <ion-label>{{'COMMENTS' | translate}}</ion-label>
-                    <ion-input placeholder="Add Comments" name="comments" id="comments" type="text" [(ngModel)]="comments"></ion-input>
-                  </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                    <ion-item margin-top class="item-leave-height">
-                      <ion-label>{{'ADDITIONALCHARGES' | translate}}</ion-label>
-                      <ion-input placeholder="Additional charges" name="charges" id="charges" type="text" [(ngModel)]="charges"></ion-input>
-                    </ion-item>
-                  </ion-col>
-              </ion-row>
           </ion-card-content>
         </ion-card>
 
         <ion-card>
             <ion-card-header>
-              {{'TRUCKDETAILS'|translate}}
+              {{'OWNERDETAILS'|translate}}
             </ion-card-header>
             <ion-card-content>
                 <ion-card-title>
-                    {{truckdetails?.type}}
+                    {{owner?.name}}
                   </ion-card-title>
                     <h3>
-                      {{ truckdetails?.capacity }}
+                      {{ owner?.email }}
                     </h3>
                     <h4>
-                        {{ truckdetails?.regno }}
+                        {{ owner?.phonenumber }}
                     </h4>
             </ion-card-content>
           </ion-card>
 
-          <ion-card>
+          <!-- <ion-card>
               <ion-card-header>
-                {{'CUSTOMERDETAILS'|translate}}
+                {{'DRIVERDETAILS'|translate}}
               </ion-card-header>
               <ion-card-content>
                 <ion-card-title>
-                    {{customer?.name}}
+                    {{driver?.name}}
                   </ion-card-title>
                     <h3>
-                      {{ customer?.email }}
+                      {{ driver?.email }}
                     </h3>
-                    <h4 href="tel:customer?.phonenumber">
-                        {{ customer?.phonenumber }}
+                    <h4>
+                        {{ driver?.phonenumber }}
                     </h4>
               </ion-card-content>
-            </ion-card>
+            </ion-card> -->
             <ion-row padding-top >
                 <ion-col text-center>
-                    <button (click)="completeTrip()" ion-button medium >{{ 'CLOSETRIP' | translate }}</button>
+                    <button (click)="bookTrip()" ion-button medium >{{ 'BOOK' | translate }}</button>
                 </ion-col>
             </ion-row>
-
 </ion-content>

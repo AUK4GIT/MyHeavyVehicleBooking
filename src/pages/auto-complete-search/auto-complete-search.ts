@@ -34,6 +34,10 @@ export class AutoCompleteSearchPage {
     this.viewCtrl.dismiss(item);
   }
 
+  dismiss() {
+    
+  }
+
   updateSearch() {
     console.log('modal > updateSearch');
     if (this.autocomplete.query == '') {

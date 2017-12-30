@@ -75,6 +75,17 @@
     "CUSTOMTRIPS" : "Custom Trips",
     "MYTRIPS" : "My Trips",
     "MODELDATE" : "Model Date",
-    "COLOR" : "Color"
+    "COLOR" : "Color",
+    "SUBMIT" : "Submit",
+
+    "FREIGHT" : "Freight",
+    "BOOK" : "Book",
+
+    "ADDOFFER" : "Add Offer",
+    "UPDATEOFFER" : "Update Offer",
+
+    "ENDDATE" : "End Date",
+    "DISCOUNT" : "Discount",
+    "PRICE" : "Price"
  
 }

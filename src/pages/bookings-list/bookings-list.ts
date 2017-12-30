@@ -21,7 +21,7 @@ export class BookingsListPage {
   }
 
   ionViewDidEnter() {
-    this.items = this.appService.getRequestedTrips();            
+    this.items = this.appService.getRequestedTripsForOwnerid(this.appService.currentUser.userid);            
     console.log('ionViewDidLoad OwnerTripsListPage');
   }
 

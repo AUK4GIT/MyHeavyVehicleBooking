@@ -7,7 +7,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
   <ion-grid>
 
     <ion-row>
@@ -45,7 +45,7 @@
           <!-- <ion-select name="dropcity" [(ngModel)]="dropcity">
             <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
           </ion-select> -->
-          <ion-input placeholder="Search location" [readonly]=true (tap)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
+          <ion-input placeholder="Search location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
           </ion-input>
         </ion-item>
 
@@ -75,13 +75,13 @@
         <ion-col  col-12 col-sm>
             <ion-item margin-top class="item-leave-height">
               <ion-label>{{'COST' | translate}}</ion-label>
-              <ion-input (ionFocus)="focusFunction()" placeholder="cost" name="cost" id="cost" type="text" [(ngModel)]="cost"></ion-input>
+              <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="cost" name="cost" id="cost" type="text" [(ngModel)]="cost"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col  col-12 col-sm>
               <ion-item margin-top class="item-leave-height">
                 <ion-label>{{'DURATION' | translate}}</ion-label>
-                <ion-input (ionFocus)="focusFunction()" placeholder="duration in hours" name="duration" id="duration" type="text" [(ngModel)]="duration"></ion-input>
+                <ion-input class="hours" (ionFocus)="focusFunction()" placeholder="duration in hours" name="duration" id="duration" type="number" [(ngModel)]="duration"></ion-input>
               </ion-item>
             </ion-col>
     </ion-row>

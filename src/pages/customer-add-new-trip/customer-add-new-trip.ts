@@ -60,7 +60,10 @@ export class CustomerAddNewTripPage {
         rating: "0",
         ispredefined: "false",
         quotationidforpredefinedtrip: "",
-        remarks: ""
+        remarks: "",
+        cost:"",
+        duration:"",
+        ownerid:""
       };
         this.appService.createTripWithCustomerid(this.tempTrip);
         this.tempTrip = {};

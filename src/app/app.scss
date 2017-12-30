@@ -38,3 +38,40 @@
     margin: auto;
     border-radius: 50%;
   }
+
+  .activeHighlight, .card-header {
+    background-color: #f4f4f4;
+  }
+
+ .item-input ion-input[type=number].currency::after{
+    content: 'SR';
+    margin-left: -50px;
+    color: #888;
+    font-weight: bold;
+}
+.item-input ion-input[type=number].hours::after{
+    content: 'hrs';
+    margin-left: -50px;
+    color: #888; 
+    font-weight: bold;   
+}
+.item-input ion-input[type=number].percentage::after{
+  content: '%';
+  margin-left: -50px;
+  color: #888; 
+  font-weight: bold;   
+}
+
+.editable .label {
+  color: #2f9610;
+  font-weight: bold;
+}
+.editable {
+  border-bottom-width: 1px;
+  border-bottom-color: #2f9610;
+  border-style: solid;
+}
+
+  // #c8b496 text
+  //#ffb450 border
+  // 00b496 bars

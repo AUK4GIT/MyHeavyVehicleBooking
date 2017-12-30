@@ -30,7 +30,7 @@
     "@ngx-translate/core": "^8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "com.synconset.imagepicker": "~2.1.8",
-    "cordova-android": "~6.3.0",
+    "cordova-android": "6.3.0",
     "cordova-browser": "~5.0.1",
     "cordova-ios": "4.5.4",
     "cordova-plugin-device": "^1.1.7",
@@ -69,8 +69,8 @@
     },
     "platforms": [
       "browser",
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

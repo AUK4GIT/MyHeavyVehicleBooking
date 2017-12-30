@@ -85,7 +85,10 @@ export class HomePage {
         rating: "0",
         ispredefined: "false",
         quotationidforpredefinedtrip: "",
-        remarks: ""
+        remarks: "",
+        cost:"",
+        duration:"",
+        ownerid:""
       };
       this.presentLoginView();
     } else {

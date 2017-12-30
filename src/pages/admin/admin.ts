@@ -16,9 +16,11 @@ import { TripsListPage } from '../trips-list/trips-list';
 export class AdminPage {
   rootPage:any = TrucksListPage;
   user: any;
+  pageIndex: Number;
   @ViewChild(Nav) nav: Nav;
   constructor(private appService: AppModelServiceProvider, public events: Events, translate: TranslateService,public navCtrl: NavController, public navParams: NavParams) {
     // translate.setDefaultLang('ar-sa');
+    this.pageIndex = 1;
     this.user = this.appService.currentUser;
   }
 
@@ -26,23 +28,32 @@ export class AdminPage {
     console.log('ionViewDidLoad AdminPage');
   }
 
+  checkActivated(page) {
+    return (page == this.pageIndex);
+  }
+
   go_to_TrucksListPage(Page){
+    this.pageIndex = 1;
     this.nav.setRoot(TrucksListPage);
   }
 
   go_to_TruckOwnersListPage(){
+    this.pageIndex = 2;
     this.nav.setRoot(TruckOwnersListPage);  
   }
 
   go_to_CustomersListPage(){
+    this.pageIndex = 3;
     this.nav.setRoot(CustomersListPage);
   }
 
   go_to_TripsListPage(){
+    this.pageIndex = 4;
     this.nav.setRoot(TripsListPage);
   }
 
   logout_go_to_App(){
+    this.pageIndex = 5;
     console.log("logout_go_to_App");
     this.events.publish('logout', 'logout');    
   }

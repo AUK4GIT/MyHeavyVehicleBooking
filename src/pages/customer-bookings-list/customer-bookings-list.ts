@@ -19,7 +19,7 @@ export class CustomerBookingsListPage {
   }
 
   ionViewDidLoad() {
-    this.items = this.appService.getTrips();        
+    this.items = this.appService.getRequestedTripsForUserId(this.appService.currentUser.userid);        
     console.log('ionViewDidLoad CustomerBookingsListPage');
   }
 

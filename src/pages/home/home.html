@@ -53,7 +53,7 @@
 
                     <ion-item margin-top class="item-leave-height">
                         <ion-label stacked>{{'DROPCITY' | translate}}</ion-label>
-                        <ion-input placeholder="Search drop location" [readonly]=true (tap)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
+                        <ion-input placeholder="Search drop location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
                         </ion-input>
                     </ion-item>
                 </ion-col>
@@ -74,7 +74,7 @@
             </ion-row>
             <ion-row padding-top>
                 <ion-col text-center>
-                    <button (click)="requestQuote()" ion-button medium>{{ 'REQUESTQUOTE' | translate }}</button>
+                    <button (click)="requestQuote()" ion-button medium>{{ 'SUBMIT' | translate }}</button>
                 </ion-col>
             </ion-row>
         </ion-grid>

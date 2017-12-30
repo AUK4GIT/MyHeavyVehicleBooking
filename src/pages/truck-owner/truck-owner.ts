@@ -18,39 +18,50 @@ export class TruckOwnerPage {
 
   rootPage:any = BookingsListPage;
   user: any;
+  pageIndex: Number;
   @ViewChild(Nav) nav: Nav;
 
   constructor(public appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
+    this.pageIndex = 1;
     this.user = this.appService.currentUser;    
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TruckOwnerPage');
-    
+  }
+
+  checkActivated(page) {
+    return (page == this.pageIndex);
   }
 
   go_to_TrucksListPage(Page){
+    this.pageIndex = 3;
     this.nav.setRoot(OwnerTrucksListPage);
   }
 
   go_to_DriverssListPage(){
+    this.pageIndex = 4;
     this.nav.setRoot(DriversListPage);  
   }
 
   go_to_TripsListPage(){
+    this.pageIndex = 2;
     this.nav.setRoot(OwnerTripsListPage);
   }
 
   go_to_OffersListPage(){
+    this.pageIndex = 5;
     this.nav.setRoot(OffersListPage);
   }
 
   go_to_BookingsListPage(){
+    this.pageIndex = 1;
     this.nav.setRoot(BookingsListPage);    
   }
 
   logout_go_to_App(){
     console.log("logout_go_to_App");
+    this.pageIndex = 6;
     this.events.publish('logout', 'logout');    
   }
 

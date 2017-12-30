@@ -76,7 +76,7 @@ export class CustomersListPage {
         });
       }
       let alert = this.alertCtrl.create({
-        title: 'Rent a user',
+        title: 'Rent a Truck',
         message: message,
         buttons: buttons
       });

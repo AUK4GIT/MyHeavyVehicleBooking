@@ -26,6 +26,22 @@ trucks: AppTruck[];
     this.drivers = this.appService.getDriversForOwner(this.appService.currentUser.userid);
     this.trucks = this.appService.getTrucksForOwnerid(this.appService.currentUser.userid);
     
+    this.appService.getQuotationsForTripIdOwnerId(this.tripid, this.appService.currentUser.userid, (quotation) => {
+      if(quotation){
+        this.trucktype = quotation.truck,
+        this.driver = quotation.driver,
+        this.duration = quotation.duration,
+        this.cost = quotation.cost,
+        this.starttime = quotation.starttime,
+        this.closetime = quotation.closetime,
+        this.charges = quotation.additionalcharges,
+        this.comments = quotation.comments,
+        this.tripid = quotation.tripid,
+        this.appService.currentUser.userid = quotation.ownerid,
+        this.appService.currentUser.name = quotation.ownername,
+        this.truckid = quotation.truckid
+      }
+    })
   }
 
   ionViewDidLoad() {

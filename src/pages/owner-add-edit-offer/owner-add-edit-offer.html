@@ -1,0 +1,96 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Offer</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <ion-grid>
+
+        <ion-row>
+    
+          <ion-col>
+            <ion-item margin-top class="item-leave-height">
+              <ion-label>{{'TRUCKTYPE' | translate}}</ion-label>
+              <ion-select name="trucktypes" [(ngModel)]="offer.truckid">
+                <ion-option value="{{truck.trucktypeid}}" *ngFor="let truck of trucks">{{ truck.type }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+    
+        </ion-row>
+    
+        <ion-row>
+    
+          <ion-col col-12 col-sm>
+    
+            <ion-item margin-top class="item-leave-height">
+              <ion-label>{{'PICKUPCITY' | translate}}</ion-label>
+
+              <ion-input placeholder="Search location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="offer.fromlocation">
+              </ion-input>
+            </ion-item>
+    
+          </ion-col>
+    
+          <ion-col col-12 col-sm>
+    
+            <ion-item margin-top class="item-leave-height">
+              <ion-label>{{'DROPCITY' | translate}}</ion-label>
+              <ion-input placeholder="Search location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="offer.tolocation">
+              </ion-input>
+            </ion-item>
+    
+          </ion-col>
+    
+          </ion-row>
+
+          <ion-row>
+              <ion-col col-12 col-sm>
+      
+                <ion-item margin-top class="item-leave-height">
+                  <ion-label>{{'PRICE' | translate}}</ion-label>
+                  <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="price" name="price" id="price" type="number" [(ngModel)]="offer.price"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col col-12 col-sm>
+      
+                  <ion-item margin-top class="item-leave-height">
+                    <ion-label>{{'DISCOUNT' | translate}}</ion-label>
+                    <ion-input class="percentage" (ionFocus)="focusFunction()" placeholder="discount" name="discount" id="discount" type="number" [(ngModel)]="offer.discount"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+    
+          <ion-row>
+        
+            <ion-col col-12 col-sm>
+    
+              <ion-item margin-top class="item-leave-height">
+                <ion-label>{{'STARTDATE' | translate}}</ion-label>
+                <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="offer.startdate"></ion-datetime>
+              </ion-item>
+    
+            </ion-col>
+            <ion-col col-12 col-sm>
+    
+                <ion-item margin-top class="item-leave-height">
+                  <ion-label>{{'ENDDATE' | translate}}</ion-label>
+                  <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="offer.enddate"></ion-datetime>
+                </ion-item>
+      
+              </ion-col>
+
+          </ion-row>
+          
+          <ion-row padding-top>
+            <ion-col text-center>
+              <button (click)="updateOffer()" ion-button medium>{{ 'ADDOFFER' | translate }}</button>
+            </ion-col>
+          </ion-row>
+      </ion-grid>
+</ion-content>

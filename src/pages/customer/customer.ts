@@ -15,10 +15,16 @@ export class CustomerPage {
 
   rootPage:any = CustomerTripsListPage;
   user: any;
+  pageIndex: Number;
   @ViewChild(Nav) nav: Nav;
 
   constructor(private appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
+    this.pageIndex = 1;
     this.user = this.appService.currentUser;    
+  }
+
+  checkActivated(page) {
+    return (page == this.pageIndex);
   }
 
   ionViewDidLoad() {
@@ -26,15 +32,18 @@ export class CustomerPage {
   }
 
   go_to_TripsListPage(){
+    this.pageIndex = 1;
     this.nav.setRoot(CustomerTripsListPage);
   }
 
   go_to_BookingsListPage(){
+    this.pageIndex = 2;
     this.nav.setRoot(CustomerBookingsListPage);  
   }
 
   logout_go_to_App(){
     console.log("logout_go_to_App");
+    this.pageIndex = 3;
     this.events.publish('logout', 'logout');    
   }
 }

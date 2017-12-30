@@ -32,8 +32,8 @@
             placeholder="Start searching based on location">
           </ion-searchbar>
             <ion-list id="page-list1">
-                <ion-item-sliding *ngFor="let item of items">                 
-                <ion-item (click)="viewQuotationsForTrip(item)" color="none" id="page-list-item" >
+                <ion-item-sliding *ngFor="let item of searchItems">                 
+                <ion-item (click)="viewDetailsAndBookPredefinedTrip(item)" color="none" id="page-list-item" >
                   <ion-thumbnail item-left>
                     <img src="assets/imgs/logo_transparent.jpg"/>
                   </ion-thumbnail>
@@ -45,18 +45,19 @@
                     {{ item.trucktype }}
                   </h3>
                   <h4>
-                      {{ item.cost }}
+                      {{ item.cost }} SR
                   </h4>
                   <h5>
-                      {{ item.duration }}  
+                      {{ item.duration }}  hrs
                   </h5>
+                  <ion-icon style="color: #2f9610" item-end name="star-outline">{{item.status}}</ion-icon>
                 </ion-item>
-                <ion-item-options side="end">
+                <!-- <ion-item-options side="end">
                     <button ion-button color="danger" (click)="deleteTrip(trip, gindex, iindex)">
                       <ion-icon name="delete"></ion-icon>
                       Delete
                     </button>
-                  </ion-item-options>
+                  </ion-item-options> -->
                 </ion-item-sliding>
               </ion-list>
         </div>
@@ -83,9 +84,10 @@
                   <h5>
                       {{ item.freight }}  
                   </h5>
+                  <button ion-button outline item-end>{{item.status}}</button>              
                 </ion-item>
                 <ion-item-options side="end">
-                    <button ion-button color="danger" (click)="cancelTrip(trip, gindex, iindex)">
+                    <button ion-button color="danger" (click)="cancelCustomTrip(item)">
                       <ion-icon name="delete"></ion-icon>
                       Cancel
                     </button>

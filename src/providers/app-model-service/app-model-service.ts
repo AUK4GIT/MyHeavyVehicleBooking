@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class AppModelServiceProvider {
@@ -14,8 +15,9 @@ export class AppModelServiceProvider {
   predefinedlistofplaces: String[];
   
   // status: pending, approved, rejected
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, private storage: Storage) {
     console.log('Hello AppModelServiceProvider Provider');
+    this.getCurrentUser();
     this.predefinedlistofplaces = [
       "Riyadh",
       "Jeddah",
@@ -64,18 +66,38 @@ export class AppModelServiceProvider {
     this.trucks = [new AppTruck("Flatbed","2000 cc","SA15A6600",null,"0","5","pending","1","red","12/12/2016","1"),
                     new AppTruck("Lowbed","2200 cc","SA15A5500",null,"0","5","pending","1","gren","12/12/2016","2")];
 
-    this.quotations = [new AppQuotation("","","12 hrs","1500 sar", "pending", "", "", "", "", "", "", "1", "1", "5", "owner1", ""),
-                        new AppQuotation("","","15 hrs","2000 sar", "pending", "", "", "", "", "", "", "2", "2", "5", "owner1", "")];         
+    this.quotations = [new AppQuotation("","","12","1500", "pending", "", "", "", "", "", "", "1", "1", "5", "owner1", ""),
+                        new AppQuotation("","","15","2000", "pending", "", "", "", "", "", "", "2", "2", "5", "owner1", "")];         
 
-    this.trips = [new AppTrip("","Flatbed","Jedda","Mecca","pending","","","1","","5","","0","true","1",""),
-                  new AppTrip("","Lowbed","Medina","Mecca","pending","","","1","","5","","0","true","2","")];
+    this.trips = [new AppTrip("","Flatbed","Jedda","Mecca","pending","","","1","","5","","0","true","1","","1200","15",""),
+                  new AppTrip("","Lowbed","Medina","Mecca","pending","","","2","","5","","0","true","2","","1800","25","")];
 
-    this.offers = [new AppOffer("1","Promotional Offer","1","1","Flatbed","Jedda","Mecca","","15%","12/12/2017","29/12/2017","pending"),
-                    new AppOffer("2","Promotional Offer","2","2","Lowbed","Jedda","Mecca","","20%","12/12/2017","29/12/2017","pending")];
+    this.offers = [new AppOffer("1","Promotional Offer","1","1","Flatbed","Jedda","Mecca","","15","12/12/2017","29/12/2017","pending"),
+                    new AppOffer("2","Promotional Offer","2","2","Lowbed","Jedda","Mecca","","20","12/12/2017","29/12/2017","pending")];
   }
 
   setCurrentUser(item){
     this.currentUser = new AppUser(item.name, item.email, item.password, item.phonenumber, item.role, item.userid, item.status, item.ownerid)
+    localStorage.setItem("user",JSON.stringify(this.currentUser));
+    this.storage.set('user', this.currentUser);
+  }
+
+  getCurrentUser() {
+    if(this.currentUser) {
+      return this.currentUser;
+    } else {
+      let user = localStorage.getItem("user");
+      if(user){
+        this.currentUser = JSON.parse(user);
+        return this.currentUser;
+      } else {
+        return null;
+      }
+      // this.storage.get('user').then((val) => {
+      //   this.currentUser = val;
+      //   return this.currentUser;
+      // });
+    }
   }
 
   addUser(item) {
@@ -161,6 +183,16 @@ export class AppModelServiceProvider {
     return trips;
   }
 
+  getCustomPendingTrips() {
+    let trips = this.trips.filter((trip: AppTrip) => ((trip.status == "pending") && (trip.ispredefined == "false")));    
+    return trips;
+  }
+
+  // getBookingsForOwnerid(userid) {
+  //   let trips = this.trips.filter((trip: AppTrip) => trip.ownerid == userid);    
+  //   return trips;
+  // }
+
   getAvailableTrips(){
     let trips = this.trips.filter((trip: AppTrip) => trip.ispredefined == 'true');    
     return trips;
@@ -171,8 +203,8 @@ export class AppModelServiceProvider {
     return trips;
   }
 
-  getRequestedTrips() {
-    let trips = this.trips.filter((trip: AppTrip) => trip.ispredefined == 'false');    
+  getRequestedTripsForOwnerid(userid) {
+    let trips = this.trips.filter((trip: AppTrip) => (trip.ispredefined == 'false' && trip.ownerid == userid));    
     return trips;
   }
 
@@ -190,15 +222,40 @@ export class AppModelServiceProvider {
                   item.status, 
                   item.startdate, 
                   item.comments, 
-                  String(this.trips.length), 
+                  String(this.trips.length+1), 
                   item.freight, 
                   item.userid, 
                   item.createddate, 
                   item.rating, 
                   item.ispredefined,
                   item.quotationidforpredefinedtrip,
-                  item.remarks)
+                  item.remarks,
+                  item.cost,
+                  item.duration,
+                  item.ownerid)
     )-1];
+  }
+
+  createNewCompleteTripForPredefinedTripBooking(trip, quotation, userid) {
+    let ntrip: AppTrip = Object.assign({}, trip);
+    let nquotation: AppQuotation = Object.assign({}, quotation);
+
+    ntrip.ownerid = trip.userid;
+    ntrip.userid = userid;
+    ntrip.tripid = this.trips.length.toString();
+    ntrip.ispredefined = "false";
+    nquotation.quotationid = this.quotations.length.toString();
+    ntrip.status = "requested";
+    nquotation.status = "requested";
+
+    this.trips.push(ntrip);
+    this.quotations.push(nquotation);
+  }
+
+  //Bookings History in Customer module
+  getRequestedTripsForUserId(userid) {
+    let trips = this.trips.filter((trip: AppTrip) => ((trip.status == 'requested') && (trip.userid == userid)));    
+    return trips;
   }
 
   createTripWithOwnerid(item) {
@@ -217,7 +274,10 @@ export class AppModelServiceProvider {
                   item.rating, 
                   item.ispredefined,
                   item.quotationidforpredefinedtrip,
-                  item.remarks)
+                  item.remarks,
+                  item.cost,
+                  item.duration,
+                  item.ownerid)
     )-1];
   }
 
@@ -251,9 +311,23 @@ export class AppModelServiceProvider {
     return quotations;
   }
 
+  getQuotationsForTripIdOwnerId(tripid, ownerid, callback) {
+    let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.ownerid == ownerid) && (quotation.tripid == tripid)));    
+    if(quotations.length > 0) {
+      callback(quotations[0]);
+    } else {
+      callback(null);
+    }
+  }
+
   getQuotationsForTripId(tripid) {
     let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.tripid == tripid);    
     return quotations;
+  }
+
+  getQuotationForId(quotationid) {
+    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == quotationid);    
+    return quotations[0];
   }
 
   // createQuotationForPredefinedTripId(tripid) {
@@ -273,6 +347,16 @@ export class AppModelServiceProvider {
     let trip = trips[0];
     trip.status = "confirmed";
     quotation.status = "confirmed";
+  }
+
+  deleteTrip(trip, callback) {
+    const index: number = this.trips.indexOf(trip);
+  if (index !== -1) {
+      this.trips.splice(index, 1);
+      callback({result: 'success'});
+  } else {
+    callback({result: 'failure', error: 'user not found'});
+  }
   }
 
   completeTripWithId(tripid, quotationid) {
@@ -449,7 +533,10 @@ export class AppUser {
                     public rating: string,
                     public ispredefined: string,
                     public quotationidforpredefinedtrip: string,
-                    public customerremarks: string) {
+                    public customerremarks: string,
+                    public cost: string,
+                    public duration: string,
+                    public ownerid: string,) {
         }
       
       }
@@ -496,6 +583,7 @@ export class AppUser {
       pending = "pending",
       approved = "approved",
       rejected = "rejected",
+      requested = "requested",
       blocked = "blocked",
       cancelled = "cancelled",
       confirmed = "confirmed",
