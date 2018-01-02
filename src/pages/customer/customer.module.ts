@@ -10,7 +10,7 @@ import { CustomerAddNewTripPage } from '../customer-add-new-trip/customer-add-ne
 import { CustomerViewQuotationsPage } from '../customer-view-quotations/customer-view-quotations';
 import { CustomerQuotationsDetailsPage } from '../customer-quotations-details/customer-quotations-details';
 import { CustomerBookPredfinedTripPage } from '../customer-book-predfined-trip/customer-book-predfined-trip'
-
+import { CustomerTripeRatingPage } from '../customer-tripe-rating/customer-tripe-rating'
 @NgModule({
   declarations: [
     CustomerPage,
@@ -19,7 +19,8 @@ import { CustomerBookPredfinedTripPage } from '../customer-book-predfined-trip/c
     CustomerAddNewTripPage,
     CustomerViewQuotationsPage,
     CustomerQuotationsDetailsPage,
-    CustomerBookPredfinedTripPage
+    CustomerBookPredfinedTripPage,
+    CustomerTripeRatingPage
   ],
   imports: [
     IonicPageModule.forChild(CustomerPage),
@@ -31,7 +32,8 @@ import { CustomerBookPredfinedTripPage } from '../customer-book-predfined-trip/c
     CustomerAddNewTripPage,
     CustomerViewQuotationsPage,
     CustomerQuotationsDetailsPage,
-    CustomerBookPredfinedTripPage
+    CustomerBookPredfinedTripPage,
+    CustomerTripeRatingPage
   ]
 })
 export class CustomerPageModule {}

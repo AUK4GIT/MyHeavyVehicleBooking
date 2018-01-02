@@ -26,6 +26,10 @@
         <h3>
           {{ truck.capacity }}
         </h3>
+        <h6 icon-end style="float: right; color: #bbb; font-size:1.2rem;">
+            Swipe left to see more options
+            <ion-icon name="arrow-round-back"></ion-icon>
+        </h6>
       </ion-item>
       <ion-item-options side="end">
           <button ion-button color="danger" (click)="deleteItem(truck, gindex, iindex)">

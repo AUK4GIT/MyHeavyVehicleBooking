@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,  ModalController, Modal, Events, PopoverController } from 'ionic-angular';
+import { NavController, NavParams,  ModalController, Modal, Events, PopoverController, AlertController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip, AppTruck, AppTruckType } from '../../providers/app-model-service/app-model-service'
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
@@ -21,7 +21,7 @@ export class CustomerAddNewTripPage {
   trucks : AppTruckType[];
   cities: [any];
 
-  constructor(private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private alertCtrl: AlertController, private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -33,7 +33,7 @@ export class CustomerAddNewTripPage {
   }
 
   private getMinDate(day: number, month: number, year: number): string {
-    return year.toString() + "-" + month.toString() + "-" + day.toString();
+    return year.toString() + "-" + (month.toString().length==1 ? "0"+month.toString() : month.toString()) + "-" + (day.toString().length==1 ? "0"+day.toString() : day.toString());
   }
 
   ionViewDidLoad() {
@@ -59,20 +59,47 @@ export class CustomerAddNewTripPage {
         createddate: this.mindate,
         rating: "0",
         ispredefined: "false",
-        quotationidforpredefinedtrip: "",
+        quoteidforpretrip: "",
         remarks: "",
         cost:"",
         duration:"",
         ownerid:""
       };
-        this.appService.createTripWithCustomerid(this.tempTrip);
-        this.tempTrip = {};
-      
-      this.navCtrl.pop();
+        this.appService.createTripWithCustomerid(this.tempTrip, ()=>{
+          this.presentAlert("Trip created successfully. Wait for the quotations from the Truck providers.",["OK"],()=>{
+            this.navCtrl.pop();
+            this.tempTrip = {};
+          });
+        });
+        // this.tempTrip = {};  
     }
   }
 
   focusFunction() {
+  }
+
+  presentAlert(message, buttontexts, callback) {
+    var buttons = [];
+    var createCallback =  ( i ) => {
+      return () => {
+        if(callback) {
+          callback(i);
+        }
+      }
+    }
+    for(var i=0; i<buttontexts.length ; i++){
+      buttons.push({
+        text: buttontexts[i],
+        role: 'cancel',
+        handler: createCallback(i)
+      });
+    }
+    let alert = this.alertCtrl.create({
+      title: 'Rent a Truck',
+      message: message,
+      buttons: buttons
+    });
+    alert.present();
   }
 
   presentPredefinedPlaces(ev, type) {

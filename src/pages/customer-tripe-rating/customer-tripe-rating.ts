@@ -3,53 +3,29 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip } from '../../providers/app-model-service/app-model-service';
 
 @Component({
-  selector: 'page-customer-quotations-details',
-  templateUrl: 'customer-quotations-details.html',
+  selector: 'page-customer-tripe-rating',
+  templateUrl: 'customer-tripe-rating.html',
 })
-export class CustomerQuotationsDetailsPage {
+export class CustomerTripeRatingPage {
 
   quotation: AppQuotation;
   trip: AppTrip;
   owner: AppUser;
   driver: AppUser;
   constructor( private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
-  this.quotation = this.navParams.get("quotation");
-  this.trip = this.navParams.get("trip");  
+    this.trip = this.navParams.get("trip");  
   }
 
   ionViewDidEnter() {
     console.log('ionViewDidLoad CustomerQuotationsDetailsPage');
+    this.quotation = this.appService.getConfirmedQuotationForTripId(this.trip.tripid);
     this.owner = this.appService.getUserById(this.quotation.ownerid);
     this.driver = this.appService.getUserById(this.quotation.driver);
   }
 
-  confirmQuote(){
-    if(this.trip.status == 'requested'){
-      this.presentAlert("You can book this trip once the owner accepts and the status is changed to confirmed.",["OK"],null);
-      return;
-    } 
-    this.appService.confirmQuotation(this.quotation.quotationid, ()=>{
-      this.presentConfirm();
-    });
+  rateTheTrip(){
+    
   }
-
-  presentConfirm() {
-    let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
-      message: 'ThankYou for choosing a quotation. You can contact the truck provider for proceedings.',
-      buttons: [
-        {
-          text: "OK",
-          role: 'cancel',
-          handler: () => {
-            this.navCtrl.pop();
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
 
   presentAlert(message, buttontexts, callback) {
     var buttons = [];

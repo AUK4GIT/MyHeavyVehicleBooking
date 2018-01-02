@@ -49,15 +49,16 @@ export class HomePage {
   }
 
   private getMinDate(day: number, month: number, year: number): string {
-    return year.toString() + "-" + month.toString() + "-" + day.toString();
+    return year.toString() + "-" + (month.toString().length==1 ? "0"+month.toString() : month.toString()) + "-" + (day.toString().length==1 ? "0"+day.toString() : day.toString());
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad tabsparent');
     this.trucks = this.appService.getTruckTypes(); 
     this.cities = ["Riyadh", "Jeddah", "Mecca", "Medina", "Al-Ahsa", "Taif", "Dammam", "Buraidah", "Khobar", "Tabuk"]; 
-    this.offers = this.appService.getOffers();
+    this.offers = this.appService.getApprovedOffers();
     if(this.offers && this.offers.length>0) {
+      localStorage.setItem("offers",JSON.stringify(this.offers));
       this.hideSlide = false;
     } else {
       this.hideSlide = true;
@@ -84,7 +85,7 @@ export class HomePage {
         createddate: this.mindate,
         rating: "0",
         ispredefined: "false",
-        quotationidforpredefinedtrip: "",
+        quoteidforpretrip: "",
         remarks: "",
         cost:"",
         duration:"",
@@ -133,12 +134,13 @@ export class HomePage {
     this.appService.setCurrentUser(user);
     if(Object.keys(this.tempTrip).length > 0){
       this.tempTrip["userid"] = user.userid;
-      this.appService.createTripWithCustomerid(this.tempTrip);
-      this.tempTrip = {};
+      this.appService.createTripWithCustomerid(this.tempTrip, ()=>{
+        this.tempTrip = {};
+        this.navigateToRolebasedModule(user.role);    
+      });
     } else {
-
+      console.log("Error afterLogin");
     }
-    this.navigateToRolebasedModule(user.role);    
   }
 
   focusFunction() {

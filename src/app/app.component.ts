@@ -3,7 +3,6 @@ import { Platform, Events, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from '@ngx-translate/core';
-
 import { HomePage } from '../pages/home/home';
 import { FCM } from '@ionic-native/fcm';
 
@@ -19,7 +18,7 @@ export class MyApp {
   constructor(private fcm: FCM, translate: TranslateService, public events: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     // constructor(translate: TranslateService, public events: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
       
-   platform.ready().then(() => {
+   platform.ready().then((source) => {
       statusBar.styleDefault();
       splashScreen.hide();
       this.platform = platform;
@@ -28,6 +27,22 @@ export class MyApp {
       // this.platform.setDir('rtl', true);
       translate.setDefaultLang('en');
       this.platform.setDir('ltr', true);
+      console.log(source, );
+      if (this.platform.is('android')) {
+        localStorage.setItem("platform","android");
+        console.log("running on Android device!: ANdroid");
+    }
+    if (this.platform.is('ios')) {
+      localStorage.setItem("platform","ios");
+        console.log("running on iOS device!: iOS");
+    }
+    if (this.platform.is('mobileweb')) {
+      localStorage.setItem("platform","mobileweb");
+        console.log("running in a browser on mobile!: Mobileweb");
+    } else {
+      localStorage.setItem("platform","browser");
+      console.log("running in a browser on mobile!: Browser");
+    }
       this.configureFCM();
     });
 
@@ -47,6 +62,7 @@ export class MyApp {
       this.fcm.subscribeToTopic('alerts');
 
       this.fcm.getToken().then(token => {
+        localStorage.setItem("fcmtoken",token)
         // backend.registerToken(token);
       })
 
@@ -59,6 +75,7 @@ export class MyApp {
       })
 
       this.fcm.onTokenRefresh().subscribe(token => {
+        localStorage.setItem("fcmtoken",token)
         // backend.registerToken(token);
       })
 

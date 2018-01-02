@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AppModelServiceProvider {
@@ -13,10 +15,12 @@ export class AppModelServiceProvider {
   offers: AppOffer[];
   quotations: AppQuotation[];
   predefinedlistofplaces: String[];
-  
+  header : any;
+
   // status: pending, approved, rejected
   constructor(public http: HttpClient, private storage: Storage) {
     console.log('Hello AppModelServiceProvider Provider');
+    this.header = { "headers": {"Content-Type": "application/json"} };
     this.getCurrentUser();
     this.predefinedlistofplaces = [
       "Riyadh",
@@ -64,7 +68,7 @@ export class AppModelServiceProvider {
     // this.quotations = new Array<AppQuotation>(); 
     
     this.trucks = [new AppTruck("Flatbed","2000 cc","SA15A6600",null,"0","5","pending","1","red","12/12/2016","1"),
-                    new AppTruck("Lowbed","2200 cc","SA15A5500",null,"0","5","pending","1","gren","12/12/2016","2")];
+                    new AppTruck("Lowbed","2200 cc","SA15A5500",null,"0","5","pending","2","gren","12/12/2016","2")];
 
     this.quotations = [new AppQuotation("","","12","1500", "pending", "", "", "", "", "", "", "1", "1", "5", "owner1", ""),
                         new AppQuotation("","","15","2000", "pending", "", "", "", "", "", "", "2", "2", "5", "owner1", "")];         
@@ -72,8 +76,8 @@ export class AppModelServiceProvider {
     this.trips = [new AppTrip("","Flatbed","Jedda","Mecca","pending","","","1","","5","","0","true","1","","1200","15",""),
                   new AppTrip("","Lowbed","Medina","Mecca","pending","","","2","","5","","0","true","2","","1800","25","")];
 
-    this.offers = [new AppOffer("1","Promotional Offer","1","1","Flatbed","Jedda","Mecca","","15","12/12/2017","29/12/2017","pending"),
-                    new AppOffer("2","Promotional Offer","2","2","Lowbed","Jedda","Mecca","","20","12/12/2017","29/12/2017","pending")];
+    this.offers = [new AppOffer("1","Promotional Offer","1","1","Flatbed","Jedda","Mecca","","15","12/12/2017","29/12/2017","pending","5"),
+                    new AppOffer("2","Promotional Offer","2","2","Lowbed","Jedda","Mecca","","20","12/12/2017","29/12/2017","pending","5")];
   }
 
   setCurrentUser(item){
@@ -102,7 +106,7 @@ export class AppModelServiceProvider {
 
   addUser(item) {
     return this.users[this.users.push(
-      new AppUser(item.name, item.email, item.password, item.phonenumber, item.role, String(this.users.length), item.status, item.ownerid)
+      new AppUser(item.name, item.email, item.password, item.phonenumber, item.role, String(this.users.length+1), item.status, item.ownerid)
     )-1];
   }
 
@@ -115,6 +119,26 @@ export class AppModelServiceProvider {
   }
 
   loginService(item, callback) {
+    // this.http.post('http://zamilrenttruck.com/login',
+    //   { username: item.email,
+    //     password: item.password,
+    //     token : localStorage.getItem("fcmtoken"),
+    //     platform: localStorage.getItem("platform")
+    //   }, this.header).toPromise().then(response => {
+    //     console.log("data: "+response);
+    //     if(response["error"]){
+    //       callback({result: 'failure', error: response["error"]});
+    //     } else if(response["message"]){
+    //       let msg = response["message"];
+    //       callback({result: 'success', data: msg});
+    //     } else {
+    //       callback({result: 'failure', error: "Unkown error."});
+    //     }
+    //   }).catch(error => {
+    //     console.log(error);
+    //     callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    //   });
+    
     let users = this.users.filter((user: AppUser) => user.email == item.email);
     if(users.length > 0){
       let user = users[0];
@@ -126,15 +150,39 @@ export class AppModelServiceProvider {
     } else {
       callback({result: 'failure', error: "User doesn't exist. Please register."});       
     }
+    
   }
 
   registrationService(item, callback){
-    let users = this.users.filter((user: AppUser) => user.email == item.email);
-    if(users.length > 0){
-      callback({result: 'failure', error: "Emailid already exists. Please register with new emailid."});             
-    } else {
-      callback({result: 'success', data: this.addUser(item)});
-    }
+
+    this.http.post('http://zamilrenttruck.com/user/create',
+      { role: item.role,
+        name: item.name,
+        phonenumber: item.phonenumber,
+        email: item.email,
+        password: item.password,
+        status: item.status,
+        token : localStorage.getItem("fcmtoken"),
+        platform: localStorage.getItem("platform")
+      }, this.header).toPromise().then(response => {
+        console.log("data: "+response);
+        if(response["message"]){
+          callback({result: 'failure', error: response["message"]});
+        } else if(response["data"]){
+          let user = response["data"];
+          callback({result: 'success', data: user.length>0 ? user[0] : []});
+        }
+      }).catch(error => {
+        console.log(error);
+        callback({result: 'failure', error: "Server Error. Please try after sometime."});
+      });
+
+    // let users = this.users.filter((user: AppUser) => user.email == item.email);
+    // if(users.length > 0){
+    //   callback({result: 'failure', error: "Emailid already exists. Please register with new emailid."});             
+    // } else {
+    //   callback({result: 'success', data: this.addUser(item)});
+    // }
   }
 
   getUsersByRole(role){
@@ -179,12 +227,12 @@ export class AppModelServiceProvider {
   }
 
   getTripsForCustomerid(userid) {
-    let trips = this.trips.filter((trip: AppTrip) => trip.userid == userid);    
+    let trips = this.trips.filter((trip: AppTrip) => ((trip.userid == userid) && (trip.status != 'completed')));    
     return trips;
   }
 
   getCustomPendingTrips() {
-    let trips = this.trips.filter((trip: AppTrip) => ((trip.status == "pending") && (trip.ispredefined == "false")));    
+    let trips = this.trips.filter((trip: AppTrip) => (((trip.status == "pending") || (trip.status == "requested")) && (trip.ispredefined == "false")));    
     return trips;
   }
 
@@ -208,13 +256,33 @@ export class AppModelServiceProvider {
     return trips;
   }
 
+  getConfirmedTripsforDriverId(userid) {
+    //first get confirmed quotations for driverid
+      let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.driver) == userid && (quotation.status == "confirmed")));    
+      // return quotations;
+      var trips : any[] = [];
+      for(var i=0; i<quotations.length; i++){
+        let ftrips = this.trips.filter((trip: AppTrip) => (trip.ispredefined == 'false' && trip.tripid == quotations[i].tripid));    
+        trips.push(ftrips[0]);
+      }
+    return trips;
+  }
+
   getOffers() {
-    let offers = this.offers.filter((offer: AppOffer) => offer.status == 'approved');    
     return this.offers;
   }
 
-  createTripWithCustomerid(item) {
-    return this.trips[this.trips.push(
+  getOffersByOwnerId(userid) {
+    let offers = this.offers.filter((offer: AppOffer) => offer.userid == userid);    
+    return offers;
+  }
+  getApprovedOffers() {
+    let offers = this.offers.filter((offer: AppOffer) => offer.status == 'approved');    
+    return offers;
+  }
+
+  createTripWithCustomerid(item, callback) {
+     this.trips[this.trips.push(
       new AppTrip(item.truckid, 
                   item.trucktype,
                   item.startlocation, 
@@ -228,12 +296,13 @@ export class AppModelServiceProvider {
                   item.createddate, 
                   item.rating, 
                   item.ispredefined,
-                  item.quotationidforpredefinedtrip,
+                  item.quoteidforpretrip,
                   item.remarks,
                   item.cost,
                   item.duration,
                   item.ownerid)
     )-1];
+    callback();
   }
 
   createNewCompleteTripForPredefinedTripBooking(trip, quotation, userid) {
@@ -247,14 +316,16 @@ export class AppModelServiceProvider {
     nquotation.quotationid = this.quotations.length.toString();
     ntrip.status = "requested";
     nquotation.status = "requested";
-
+    ntrip.tripid = (this.trips.length+1).toString();
+    nquotation.quotationid = (this.quotations.length+1).toString();
+    nquotation.tripid = ntrip.tripid ;
     this.trips.push(ntrip);
     this.quotations.push(nquotation);
   }
 
   //Bookings History in Customer module
   getRequestedTripsForUserId(userid) {
-    let trips = this.trips.filter((trip: AppTrip) => ((trip.status == 'requested') && (trip.userid == userid)));    
+    let trips = this.trips.filter((trip: AppTrip) => (((trip.status == 'requested') || (trip.status == 'confirmed') || (trip.status == 'completed')) && (trip.userid == userid)));    
     return trips;
   }
 
@@ -273,7 +344,7 @@ export class AppModelServiceProvider {
                   item.createddate, 
                   item.rating, 
                   item.ispredefined,
-                  item.quotationidforpredefinedtrip,
+                  item.quoteidforpretrip,
                   item.remarks,
                   item.cost,
                   item.duration,
@@ -281,8 +352,8 @@ export class AppModelServiceProvider {
     )-1];
   }
 
-  addQuotationForTrip(item) {
-    return this.quotations[this.quotations.push(
+  addQuotationForTrip(item, callback) {
+     this.quotations[this.quotations.push(
       new AppQuotation(item.truck , 
         item.driver , 
         item.duration,
@@ -294,12 +365,36 @@ export class AppModelServiceProvider {
         item.comments,
         item.appliedofferid,
         item.discount,
-        String(this.quotations.length),
+        String(this.quotations.length+1),
         item.tripid,
         item.ownerid,
         item.ownername,
         item.truckid)
     )-1];
+    callback();
+  }
+
+  updateQuotationForTripAndConfirm(item, callback) {
+    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == item.quotationid);
+    if (quotations.length > 0) {
+      let quotation = quotations[0];
+      quotation.driver = item.driver;
+      quotation.starttime = item.starttime;
+      quotation.closetime = item.closetime;
+      quotation.duration = item.duration;
+      quotation.truckid = item.truckid;
+      quotation.additionalcharges = item.additionalcharges;
+      quotation.comments = item.comments;
+      quotation.cost = item.cost;
+
+      let trips = this.trips.filter((trip: AppTrip) => ((trip.tripid == quotation.tripid) && (trip.ispredefined == 'false')));
+      let trip = trips[0];
+      trip.status = "confirmed";
+      quotation.status = "confirmed";
+      trip.cost = quotation.cost;
+      trip.duration = quotation.duration;
+    }
+    callback();
   }
 
   getAllQuotations() {
@@ -340,13 +435,16 @@ export class AppModelServiceProvider {
     return quotations.length > 0 ? quotations[0] : null;
   }
 
-  confirmQuotation(quotationid) {
+  confirmQuotation(quotationid, callback) {
     let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == quotationid);    
     let quotation = quotations[0];
     let trips = this.trips.filter((trip: AppTrip) => trip.tripid == quotation.tripid);    
     let trip = trips[0];
     trip.status = "confirmed";
     quotation.status = "confirmed";
+    trip.cost=quotation.cost;
+    trip.duration=quotation.duration;
+    callback();
   }
 
   deleteTrip(trip, callback) {
@@ -377,7 +475,7 @@ export class AppModelServiceProvider {
                     item.rating, 
                     item.ownerid, 
                     item.status, 
-                    String(this.trucks.length),
+                    String(this.trucks.length+1),
                     item.color, 
                     item.modeldate, 
                     item.trucktypeid,)
@@ -415,6 +513,39 @@ blockuser(item, callback) {
   }
 }
 
+//Offer CRUD
+//custoer admin
+deleteoffer(item, callback) {
+  const index: number = this.offers.indexOf(item);
+  if (index !== -1) {
+      this.offers.splice(index, 1);
+      callback({result: 'success'});
+  } else {
+    callback({result: 'failure', error: 'offer not found'});
+  }
+}
+approveoffer(item, callback) {
+  let offers = this.offers.filter((offer: AppOffer) => offer.userid == item.userid);    
+  if(offers.length > 0){
+    let offer = offers[0];
+    offer.status = "approved";
+    callback({result: "success"});
+  } else {
+    callback({result: "failure", error: "offer not found"});
+  }
+}
+rejectoffer(item, callback) {
+  let offers = this.offers.filter((offer: AppOffer) => offer.userid == item.userid);    
+  if(offers.length > 0){
+    let offer = offers[0];
+    offer.status = "rejected";
+    callback({result: "success"});
+  } else {
+    callback({result: "failure", error: "offer not found"});
+  }
+}
+
+
   // Trucks admin
   deleteTruck(item, callback) {
     const index: number = this.trucks.indexOf(item);
@@ -446,6 +577,9 @@ blockuser(item, callback) {
     }
   }
 
+  sendForgotPassword(emailid){
+
+  }
 
   //mark - Utility methods
 
@@ -479,103 +613,108 @@ blockuser(item, callback) {
 
 export class AppUser {
   
-    constructor(public name: string, 
-                public email: string, 
-                public password: string,
-                public phonenumber: string,
-                public role: string,
-                public userid: string,
-                public status: string,
-                public owneridfordriver: string) {
+    constructor(public name: string = "", 
+                public email: string = "", 
+                public password: string = "",
+                public phonenumber: string = "",
+                public role: string = "",
+                public userid: string = "",
+                public status: string = "",
+                public owneridfordriver: string = "",
+                public licensefordriver: string = "",
+                public nationalidfordriver: string = "",
+                public token: string = localStorage.getItem("fcmtoken"),
+                public platform: string = localStorage.getItem("platform")) {
     }
   
   }
 
   export class AppTruck {
     
-      constructor(public type: string, 
-                  public capacity: string, 
-                  public regno: string,
+      constructor(public type: string = "", 
+                  public capacity: string = "", 
+                  public regno: string = "",
                   public photos: [string],
-                  public rating: string,
-                  public ownerid: string,
-                  public status: string,
-                  public truckid: string,
-                  public color: string,
-                  public modeldate: string,
-                  public trucktypeid: string) {
+                  public rating: string = "",
+                  public ownerid: string = "",
+                  public status: string = "",
+                  public truckid: string = "",
+                  public color: string = "",
+                  public modeldate: string = "",
+                  public trucktypeid: string = "") {
       }
     
     }
 
     export class AppTruckType {
       
-        constructor(public trucktypeid: string,
-                    public type: string,
-                    public truckdescription: string) {
+        constructor(public trucktypeid: string = "",
+                    public type: string = "",
+                    public truckdescription: string = "") {
         }
       
       }
 
     export class AppTrip {
       
-        constructor(public truckid: string, 
-                    public trucktype: string,
-                    public startlocation: string, 
-                    public endlocation: string,
-                    public status: string,
-                    public startdate: string,
-                    public comments: string,
-                    public tripid: string,
-                    public freight: string,
-                    public userid: string,
-                    public createddate: string,
-                    public rating: string,
-                    public ispredefined: string,
-                    public quotationidforpredefinedtrip: string,
-                    public customerremarks: string,
-                    public cost: string,
-                    public duration: string,
-                    public ownerid: string,) {
+        constructor(public truckid: string = "", 
+                    public trucktype: string = "",
+                    public startlocation: string = "", 
+                    public endlocation: string = "",
+                    public status: string = "",
+                    public startdate: string = "",
+                    public comments: string = "",
+                    public tripid: string = "",
+                    public freight: string = "",
+                    public userid: string = "",
+                    public createddate: string = "",
+                    public rating: string = "",
+                    public ispredefined: string = "",
+                    public quoteidforpretrip: string = "",
+                    public customerremarks: string = "",
+                    public cost: string = "",
+                    public duration: string = "",
+                    public ownerid: string = "") {
         }
       
       }
 
     export class AppQuotation {
       
-      constructor(public truck: string, 
-        public driver: string,
-        public duration: string,
-        public cost: string,
-        public status: string,
-        public starttime: string,
-        public closetime: string,
-        public additionalcharges: string,
-        public comments: string,
-        public appliedofferid: string,
-        public discount: string,
-        public quotationid: string,
-        public tripid: string,
-        public ownerid: string,
-        public ownername: string,
-        public truckid: string) {
+      constructor(public truck: string = "", 
+        public driver: string = "",
+        public duration: string = "",
+        public cost: string = "",
+        public status: string = "",
+        public starttime: string = "",
+        public closetime: string = "",
+        public additionalcharges: string = "",
+        public comments: string = "",
+        public appliedofferid: string = "",
+        public discount: string = "",
+        public quotationid: string = "",
+        public tripid: string = "",
+        public ownerid: string = "",
+        public ownername: string = "",
+        public truckid: string = "") {
 }
     }
     
     export class AppOffer {
 
-      constructor(public tripid: string,
-                  public message: string,
-                  public offerid: string,
-                  public truckid: string,
-                  public trucktype: string,
-                  public fromlocation: string,
-                  public tolocation: string,
-                  public price: string, 
-                  public discount: string, 
-                  public startdate: string, 
-                  public enddate: string,
-                  public status: string){
+      constructor(public tripid: string = "",
+                  public message: string = "",
+                  public offerid: string = "",
+                  public truckid: string = "",
+                  public trucktype: string = "",
+                  public fromlocation: string = "",
+                  public tolocation: string = "",
+                  public price: string = "", 
+                  public discount: string = "", 
+                  public startdate: string = "", 
+                  public enddate: string = "",
+                  public status: string = "",
+                  public userid: string = ""){
       }
     }
 

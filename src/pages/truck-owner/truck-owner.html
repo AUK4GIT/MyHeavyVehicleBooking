@@ -6,23 +6,30 @@
             </ion-toolbar>
         </ion-header>
         <ion-content>
-                <ion-card class="profile-card">
-                        <ion-item>
-                            <img src="assets/imgs/logo.png" class="custom-avatar" />
-                        </ion-item>
-                        <ion-card-content>
-                                <h2>Name: <b>{{user.name}}</b></h2>
-                                <h3>Phone No: <b>{{user.phonenumber}}</b></h3>
-                                <h3>Email: <b>{{user.email}}</b></h3>
-                        </ion-card-content>
-                </ion-card>
-            <ion-list>
-                <ion-item detail-push [class.activeHighlight]="checkActivated(1)" (click)="go_to_BookingsListPage()" menuClose>
-                    {{'BOOKINGS' | translate}}
+            <ion-card class="profile-card">
+                <ion-item>
+                    <img src="assets/imgs/logo.png" class="custom-avatar" />
                 </ion-item>
-                <ion-item detail-push [class.activeHighlight]="checkActivated(2)" (click)="go_to_TripsListPage()" menuClose>
+                <ion-card-content>
+                    <h2>Name:
+                        <b>{{user.name}}</b>
+                    </h2>
+                    <h3>Phone No:
+                        <b>{{user.phonenumber}}</b>
+                    </h3>
+                    <h3>Email:
+                        <b>{{user.email}}</b>
+                    </h3>
+                </ion-card-content>
+            </ion-card>
+            <ion-list>
+                <ion-item detail-push [class.activeHighlight]="checkActivated(1)" (click)="go_to_TripsListPage()" menuClose>
                     {{'TRIPS' | translate}}
                 </ion-item>
+                <ion-item detail-push [class.activeHighlight]="checkActivated(2)" (click)="go_to_BookingsListPage()" menuClose>
+                    {{'BOOKINGS' | translate}}
+                </ion-item>
+
                 <ion-item detail-push [class.activeHighlight]="checkActivated(3)" (click)="go_to_TrucksListPage()" menuClose>
                     {{'TRUCKS' | translate}}
                 </ion-item>

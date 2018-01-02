@@ -22,7 +22,7 @@ export class TruckOwnerPage {
   @ViewChild(Nav) nav: Nav;
 
   constructor(public appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
-    this.pageIndex = 1;
+    this.pageIndex = 2;
     this.user = this.appService.currentUser;    
   }
 
@@ -45,7 +45,7 @@ export class TruckOwnerPage {
   }
 
   go_to_TripsListPage(){
-    this.pageIndex = 2;
+    this.pageIndex = 1;
     this.nav.setRoot(OwnerTripsListPage);
   }
 
@@ -55,7 +55,7 @@ export class TruckOwnerPage {
   }
 
   go_to_BookingsListPage(){
-    this.pageIndex = 1;
+    this.pageIndex = 2;
     this.nav.setRoot(BookingsListPage);    
   }
 

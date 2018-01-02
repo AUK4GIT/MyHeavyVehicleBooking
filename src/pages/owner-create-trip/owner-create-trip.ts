@@ -31,7 +31,7 @@ export class OwnerCreateTripPage {
     this.mindate = this.getMinDate(day, month, year);
   }
   private getMinDate(day: number, month: number, year: number): string {
-    return year.toString() + "-" + month.toString() + "-" + day.toString();
+    return year.toString() + "-" + (month.toString().length==1 ? "0"+month.toString() : month.toString()) + "-" + (day.toString().length==1 ? "0"+day.toString() : day.toString());
   }
 
   ionViewDidLoad() {
@@ -62,7 +62,7 @@ export class OwnerCreateTripPage {
         createddate: this.mindate ? this.mindate : "",
         rating: "0",
         ispredefined: "true",
-        quotationidforpredefinedtrip: "",
+        quoteidforpretrip: "",
         cost:this.cost,
         duration:this.duration,
         ownerid:this.appService.currentUser.userid

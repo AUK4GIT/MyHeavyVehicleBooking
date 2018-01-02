@@ -86,6 +86,10 @@
 
     "ENDDATE" : "End Date",
     "DISCOUNT" : "Discount",
-    "PRICE" : "Price"
- 
+    "PRICE" : "Price",
+    "COST":"Cost",
+    "STARTTIME":"Start time",
+    "CLOSETIME":"Close time",
+    "DURATION":"Duration",
+    "TRUCK":"Truck"
 }

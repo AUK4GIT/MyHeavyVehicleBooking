@@ -27,13 +27,13 @@ export class CustomerBookPredfinedTripPage {
     this.mindate = this.getMinDate(day, month, year);
   }
   private getMinDate(day: number, month: number, year: number): string {
-    return year.toString() + "-" + month.toString() + "-" + day.toString();
+    return year.toString() + "-" + (month.toString().length==1 ? "0"+month.toString() : month.toString()) + "-" + (day.toString().length==1 ? "0"+day.toString() : day.toString());
   }
 
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CustomerBookPredfinedTripPage');
-    this.quotation = this.appService.getQuotationForId(this.trip.quotationidforpredefinedtrip);  
+    this.quotation = this.appService.getQuotationForId(this.trip.quoteidforpretrip);  
     this.owner = this.appService.getUserById(this.quotation.ownerid);
   }
 

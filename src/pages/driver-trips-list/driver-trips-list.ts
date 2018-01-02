@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
+import { AppModelServiceProvider, AppTrip, AppQuotation } from '../../providers/app-model-service/app-model-service'
 import { DriverTripDetailsPage } from '../driver-trip-details/driver-trip-details'
 
 @Component({
@@ -8,13 +8,13 @@ import { DriverTripDetailsPage } from '../driver-trip-details/driver-trip-detail
   templateUrl: 'driver-trips-list.html',
 })
 export class DriverTripsListPage {
-  items: AppTrip[];
+  items: AppQuotation[];
   constructor(private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DriverTripsListPage');
-    this.items = this.appService.getTrips();        
+    this.items = this.appService.getConfirmedTripsforDriverId(this.appService.currentUser.userid);        
   }
 
   showTripDetails(trip){

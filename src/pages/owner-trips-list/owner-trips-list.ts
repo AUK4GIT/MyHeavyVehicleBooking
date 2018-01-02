@@ -53,7 +53,7 @@ export class OwnerTripsListPage {
   }
 
   giveQuotationsForTrip(trip){
-        this.navCtrl.push(OwnerTripQuotationPage, { tripid: trip.tripid, trucktype: trip.trucktype});    
+        this.navCtrl.push(OwnerTripQuotationPage, { tripid: trip.tripid, trucktype: trip.trucktype, status:trip.status});    
   }
 
   updateSearch() {

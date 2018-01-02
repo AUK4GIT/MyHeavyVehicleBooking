@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Storage } from '@ionic/storage';
 import { AppModelServiceProvider } from '../../providers/app-model-service/app-model-service'
@@ -13,7 +13,8 @@ export class RegistrationPage {
 
   registrationForm;
   private serverError: String;
-  constructor(private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  private loading: any;
+  constructor(public loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
     this.serverError = "";
   }  
   
@@ -50,7 +51,7 @@ export class RegistrationPage {
       if(loginItem.username == "" || loginItem.password == "" || loginItem.phonenumber == "" || loginItem.email == "") {
         return;
       }
-
+      this.presentLoadingCustom();
       this.appService.registrationService({email: loginItem.email, password: loginItem.password, name: loginItem.username, phonenumber: loginItem.phonenumber, role: loginItem.role, status: "pending"},
         (response) => {
          if(response.result == 'success') {
@@ -59,8 +60,7 @@ export class RegistrationPage {
            this.serverError = response.error;
          }
      });
-      // this.storage.set('login', 'success');
-      // this.viewCtrl.dismiss({ result: 'success', userType: 'user' });
+     this.loading.dismiss();
     }
     
 
@@ -80,6 +80,18 @@ export class RegistrationPage {
         ]
       });
       alert.present();
+    }
+
+    presentLoadingCustom() {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
     }
 
 }

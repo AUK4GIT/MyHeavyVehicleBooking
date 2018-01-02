@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Offers</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list id="page-list1">
+    <ion-item-group *ngFor="let group of offerGroups;  let gindex = index">
+      <ion-item-divider color="light" text-capitalize>{{group.group}}</ion-item-divider>
+      <ion-item-sliding *ngFor="let item of group.list; let iindex = index">
+        <ion-item color="none" id="page-list-item10">
+          <ion-thumbnail item-left>
+            <img src="assets/imgs/logo_transparent.jpg" />
+          </ion-thumbnail>
+          <h2>
+            {{item.fromlocation}} - {{item.tolocation}}
+          </h2>
+          <h3>
+            {{item.message}}
+          </h3>
+          <h3>
+            Discount {{item.discount}} on truck type {{item.trucktype}}
+          </h3>
+          <h3>
+            {{item.startdate}} - {{item.enddate}}
+          </h3>
+          <h6 icon-end style="float: right; color: #bbb; font-size:1.2rem;">
+              Swipe left to see more options
+              <ion-icon name="arrow-round-back"></ion-icon>
+          </h6>
+        </ion-item>
+        <ion-item-options side="end">
+          <button ion-button color="danger" (click)="deleteItem(item, gindex, iindex)">
+            <ion-icon name="delete"></ion-icon>
+            Delete
+          </button>
+          <button *ngIf="group.group != 'approved'" ion-button color="primary" (click)="approveItem(item, gindex, iindex)">
+            <ion-icon name="approve"></ion-icon>
+            Approve
+          </button>
+          <button *ngIf="group.group != 'blocked'" ion-button color="secondary" (click)="rejectItem(item, gindex, iindex)">
+            <ion-icon name="block"></ion-icon>
+            Reject
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-item-group>
+  </ion-list>
+</ion-content>

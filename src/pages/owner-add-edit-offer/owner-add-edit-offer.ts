@@ -26,11 +26,11 @@ export class OwnerAddEditOfferPage {
     if(this.navParams.get("offer")) {
       this.offer = this.navParams.get("offer");
     } else {
-      this.offer = new AppOffer("","","","","","","","","","","","");
+      this.offer = new AppOffer("","","","","","","","","","","","","");
     }
   }
   private getMinDate(day: number, month: number, year: number): string {
-    return year.toString() + "-" + month.toString() + "-" + day.toString();
+    return year.toString() + "-" + (month.toString().length==1 ? "0"+month.toString() : month.toString()) + "-" + (day.toString().length==1 ? "0"+day.toString() : day.toString());
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad OwnerAddEditOfferPage');

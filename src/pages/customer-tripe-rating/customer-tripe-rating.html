@@ -1,0 +1,94 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Rate your Trip</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+
+<ion-content >
+
+    <ion-card>
+        <ion-card-header>
+          {{'TRIPDETAILS'|translate}}
+        </ion-card-header>
+        <ion-card-content>
+          <ion-card-title>
+              {{trip?.startlocation}} - {{trip?.endlocation}}
+          </ion-card-title>
+          <h4 >
+              {{ trip?.startdate }}
+          </h4>
+          <h5>
+              {{ trip?.freight }}  
+          </h5>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+          <ion-card-header>
+            {{'QUOTATIONDETAILS'|translate}}
+          </ion-card-header>
+          <ion-card-content>
+            <ion-card-title>
+                {{ quotation?.trucktype }}
+              </ion-card-title>
+            <h2><b>
+                {{ quotation?.cost }} SR
+                </b>
+            </h2>
+            <h4>
+                {{ quotation?.starttime }}
+            </h4>
+            <h5>
+                {{ quotation?.duration }} hrs
+            </h5>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+            <ion-card-header>
+              {{'OWNERDETAILS'|translate}}
+            </ion-card-header>
+            <ion-card-content>
+                <ion-card-title>
+                    {{owner?.name}}
+                  </ion-card-title>
+                    <h3>
+                      {{ owner?.email }}
+                    </h3>
+                    <h4>
+                        {{ owner?.phonenumber }}
+                    </h4>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card>
+              <ion-card-header>
+                {{'DRIVERDETAILS'|translate}}
+              </ion-card-header>
+              <ion-card-content>
+                <ion-card-title>
+                    {{driver?.name}}
+                  </ion-card-title>
+                    <h3>
+                      {{ driver?.email }}
+                    </h3>
+                    <h4>
+                        {{ driver?.phonenumber }}
+                    </h4>
+              </ion-card-content>
+            </ion-card>
+            <ion-row padding-top >
+                <ion-col text-center>
+                    <button (click)="rateTheTrip()" ion-button medium >{{ 'CONFIRMQUOTE' | translate }}</button>
+                </ion-col>
+            </ion-row>
+</ion-content>
+
+</ion-content>

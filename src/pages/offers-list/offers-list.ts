@@ -20,7 +20,7 @@ export class OffersListPage {
   }
 
   ionViewDidLoad() {
-    this.items = this.appService.getOffers();            
+    this.items = this.appService.getOffersByOwnerId(this.appService.currentUser.userid);            
     console.log('ionViewDidLoad OffersListPage');
   }
 

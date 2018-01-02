@@ -50,7 +50,7 @@
                   <h5>
                       {{ item.duration }}  hrs
                   </h5>
-                  <ion-icon style="color: #2f9610" item-end name="star-outline">{{item.status}}</ion-icon>
+                  <ion-icon *ngIf="isOfferAvailableForTrip(item)" style="color: #2f9610" item-end name="star-outline">{{getOfferMessage(item)}}</ion-icon>
                 </ion-item>
                 <!-- <ion-item-options side="end">
                     <button ion-button color="danger" (click)="deleteTrip(trip, gindex, iindex)">
@@ -84,7 +84,11 @@
                   <h5>
                       {{ item.freight }}  
                   </h5>
-                  <button ion-button outline item-end>{{item.status}}</button>              
+                  <button ion-button outline item-end>{{item.status}}</button>
+                  <h6 icon-end style="float: right; color: #bbb; font-size:1.2rem;">
+                        Swipe left to see more options
+                        <ion-icon name="arrow-round-back"></ion-icon>
+                    </h6>              
                 </ion-item>
                 <ion-item-options side="end">
                     <button ion-button color="danger" (click)="cancelCustomTrip(item)">

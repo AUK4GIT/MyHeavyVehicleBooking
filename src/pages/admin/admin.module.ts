@@ -7,6 +7,7 @@ import { TrucksListPage } from '../trucks-list/trucks-list';
 import { TruckOwnersListPage } from '../truck-owners-list/truck-owners-list';
 import { CustomersListPage } from '../customers-list/customers-list';
 import { TripsListPage } from '../trips-list/trips-list';
+import { AdminOffersListPage } from '../admin-offers-list/admin-offers-list';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { TripsListPage } from '../trips-list/trips-list';
     TrucksListPage,
     TruckOwnersListPage,
     CustomersListPage,
-    TripsListPage
+    TripsListPage,
+    AdminOffersListPage
   ],
   imports: [
     IonicPageModule.forChild(AdminPage),
@@ -26,7 +28,8 @@ import { TripsListPage } from '../trips-list/trips-list';
     TrucksListPage,
     TruckOwnersListPage,
     CustomersListPage,
-    TripsListPage
+    TripsListPage,
+    AdminOffersListPage
   ]
 })
 export class AdminPageModule {}

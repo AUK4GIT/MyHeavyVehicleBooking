@@ -7,6 +7,7 @@ import { TrucksListPage } from '../trucks-list/trucks-list';
 import { TruckOwnersListPage } from '../truck-owners-list/truck-owners-list';
 import { CustomersListPage } from '../customers-list/customers-list';
 import { TripsListPage } from '../trips-list/trips-list';
+import { AdminOffersListPage } from '../admin-offers-list/admin-offers-list';
 
 @IonicPage()
 @Component({
@@ -52,8 +53,13 @@ export class AdminPage {
     this.nav.setRoot(TripsListPage);
   }
 
-  logout_go_to_App(){
+  go_to_OfferslistPage(){
     this.pageIndex = 5;
+    this.nav.setRoot(AdminOffersListPage);
+  }
+
+  logout_go_to_App(){
+    this.pageIndex = 6;
     console.log("logout_go_to_App");
     this.events.publish('logout', 'logout');    
   }

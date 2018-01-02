@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { AppModelServiceProvider, AppTruck, AppTrip } from '../../providers/app-model-service/app-model-service'
+import { AppModelServiceProvider, AppTruck, AppTrip, AppOffer } from '../../providers/app-model-service/app-model-service'
 
 import { CustomerAddNewTripPage } from '../customer-add-new-trip/customer-add-new-trip';
 import { CustomerViewQuotationsPage } from '../customer-view-quotations/customer-view-quotations';
@@ -16,12 +16,23 @@ export class CustomerTripsListPage {
   segment: string;
   search: any;
   searchItems: AppTrip[];
+  offers: AppOffer[];
+  offerIds: string[];
 
   constructor(private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.segment = 'availabletrips';
     this.search = {
       query: ''
     };
+    var offers = JSON.parse(localStorage.getItem("offers"));
+    this.offers = [];
+    for(var i=0; i<offers.length; i++){
+      var offer = new AppOffer();
+      // this.offers.push(offer.copyInto(offers[i]));
+      this.offers.push(offers[i]);
+    }
+
+    this.offerIds = offers.map((value) => value.tripid);
   }
 
   ionViewDidEnter() {
@@ -31,6 +42,15 @@ export class CustomerTripsListPage {
     }  else {
       this.loadCustomTrips();      
     } 
+  }
+
+  isOfferAvailableForTrip(trip){
+    return (this.offerIds.indexOf(trip.tripid) != -1);
+  }
+
+  getOfferMessage(trip) {
+    var offers = this.offers.filter((item: AppOffer) => (item.tripid == trip.tripid));
+    return offers[0].discount+"% discount";
   }
 
   segmentChanged(event) {
