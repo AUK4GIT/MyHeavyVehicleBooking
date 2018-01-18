@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { Slides, App, PopoverController, NavParams, NavController, ModalController, Modal, Events } from 'ionic-angular';
+import { Slides, App, LoadingController, PopoverController, NavParams, NavController, ModalController, Modal, Events, AlertController } from 'ionic-angular';
 import { HomepopoverComponent } from '../../components/homepopover/homepopover';
-import { AppModelServiceProvider, AppTrip, AppTruckType, AppOffer } from '../../providers/app-model-service/app-model-service'
+import { AppModelServiceProvider, AppTrip, AppTruckType, AppOffer, AppCity } from '../../providers/app-model-service/app-model-service'
 import { Popover } from 'ionic-angular/components/popover/popover';
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
@@ -15,7 +15,7 @@ export class HomePage {
 
   segment: string;
   trucks : AppTruckType[];
-  cities: [any];
+  cities: AppCity[];
   bgclass: any;
   bgclasses: [string];
   maxdate : string;
@@ -28,10 +28,13 @@ export class HomePage {
   tempTrip: any;
   offers: AppOffer[];
   hideSlide: boolean;
+  private loading: any;
 
-  constructor(private appService: AppModelServiceProvider, public appCtrl: App, public events: Events, private popoverCtrl: PopoverController, public navCtrl: NavController, private modal: ModalController) {
+  constructor(public alertCtrl :AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public appCtrl: App, public events: Events, private popoverCtrl: PopoverController, public navCtrl: NavController, private modal: ModalController) {
     this.segment = 'aboutus';
     this.bgclasses = ["truckbgone", "truckbgtwo", "truckbgthree"];
+    this.cities = []; 
+
     // this.bgclass = this.bgclasses[0];
     this.bgclass = { 'truckbgone': true, 'truckbgtwo': false, 'truckbgthree': false };
     var i = 0;
@@ -54,15 +57,32 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad tabsparent');
-    this.trucks = this.appService.getTruckTypes(); 
-    this.cities = ["Riyadh", "Jeddah", "Mecca", "Medina", "Al-Ahsa", "Taif", "Dammam", "Buraidah", "Khobar", "Tabuk"]; 
-    this.offers = this.appService.getApprovedOffers();
-    if(this.offers && this.offers.length>0) {
-      localStorage.setItem("offers",JSON.stringify(this.offers));
-      this.hideSlide = false;
-    } else {
-      this.hideSlide = true;
-    }
+    this.presentLoadingCustom();
+    this.appService.getTruckTypesAndPlaces((resp) => {
+      this.dismissLoading();
+      if (resp.result == "failure") {
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        this.trucks = resp["data"]["trucktypes"];
+        this.appService.predefinedlistofplaces = resp["data"]["places"];
+      }
+    });  
+    this.appService.getApprovedOffers((resp)=>{
+      if(resp.result == "failure"){
+        console.log("resp.error");
+      } else {
+        this.offers = resp.data;
+        if(this.offers && this.offers.length>0) {
+          localStorage.setItem("offers",JSON.stringify(this.offers));
+          this.hideSlide = false;
+        } else {
+          localStorage.setItem("offers",JSON.stringify(this.offers));
+          this.hideSlide = true;
+        }
+      }
+      this.dismissLoading();
+    });
   }
 
   dismiss() {
@@ -85,7 +105,7 @@ export class HomePage {
         createddate: this.mindate,
         rating: "0",
         ispredefined: "false",
-        quoteidforpretrip: "",
+        qidpdefinedtrip: "",
         remarks: "",
         cost:"",
         duration:"",
@@ -132,13 +152,29 @@ export class HomePage {
 
   afterLogin(user) {
     this.appService.setCurrentUser(user);
-    if(Object.keys(this.tempTrip).length > 0){
+    if (Object.keys(this.tempTrip).length > 0 && user.role == "customer") {
       this.tempTrip["userid"] = user.userid;
-      this.appService.createTripWithCustomerid(this.tempTrip, ()=>{
-        this.tempTrip = {};
-        this.navigateToRolebasedModule(user.role);    
-      });
+      this.appService.customTripCreated = true;
+      localStorage.setItem("tripSearch","true");
+      localStorage.setItem("tripSearched",JSON.stringify(this.tempTrip));
+
+      this.navigateToRolebasedModule(user.role);
+      // this.presentLoadingCustom();
+      // this.appService.createTripWithCustomerid(this.tempTrip, (resp) => {
+      //   this.dismissLoading();
+      //   if (resp.result == "failure") {
+      //     console.log("resp.error");
+      //     this.presentAlert(resp.error, ["OK"], null);
+      //   } else if (resp["message"]) {
+      //     this.tempTrip = {};
+      //     this.navigateToRolebasedModule(user.role);
+      //   }
+      // });
     } else {
+      this.appService.customTripCreated = false;
+      localStorage.setItem("tripSearch","false");
+      localStorage.setItem("tripSearched",null);
+      this.navigateToRolebasedModule(user.role);
       console.log("Error afterLogin");
     }
   }
@@ -157,9 +193,17 @@ export class HomePage {
           this.presentAutoComplete(type)
         } else {
           if(type == 'pickup'){
-            this.pickupcity = _data;
+            if(_data == this.dropcity && _data != ""){
+              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+            } else {
+              this.pickupcity = _data;
+            }
           } else {
-            this.dropcity = _data;
+            if(_data == this.pickupcity && _data != ""){
+              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+            } else {
+              this.dropcity = _data;
+            }
           }
         }
       },
@@ -214,11 +258,56 @@ export class HomePage {
     loginModal.present();
     loginModal.onDidDismiss((data) => {
       if (data && data.result == 'success') {
-        this.afterLogin(data.user);
+        this.afterLogin(data.user[0]);
       } else {
         console.log("Login Failure: ", JSON.stringify(data));
       }
     });
     
   }
+
+  presentAlert(message, buttontexts, callback) {
+    var buttons = [];
+    var createCallback =  ( i ) => {
+      return () => {
+        if(callback) {
+          callback(i);
+        }
+      }
+    }
+    for(var i=0; i<buttontexts.length ; i++){
+      buttons.push({
+        text: buttontexts[i],
+        role: 'cancel',
+        handler: createCallback(i)
+      });
+    }
+    let alert = this.alertCtrl.create({
+      title: 'Rent a Truck',
+      message: message,
+      buttons: buttons
+    });
+    alert.present();
+  }
+
+  presentLoadingCustom() {
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
+  }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
 }

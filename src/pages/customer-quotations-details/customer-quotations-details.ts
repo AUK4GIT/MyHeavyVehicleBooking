@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip } from '../../providers/app-model-service/app-model-service';
 
 @Component({
@@ -12,15 +12,41 @@ export class CustomerQuotationsDetailsPage {
   trip: AppTrip;
   owner: AppUser;
   driver: AppUser;
-  constructor( private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  private loading: any;
+  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   this.quotation = this.navParams.get("quotation");
   this.trip = this.navParams.get("trip");  
   }
 
   ionViewDidEnter() {
+    this.presentLoadingCustom();
     console.log('ionViewDidLoad CustomerQuotationsDetailsPage');
-    this.owner = this.appService.getUserById(this.quotation.ownerid);
-    this.driver = this.appService.getUserById(this.quotation.driver);
+    // this.owner = this.appService.getUserById(this.quotation.ownerid);
+    // this.driver = this.appService.getUserById(this.quotation.driver);
+    this.appService.getUserById(this.quotation.ownerid, (resp)=>{
+      this.dismissLoading();
+      if(resp.result == "failure"){
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        if(resp["data"].length>0){
+          this.owner = resp["data"][0];
+        }
+      }
+    });
+    if (this.quotation.driver != "") {
+      this.appService.getUserById(this.quotation.driver, (resp) => {
+        this.dismissLoading();
+        if (resp.result == "failure") {
+          console.log("resp.error");
+          this.presentAlert(resp.error, ["OK"], null);
+        } else if (resp["data"]) {
+          if (resp["data"].length > 0) {
+            this.driver = resp["data"][0];
+          }
+        }
+      });
+    }
   }
 
   confirmQuote(){
@@ -28,8 +54,15 @@ export class CustomerQuotationsDetailsPage {
       this.presentAlert("You can book this trip once the owner accepts and the status is changed to confirmed.",["OK"],null);
       return;
     } 
-    this.appService.confirmQuotation(this.quotation.quotationid, ()=>{
-      this.presentConfirm();
+    this.presentLoadingCustom();
+    this.appService.confirmQuotation(this.quotation.quotationid, this.quotation.cost, this.quotation.duration, this.quotation.tripid, (resp)=>{
+      this.dismissLoading();
+      if(resp.result == "failure"){
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["message"]) {
+        this.presentConfirm();
+      }
     });
   }
 
@@ -74,5 +107,28 @@ export class CustomerQuotationsDetailsPage {
     });
     alert.present();
   }
+
+  presentLoadingCustom() {
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
+  }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
+
+
 
 }

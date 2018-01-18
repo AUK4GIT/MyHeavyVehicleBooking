@@ -1,39 +1,51 @@
 <ion-header>
   <ion-navbar>
-      <ion-buttons start>
-          <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-          </button>
-        </ion-buttons>
+    <ion-buttons start>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>
       {{'OFFERS' | translate}}
     </ion-title>
     <ion-buttons end>
-        <button ion-button (click)="createOffer()">
-          <ion-icon name="add" ></ion-icon>
-        </button>
-      </ion-buttons>
+      <button ion-button (click)="createOffer()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content  id="page1">
+<ion-content id="page1">
   <ion-list id="page-list1">
-    <ion-item (click)="editOffer(item)" color="none" id="page-list-item10" *ngFor="let item of items" >
-      <ion-thumbnail item-left>
-        <img src="assets/imgs/logo_transparent.jpg"/>
-      </ion-thumbnail>
-      <h2>
-        {{item.fromlocation}} - {{item.tolocation}}
-      </h2>
-      <h3>
+    <ion-item-sliding *ngFor="let item of items; let iindex = index">
+      <ion-item (click)="editOffer(item)" color="none" id="page-list-item10">
+        <ion-thumbnail item-left>
+          <img src="assets/imgs/logo_transparent.jpg" />
+          <!-- <div class="icon-tag" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
+        </ion-thumbnail>
+        <h2>
+          {{item.fromlocation}} - {{item.tolocation}}
+        </h2>
+        <h3>
           {{item.message}}
         </h3>
         <h3>
-            Discount {{item.discount}} on truck type {{item.trucktype}}
-          </h3>
-          <h3>
-              {{item.startdate}} - {{item.enddate}}
-            </h3>
-      <button ion-button outline item-end>{{item.status}}</button>
-    </ion-item>
+          Discount {{item.discount}} % on truck type {{item.trucktype}}
+        </h3>
+        <h3>
+          {{item.startdate}} - {{item.enddate}}
+        </h3>
+        <h6 icon-end style="float: right; color: #bbb; font-size:1.2rem;">
+          Swipe left to see more options
+          <ion-icon name="arrow-round-back"></ion-icon>
+        </h6>
+      </ion-item>
+      <ion-item-options side="end">
+        <button ion-button color="danger" (click)="deleteItem(item, iindex)">
+          <ion-icon name="delete"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

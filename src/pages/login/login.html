@@ -21,14 +21,14 @@
                 </ion-row>
                 <p>{{'LOGINHINT' | translate}}</p>
 
-                <button ion-button (click)="loginWithRole(1)">Admin Login</button>
+                <!-- <button ion-button (click)="loginWithRole(1)">Admin Login</button>
                 <button ion-button (click)="loginWithRole(2)">Owner Login</button>
                 <button ion-button (click)="loginWithRole(3)">Customer Login</button>
-                <button ion-button (click)="loginWithRole(4)">Driver Login</button>
+                <button ion-button (click)="loginWithRole(4)">Driver Login</button> -->
 
                 <ion-item item-start>
                   <ion-label floating>{{ 'EMAILID' | translate }}</ion-label>
-                  <ion-input (ionFocus)="focusFunction()" name="name" id="name" type="text" ngModel1 formControlName="username"></ion-input>
+                  <ion-input (ionFocus)="focusFunction()" name="email" id="email" type="email" ngModel1 formControlName="username"></ion-input>
                 </ion-item>
               
                 <ion-item item-start>

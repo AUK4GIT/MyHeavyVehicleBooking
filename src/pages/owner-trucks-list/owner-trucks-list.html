@@ -22,10 +22,12 @@
         <img src="assets/imgs/logo_transparent.jpg" />
       </ion-thumbnail>
       <h2>
-        {{item.type}}
+        {{item.trucktype}}
       </h2>
+      <h3>{{item.capacity}}</h3>
+      <p>{{item.regno}}</p>
       <button ion-button outline item-end>{{item.status}}</button>      
-      <p>{{item.capacity}}</p>
+      
       <!-- <rating [(ngModel)]="item.rating" readOnly="true" max="5"
         emptyStarIconName="star-outline"
         halfStarIconName="star-half"

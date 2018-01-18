@@ -46,7 +46,7 @@ export class AutoCompleteSearchPage {
     }
     let self = this;
     let config = {
-      types:  ['geocode'], // other types available in the API: 'establishment', 'regions', and 'cities'
+      types:  ['(cities)'], // other types available in the API: 'establishment', 'regions', and 'cities'
       input: this.autocomplete.query,
       componentRestrictions: {country: 'sa'}
     }

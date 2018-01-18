@@ -17,7 +17,7 @@
 </ion-header>
 <ion-content  id="page">
 
-    <ion-segment [(ngModel)]="segment" color="primary" (ionChange)="segmentChanged($event)">
+    <ion-segment padding-top [(ngModel)]="segment" color="primary" (ionChange)="segmentChanged($event)">
         <ion-segment-button value="availabletrips">
             {{ 'AVAILABLETRIPS' | translate }}
         </ion-segment-button>
@@ -59,6 +59,7 @@
                 <ion-item (click)="editTrip(item)" color="none" id="page-list-item" >
                   <ion-thumbnail item-left>
                     <img src="assets/imgs/logo_transparent.jpg"/>
+                    <!-- <div class="icon-road" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
                   </ion-thumbnail>
                   <h2><b>
                       {{item.startlocation}} - {{item.endlocation}}
@@ -81,7 +82,7 @@
                   </h6>
                 </ion-item>
                 <ion-item-options side="end">
-                    <button ion-button color="danger" (click)="deleteTrip(trip, gindex, iindex)">
+                    <button ion-button color="danger" (click)="deleteAvailableTrip(item)">
                       <ion-icon name="delete"></ion-icon>
                       Delete
                     </button>
@@ -98,6 +99,7 @@
                 <ion-item (click)="giveQuotationsForTrip(item)" color="none" id="page-list-item" >
                   <ion-thumbnail item-left>
                     <img src="assets/imgs/logo_transparent.jpg"/>
+                    <!-- <div class="icon-road" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
                   </ion-thumbnail>
                   <h2><b>
                       {{item.startlocation}} - {{item.endlocation}}

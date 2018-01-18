@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Modal, PopoverController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ModalController, Modal, PopoverController, AlertController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip, AppTruck, AppTruckType } from '../../providers/app-model-service/app-model-service'
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
@@ -20,8 +20,9 @@ export class OwnerCreateTripPage {
   trucks : AppTruckType[];
   cost: string;
   duration: string;
+  private loading: any;
 
-  constructor(private popoverCtrl: PopoverController, public modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public alertCtrl :AlertController, public loadingCtrl: LoadingController, private popoverCtrl: PopoverController, public modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -36,7 +37,18 @@ export class OwnerCreateTripPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad OwnerCreateTripPage');
-    this.trucks = this.appService.getTruckTypes(); 
+    // this.trucks = this.appService.getTruckTypes(); 
+    this.presentLoadingCustom(); 
+    this.appService.getTruckTypesAndPlaces((resp) => {
+      this.dismissLoading();
+      if (resp.result == "failure") {
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        this.trucks = resp["data"]["trucktypes"];
+        this.appService.predefinedlistofplaces = resp["data"]["places"];
+      }
+    });
   }
 
   createTrip() {
@@ -62,15 +74,25 @@ export class OwnerCreateTripPage {
         createddate: this.mindate ? this.mindate : "",
         rating: "0",
         ispredefined: "true",
-        quoteidforpretrip: "",
+        qidpdefinedtrip: "",
         cost:this.cost,
         duration:this.duration,
         ownerid:this.appService.currentUser.userid
       };
-      this.appService.createTripWithOwnerid(tempTrip);
-      this.navCtrl.pop();
+      this.presentLoadingCustom();
+      this.appService.createTripWithOwnerid(tempTrip, (resp)=>{
+        this.dismissLoading();
+        if (resp.result == "failure") {
+          console.log("resp.error");
+          this.presentAlert(resp.error, ["OK"], null);
+        } else if (resp["message"]) {
+          this.presentAlert("Trip created successfully.",["OK"],()=>{
+            this.navCtrl.pop();
+          });
+        }
+      });
     } else {
-
+      this.presentAlert("Please fill all the details.",["OK"],null);
     }      
   }
 
@@ -86,9 +108,17 @@ export class OwnerCreateTripPage {
           this.presentAutoComplete(type)
         } else {
           if(type == 'pickup'){
-            this.pickupcity = _data;
+            if(_data == this.dropcity && _data != ""){
+              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+            } else {
+              this.pickupcity = _data;
+            }
           } else {
-            this.dropcity = _data;
+            if(_data == this.pickupcity && _data != ""){
+              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+            } else {
+              this.dropcity = _data;
+            }
           }
         }
       },
@@ -115,5 +145,49 @@ export class OwnerCreateTripPage {
     });
     
   }
+
+  presentAlert(message, buttontexts, callback) {
+    var buttons = [];
+    var createCallback =  ( i ) => {
+      return () => {
+        if(callback) {
+          callback(i);
+        }
+      }
+    }
+    for(var i=0; i<buttontexts.length ; i++){
+      buttons.push({
+        text: buttontexts[i],
+        role: 'cancel',
+        handler: createCallback(i)
+      });
+    }
+    let alert = this.alertCtrl.create({
+      title: 'Rent a Truck',
+      message: message,
+      buttons: buttons
+    });
+    alert.present();
+  }
+  presentLoadingCustom() {
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
+  }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
 
 }

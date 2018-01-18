@@ -45,7 +45,7 @@
                 <ion-col col-12 col-sm>
                     <ion-item margin-top class="item-leave-height">
                         <ion-label stacked>{{'PICKUPCITY' | translate}}</ion-label>
-                        <ion-input placeholder="Search pickup location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
+                        <ion-input placeholder="Search pickup location" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
                         </ion-input>
                     </ion-item>
                 </ion-col>
@@ -53,7 +53,7 @@
 
                     <ion-item margin-top class="item-leave-height">
                         <ion-label stacked>{{'DROPCITY' | translate}}</ion-label>
-                        <ion-input placeholder="Search drop location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
+                        <ion-input placeholder="Search drop location" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
                         </ion-input>
                     </ion-item>
                 </ion-col>
@@ -82,10 +82,10 @@
     <ion-row *ngIf="!hideSlide">
         <ion-slides effect="slide" autoplay="3000" loop='true' pager="true" #slider>
             <ion-slide *ngFor="let offer of offers">
-                <h1>{{offer.message}}</h1>
-                <h2>Trip: {{offer.fromlocation}} - {{offer.tolocation}}</h2>
-                <h3>Discount %: {{offer.discount}}</h3>
-                <h4>Validity : {{offer.startdate}} - {{offer.enddate}}</h4>
+                <h3>{{offer.message}}</h3>
+                <h4>Trip: {{offer.fromlocation}} - {{offer.tolocation}}</h4>
+                <h5>Discount : {{offer.discount}} %</h5>
+                <h6>Validity : {{offer.startdate}} - {{offer.enddate}}</h6>
             </ion-slide>
         </ion-slides>
     </ion-row>

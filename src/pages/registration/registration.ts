@@ -57,12 +57,37 @@ export class RegistrationPage {
          if(response.result == 'success') {
           this.presentConfirm();
          } else {
-           this.serverError = response.error;
+          //  this.serverError = response.error;
+          this.presentAlert(response.error,["OK"],null);
          }
      });
-     this.loading.dismiss();
+     this.dismissLoading();
     }
     
+    presentAlert(message, buttontexts, callback) {
+      var buttons = [];
+      var createCallback =  ( i ) => {
+        return () => {
+          if(callback) {
+            callback(i);
+          }
+        }
+      }
+      for(var i=0; i<buttontexts.length ; i++){
+        buttons.push({
+          text: buttontexts[i],
+          role: 'cancel',
+          handler: createCallback(i)
+        });
+      }
+      let alert = this.alertCtrl.create({
+        title: 'Rent a Truck',
+        message: message,
+        buttons: buttons
+      });
+      alert.present();
+    }
+  
 
     presentConfirm() {
       let alert = this.alertCtrl.create({
@@ -83,15 +108,24 @@ export class RegistrationPage {
     }
 
     presentLoadingCustom() {
-      this.loading = this.loadingCtrl.create({
-        duration: 10000
-      });
-    
-      this.loading.onDidDismiss(() => {
-        console.log('Dismissed loading');
-      });
-    
-      this.loading.present();
+      if(!this.loading) {
+        this.loading = this.loadingCtrl.create({
+          duration: 10000
+        });
+      
+        this.loading.onDidDismiss(() => {
+          console.log('Dismissed loading');
+        });
+      
+        this.loading.present();
+      }
     }
+    
+    dismissLoading(){
+      if(this.loading){
+          this.loading.dismiss();
+          this.loading = null;
+      }
+  }
 
 }

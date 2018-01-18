@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTruck } from '../../providers/app-model-service/app-model-service'
 
 @Component({
@@ -8,16 +8,28 @@ import { AppModelServiceProvider, AppTruck } from '../../providers/app-model-ser
 })
 export class TrucksListPage {
   truckGroups: any[];
-  constructor(private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  trucks: any[];
+  private loading: any;
+  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidEnter() {
-    this.groupItems();
+    this.presentLoadingCustom();
+    this.appService.getTrucks((resp)=>{
+      if(resp.result == "failure"){
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        this.trucks = resp["data"];
+        this.groupItems();
+      }
+      this.dismissLoading();
+    })
+    
     }
 
   groupItems() {
-    var trucks = this.appService.getTrucks();  
-    this.truckGroups = this.appService.groupByreturningArray(trucks, "status", false);
+    this.truckGroups = this.appService.groupByreturningArray(this.trucks, "status", false);
   }
 
   deleteItem(item, gindex, iindex) {
@@ -82,4 +94,49 @@ export class TrucksListPage {
     });
     alert.present();
   }
+
+  presentAlert(message, buttontexts, callback) {
+    var buttons = [];
+    var createCallback =  ( i ) => {
+      return () => {
+        if(callback) {
+          callback(i);
+        }
+      }
+    }
+    for(var i=0; i<buttontexts.length ; i++){
+      buttons.push({
+        text: buttontexts[i],
+        role: 'cancel',
+        handler: createCallback(i)
+      });
+    }
+    let alert = this.alertCtrl.create({
+      title: 'Rent a Truck',
+      message: message,
+      buttons: buttons
+    });
+    alert.present();
+  }
+
+  presentLoadingCustom() {
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
+  }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
 }

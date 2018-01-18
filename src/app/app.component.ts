@@ -32,11 +32,11 @@ export class MyApp {
         localStorage.setItem("platform","android");
         console.log("running on Android device!: ANdroid");
     }
-    if (this.platform.is('ios')) {
+    else if (this.platform.is('ios')) {
       localStorage.setItem("platform","ios");
         console.log("running on iOS device!: iOS");
     }
-    if (this.platform.is('mobileweb')) {
+    else if (this.platform.is('mobileweb')) {
       localStorage.setItem("platform","mobileweb");
         console.log("running in a browser on mobile!: Mobileweb");
     } else {

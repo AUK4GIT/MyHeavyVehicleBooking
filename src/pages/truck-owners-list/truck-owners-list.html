@@ -11,13 +11,22 @@
     </ion-navbar>
   </ion-header>
   <ion-content id="page1">
+      <ion-row style="height: 35px;">
+          <ion-item icon-end> 
+            <div float-end (click)="sortData()">Sort by Date: 
+              <ion-icon *ngIf="sortIsAscending" float-end name="arrow-round-up"></ion-icon>
+              <ion-icon *ngIf="!sortIsAscending" float-end name="arrow-round-down"></ion-icon>
+            </div>
+          </ion-item>
+        </ion-row>
     <ion-list id="page-list1">
         <ion-item-group *ngFor="let group of userGroups;  let gindex = index" >
             <ion-item-divider color="light" text-capitalize>{{group.group}}</ion-item-divider> 
             <ion-item-sliding *ngFor="let owner of group.list; let iindex = index">       
-            <ion-item color="none" id="page-list-item10">
+            <ion-item color="none" id="page-list-item10" (click)="showTripsForUser(owner)">
               <ion-thumbnail item-left>
                 <img src="assets/imgs/logo_transparent.jpg" />
+                <!-- <div class="icon-user" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
               </ion-thumbnail>
               <h2><b>
                   {{owner.name}}
@@ -26,9 +35,12 @@
               <h3>
                 {{ owner.email }}
               </h3>
-              <h2>
+              <h4>
                   {{ owner.phonenumber }}
-                </h2>
+                </h4>
+              <h5>
+                  DOJ: {{ owner.timestamp | date : 'dd MMM yyyy' }}
+              </h5>
                 <h6 icon-end style="float: right; color: #bbb; font-size:1.2rem;">
                     Swipe left to see more options
                     <ion-icon name="arrow-round-back"></ion-icon>

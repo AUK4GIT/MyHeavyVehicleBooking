@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
 import { OwnerTripQuotationPage } from '../owner-trip-quotation/owner-trip-quotation';
 import { OwnerCreateTripPage } from '../owner-create-trip/owner-create-trip'
@@ -13,8 +13,9 @@ export class OwnerTripsListPage {
   segment: string;
   search: any;
   searchItems: AppTrip[];
+  private loading: any;
 
-  constructor(private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.segment = 'availabletrips';
     this.search = {
       query: ''
@@ -31,12 +32,30 @@ export class OwnerTripsListPage {
   }
 
   loadAvailableTrips() {
-    this.items = this.appService.getOwnerAvailableTrips(this.appService.currentUser.userid);            
-    this.searchItems = this.items;           
+    this.presentLoadingCustom();
+    this.appService.getOwnerAvailableTrips(this.appService.currentUser.userid, (resp) => {
+      this.dismissLoading();
+      if (resp.result == "failure") {
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        this.items = resp["data"];
+        this.searchItems = this.items;           
+      }
+    });
   }
 
   loadCustomTrips() {
-    this.items = this.appService.getCustomPendingTrips();            
+    this.presentLoadingCustom();
+    this.appService.getCustomPendingTrips((resp) => {
+      this.dismissLoading();
+      if (resp.result == "failure") {
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        this.items = resp["data"];
+      }
+    });            
   }
 
   segmentChanged(event) {
@@ -118,4 +137,25 @@ export class OwnerTripsListPage {
     });
     alert.present();
   }
+
+  presentLoadingCustom() {
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
+  }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
 }

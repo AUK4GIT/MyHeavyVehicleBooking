@@ -40,10 +40,22 @@
                   <ion-input (ionFocus)="focusFunction()" name="email" id="email" type="email" ngModel1 formControlName="email"></ion-input>
                 </ion-item>
 
-                <ion-item>
-                  <ion-label floating>{{'PHONENUMBER' | translate}}</ion-label>
-                  <ion-input (ionFocus)="focusFunction()" name="phonenumber" id="phonenumber" type="number" ngModel1 formControlName="phonenumber"></ion-input>
-                </ion-item>
+                <ion-row>
+                    <ion-col col-6>
+                        <ion-item>
+                          <ion-label floating>Country Code</ion-label>
+                          <ion-input type="tel" value="+966" readonly> </ion-input>
+                        </ion-item>
+                      </ion-col>
+                      <ion-col col-6>
+                        <ion-item>
+                          <ion-label floating>{{'PHONENUMBER' | translate}}</ion-label>
+                          <ion-input (ionFocus)="focusFunction()" name="phonenumber" id="phonenumber" type="tel" formControlName="phonenumber">  </ion-input>
+                        </ion-item>
+                      </ion-col>
+                  <!-- <ion-label floating>{{'PHONENUMBER' | translate}}</ion-label>
+                  <ion-input (ionFocus)="focusFunction()" name="phonenumber" id="phonenumber" type="tel" ngModel1 formControlName="phonenumber"></ion-input> -->
+                </ion-row>
 
                 <ion-item padding-top class="item-leave-height">
                   <ion-label>{{'ROLE' | translate}}</ion-label>

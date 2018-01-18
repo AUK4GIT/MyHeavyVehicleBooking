@@ -32,7 +32,7 @@
           <!-- <ion-select name="pickupcity" [(ngModel)]="pickupcity">
             <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
           </ion-select> -->
-          <ion-input placeholder="Search location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
+          <ion-input placeholder="Search location" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
           </ion-input>
         </ion-item>
 
@@ -45,7 +45,7 @@
           <!-- <ion-select name="dropcity" [(ngModel)]="dropcity">
             <ion-option value="{{city}}" *ngFor="let city of cities">{{ city }}</ion-option>
           </ion-select> -->
-          <ion-input placeholder="Search location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
+          <ion-input placeholder="Search location" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
           </ion-input>
         </ion-item>
 

@@ -57,7 +57,16 @@ export class LoginPage {
           text: 'Send',
           handler: data => {
             console.log('Saved clicked: '+data.EmailId);
-            this.appService.sendForgotPassword(data.EmailId);
+            this.presentLoadingCustom();
+            this.appService.sendForgotPassword(data.EmailId, (resp)=>{
+              this.dismissLoading();
+              if(resp.result == "failure"){
+                console.log("resp.error");
+                this.presentAlert(resp.error,["OK"],null);
+              } else {
+                this.presentAlert(resp.message,["OK"],null);
+              }
+            });
           }
         }
       ]
@@ -119,27 +128,52 @@ export class LoginPage {
         } else {
           this.serverError = response.error;
         }
-        this.loading.dismiss();
+        this.dismissLoading();
     });
-    //   // set a key/value
-    // this.storage.set('name', 'Max');
-  
-    // // Or to get a key/value pair
-    // this.storage.get('age').then((val) => {
-    //   console.log('Your age is', val);
-    // });
   }
 
   presentLoadingCustom() {
-    this.loading = this.loadingCtrl.create({
-      duration: 10000
-    });
-  
-    this.loading.onDidDismiss(() => {
-      console.log('Dismissed loading');
-    });
-  
-    this.loading.present();
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
   }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
 
+  presentAlert(message, buttontexts, callback) {
+    var buttons = [];
+    var createCallback =  ( i ) => {
+      return () => {
+        if(callback) {
+          callback(i);
+        }
+      }
+    }
+    for(var i=0; i<buttontexts.length ; i++){
+      buttons.push({
+        text: buttontexts[i],
+        role: 'cancel',
+        handler: createCallback(i)
+      });
+    }
+    let alert = this.alertCtrl.create({
+      title: 'Rent a Truck',
+      message: message,
+      buttons: buttons
+    });
+    alert.present();
+  }
 }

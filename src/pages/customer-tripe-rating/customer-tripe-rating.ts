@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip } from '../../providers/app-model-service/app-model-service';
 
 @Component({
@@ -12,19 +12,79 @@ export class CustomerTripeRatingPage {
   trip: AppTrip;
   owner: AppUser;
   driver: AppUser;
-  constructor( private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  private loading: any;
+
+  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.trip = this.navParams.get("trip");  
   }
 
   ionViewDidEnter() {
     console.log('ionViewDidLoad CustomerQuotationsDetailsPage');
-    this.quotation = this.appService.getConfirmedQuotationForTripId(this.trip.tripid);
-    this.owner = this.appService.getUserById(this.quotation.ownerid);
-    this.driver = this.appService.getUserById(this.quotation.driver);
+    this.presentLoadingCustom();
+    this.appService.getCompletedQuotationForTripId(this.trip.tripid, (resp)=>{   
+      this.dismissLoading();
+      if (resp.result == "failure") {
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        if(resp["data"].length > 0){
+         this.quotation = resp["data"][0];
+        }
+        this.getDriver();
+        this.getOwner();
+      }
+    });
+    // this.quotation = this.appService.getConfirmedQuotationForTripId(this.trip.tripid);
+    // this.owner = this.appService.getUserById(this.quotation.ownerid);
+    // this.driver = this.appService.getUserById(this.quotation.driver);
+  }
+
+  getOwner() {
+    this.presentLoadingCustom();
+    this.appService.getUserById(this.quotation.ownerid, (resp)=>{
+      this.dismissLoading();
+      if(resp.result == "failure"){
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        if(resp["data"].length > 0){
+          this.owner = resp["data"][0];
+        }
+      }
+    });
+  }
+
+  getDriver() {
+    this.presentLoadingCustom();
+    this.appService.getUserById(this.quotation.driver, (resp)=>{
+      this.dismissLoading();
+      if(resp.result == "failure"){
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        if(resp["data"].length > 0){
+          this.driver = resp["data"][0];
+        }
+      }
+    });
   }
 
   rateTheTrip(){
-    
+    // this.appService.submitRating();
+    if(this.trip.rating && this.trip.customerremarks && true){
+      this.presentLoadingCustom();
+      this.appService.submitRatingToCompletedTrip(this.trip,(resp)=>{
+        this.dismissLoading();
+      if(resp.result == "failure"){
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["message"]) {
+        this.presentAlert("Thank You for submitting the review.", ["OK"], ()=>{
+          this.navCtrl.pop();
+        });
+      }
+      });
+    }
   }
 
   presentAlert(message, buttontexts, callback) {
@@ -50,5 +110,26 @@ export class CustomerTripeRatingPage {
     });
     alert.present();
   }
+
+  presentLoadingCustom() {
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
+  }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
 
 }

@@ -11,7 +11,7 @@ export class PlacespickerComponent {
 
   itemSelected: any;
   callback: any;
-  places: String[];
+  places: any[];
 
   constructor(private appService: AppModelServiceProvider, private viewCtrl: ViewController, private navParams: NavParams) {
     console.log('Hello PlacespickerComponent Component');

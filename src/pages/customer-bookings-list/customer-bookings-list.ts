@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service';
 import { CustomerTripeRatingPage } from '../customer-tripe-rating/customer-tripe-rating'
 
@@ -9,11 +9,22 @@ import { CustomerTripeRatingPage } from '../customer-tripe-rating/customer-tripe
 })
 export class CustomerBookingsListPage {
   items: AppTrip[];
-  constructor(private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  private loading: any;
+  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    this.items = this.appService.getRequestedTripsForUserId(this.appService.currentUser.userid);        
+    this.presentLoadingCustom();
+    this.appService.getRequestedTripsForUserId(this.appService.currentUser.userid, (resp) => {
+
+      this.dismissLoading();
+      if (resp.result == "failure") {
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        this.items = resp["data"];
+      }
+    });        
     console.log('ionViewDidLoad CustomerBookingsListPage');
   }
 
@@ -48,4 +59,25 @@ export class CustomerBookingsListPage {
     });
     alert.present();
   }
+
+  presentLoadingCustom() {
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
+  }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
 }

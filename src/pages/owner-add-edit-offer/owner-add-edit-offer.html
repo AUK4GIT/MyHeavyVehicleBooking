@@ -13,6 +13,28 @@
 
         <ion-row>
     
+            <ion-col col-12 col-sm>
+              <ion-item margin-top class="item-leave-height">
+                <ion-label>Trip</ion-label>
+                <ion-select *ngIf="!isEdit" name="trip" [(ngModel)]="selectedTripId" (ionChange)="tripSelected($event)">
+                  <ion-option value="{{trip.tripid}}" *ngFor="let trip of trips">{{ trip.startlocation }} - {{ trip.endlocation}}</ion-option>
+                </ion-select>
+                <ion-input *ngIf="isEdit" placeholder="trip" [readonly]=true name="trip" [(ngModel)]="tripDetails"></ion-input>
+              </ion-item>
+            </ion-col>
+
+            <ion-col col-12 col-sm>
+                <ion-item margin-top class="item-leave-height">
+                  <ion-label>{{'TRUCKTYPE' | translate}}</ion-label>
+                  <ion-input placeholder="truck" [readonly]=true name="truck" [(ngModel)]="offer.trucktype">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+            
+          </ion-row>
+
+        <!-- <ion-row>
+    
           <ion-col>
             <ion-item margin-top class="item-leave-height">
               <ion-label>{{'TRUCKTYPE' | translate}}</ion-label>
@@ -22,7 +44,7 @@
             </ion-item>
           </ion-col>
     
-        </ion-row>
+        </ion-row> -->
     
         <ion-row>
     
@@ -31,7 +53,7 @@
             <ion-item margin-top class="item-leave-height">
               <ion-label>{{'PICKUPCITY' | translate}}</ion-label>
 
-              <ion-input placeholder="Search location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="offer.fromlocation">
+              <ion-input placeholder="Search location" [readonly]=true name="pickupcity" [(ngModel)]="offer.fromlocation">
               </ion-input>
             </ion-item>
     
@@ -41,7 +63,7 @@
     
             <ion-item margin-top class="item-leave-height">
               <ion-label>{{'DROPCITY' | translate}}</ion-label>
-              <ion-input placeholder="Search location" [readonly]=true (focus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="offer.tolocation">
+              <ion-input placeholder="Search location" [readonly]=true name="dropcity" [(ngModel)]="offer.tolocation">
               </ion-input>
             </ion-item>
     
@@ -54,7 +76,7 @@
       
                 <ion-item margin-top class="item-leave-height">
                   <ion-label>{{'PRICE' | translate}}</ion-label>
-                  <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="price" name="price" id="price" type="number" [(ngModel)]="offer.price"></ion-input>
+                  <ion-input class="currency" [readonly]=true placeholder="price" name="price" id="price" type="number" [(ngModel)]="offer.price"></ion-input>
                 </ion-item>
               </ion-col>
               <ion-col col-12 col-sm>
@@ -88,9 +110,19 @@
           </ion-row>
           
           <ion-row padding-top>
-            <ion-col text-center>
-              <button (click)="updateOffer()" ion-button medium>{{ 'ADDOFFER' | translate }}</button>
-            </ion-col>
+
+            <ion-col col-12 col-sm>
+                <ion-item margin-top class="item-leave-height">
+                  <ion-label>Description</ion-label>
+                  <ion-input class="message" (ionFocus)="focusFunction()" placeholder="description" name="message" id="message" type="text" [(ngModel)]="offer.message"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col  col-12 col-sm text-center>
+                  <button *ngIf="!isEdit" (click)="addorUpdateOffer()" ion-button medium>{{ 'ADDOFFER' | translate }}</button>
+                  <button *ngIf="isEdit" (click)="addorUpdateOffer()" ion-button medium>Update Offer</button>
+                </ion-col>
+
           </ion-row>
       </ion-grid>
 </ion-content>

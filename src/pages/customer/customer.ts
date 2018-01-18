@@ -20,7 +20,7 @@ export class CustomerPage {
 
   constructor(private appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
     this.pageIndex = 1;
-    this.user = this.appService.currentUser;    
+    this.user = this.appService.currentUser;  
   }
 
   checkActivated(page) {

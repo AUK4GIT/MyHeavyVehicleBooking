@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppUser } from '../../providers/app-model-service/app-model-service'
+import { AdminCustomerTripsListPage } from '../admin-customer-trips-list/admin-customer-trips-list'
 
 @Component({
   selector: 'page-customers-list',
@@ -8,17 +9,71 @@ import { AppModelServiceProvider, AppUser } from '../../providers/app-model-serv
 })
 export class CustomersListPage {
   userGroups: any[];
-  constructor(private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  users: any[];
+  private loading: any;
+  sortIsAscending: boolean;
+  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    this.sortIsAscending = true;
   }
 
   ionViewDidEnter() {
-    this.groupItems();
+    this.presentLoadingCustom();
+    this.appService.getUsersByRole("customer",(resp)=>{
+      this.dismissLoading();
+      if(resp.result == "failure"){
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        var usrs = resp["data"];
+        // Split timestamp into [ Y, M, D, h, m, s ]
+        usrs = usrs.map((value) => {
+          var t = value.timestamp.split(/[- :]/);
+          // Apply each element to the Date function
+          var d = new Date(Date.UTC(t[0], t[1] - 1, t[2]));
+          // value.timestamp = d.toISOString();
+          value.timestamp = d;
+          return value;
+        });
+
+        this.users = usrs;
+        this.groupItems();
+      }
+    })
     console.log('ionViewDidLoad CustomersListPage');
   }
 
+  showTripsForUser(user) {
+    this.navCtrl.push(AdminCustomerTripsListPage, {user: user});
+  }
+
+  sortData(){
+    if(this.sortIsAscending == true){
+      
+      this.userGroups.forEach(function (group) {
+        group.list.sort((a, b) =>
+          a.timestamp-b.timestamp
+        );
+      });
+
+    } else {
+      
+      this.userGroups.forEach(function (group) {
+        group.list.sort((a, b) =>
+          b.timestamp-a.timestamp
+        );
+      });
+
+    }
+    this.sortIsAscending = !this.sortIsAscending;
+  }
+
   groupItems() {
-    var users = this.appService.getUsersByRole("customer");  
-    this.userGroups = this.appService.groupByreturningArray(users, "status", false);
+    this.userGroups = this.appService.groupByreturningArray(this.users, "status", false);
+    this.userGroups.forEach(function (group) {
+      group.list.sort((a, b) =>
+        b.timestamp-a.timestamp
+      );
+    });
   }
 
   deleteItem(item, gindex, iindex) {
@@ -83,4 +138,48 @@ export class CustomersListPage {
       alert.present();
     }
 
+    presentAlert(message, buttontexts, callback) {
+      var buttons = [];
+      var createCallback =  ( i ) => {
+        return () => {
+          if(callback) {
+            callback(i);
+          }
+        }
+      }
+      for(var i=0; i<buttontexts.length ; i++){
+        buttons.push({
+          text: buttontexts[i],
+          role: 'cancel',
+          handler: createCallback(i)
+        });
+      }
+      let alert = this.alertCtrl.create({
+        title: 'Rent a Truck',
+        message: message,
+        buttons: buttons
+      });
+      alert.present();
+    }
+  
+    presentLoadingCustom() {
+      if(!this.loading) {
+        this.loading = this.loadingCtrl.create({
+          duration: 10000
+        });
+      
+        this.loading.onDidDismiss(() => {
+          console.log('Dismissed loading');
+        });
+      
+        this.loading.present();
+      }
+    }
+    
+    dismissLoading(){
+      if(this.loading){
+          this.loading.dismiss();
+          this.loading = null;
+      }
+  }
 }

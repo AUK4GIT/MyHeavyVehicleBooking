@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Trips</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeTripSearch()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <h5 style="white-space: normal; word-wrap: break-word; color: #555;">Your search for the trip returned the following available list. You can select any trip suitable based on the trucks or
+    skip the selection by closing this and proceed to create a new trip and wait for quotations from multiple vendors.</h5>
+  <ion-list id="page-list2">
+    <ion-item *ngFor="let item of items" (click)="selectPredefinedTrip(item)" color="none" id="page-list-item">
+      <ion-thumbnail item-left>
+        <img src="assets/imgs/logo_transparent.jpg" />
+      </ion-thumbnail>
+      <h2>
+        <b>
+          {{item.startlocation}} - {{item.endlocation}}
+        </b>
+      </h2>
+      <h3>
+        {{ item.trucktype }}
+      </h3>
+      <h4>
+        {{ item.cost }} SR
+      </h4>
+      <h5>
+        {{ item.duration }} hrs
+      </h5>
+    </ion-item>
+  </ion-list>
+</ion-content>

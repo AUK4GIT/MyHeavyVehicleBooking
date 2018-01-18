@@ -55,7 +55,7 @@
             <ion-item margin-top class="item-leave-height">
               <ion-label>{{'TRUCK' | translate}}</ion-label>
               <ion-select name="driver" [(ngModel)]="truckid">
-              <ion-option value="{{truck.truckid}}" *ngFor="let truck of trucks">{{ truck.type }}</ion-option>
+              <ion-option value="{{truck.truckid}}" *ngFor="let truck of trucks">{{ truck.trucktype }}</ion-option>
                 </ion-select>
             </ion-item>
           </ion-col>
@@ -78,7 +78,7 @@
 
     <ion-row padding-top>
       <ion-col text-center>
-        <button (click)="addQuote()" ion-button medium>{{ 'ADDQUOTE' | translate }}</button>
+        <button (click)="addQuote()" ion-button medium>{{ buttontitle }}</button>
       </ion-col>
     </ion-row>
   </ion-grid>

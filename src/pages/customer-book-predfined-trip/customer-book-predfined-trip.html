@@ -75,22 +75,22 @@
             </ion-card-content>
           </ion-card>
 
-          <!-- <ion-card>
+          <ion-card *ngIf="offer">
               <ion-card-header>
-                {{'DRIVERDETAILS'|translate}}
+                Offer
               </ion-card-header>
               <ion-card-content>
                 <ion-card-title>
-                    {{driver?.name}}
+                    {{offer?.message}}
                   </ion-card-title>
                     <h3>
-                      {{ driver?.email }}
+                      Discount: {{ offer?.discount }} %
                     </h3>
                     <h4>
-                        {{ driver?.phonenumber }}
+                      Validity: {{ offer?.startdate }} - {{ offer?.enddate }}
                     </h4>
               </ion-card-content>
-            </ion-card> -->
+            </ion-card>
             <ion-row padding-top >
                 <ion-col text-center>
                     <button (click)="bookTrip()" ion-button medium >{{ 'BOOK' | translate }}</button>

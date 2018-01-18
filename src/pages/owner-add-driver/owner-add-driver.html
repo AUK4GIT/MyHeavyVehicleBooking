@@ -25,9 +25,33 @@
       </ion-item>
 
       <ion-item>
+          <ion-label floating>{{'LICENSE' | translate}}</ion-label>
+          <ion-input [(ngModel)]="license" (ionFocus)="focusFunction()" name="license" id="license" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>{{'NATIONALID' | translate}}</ion-label>
+            <ion-input [(ngModel)]="nationalid" (ionFocus)="focusFunction()" name="nationalid" id="nationalid" type="text"></ion-input>
+          </ion-item>
+
+      <ion-row>
+          <ion-col col-6>
+              <ion-item>
+                <ion-label floating>Country Code</ion-label>
+                <ion-input type="tel" value="+966" readonly> </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-6>
+              <ion-item>
+                <ion-label floating>{{'PHONENUMBER' | translate}}</ion-label>
+                <ion-input (ionFocus)="focusFunction()" name="phonenumber" id="phonenumber" type="tel" [(ngModel)]="phonenumber">  </ion-input>
+              </ion-item>
+            </ion-col>
+      </ion-row>
+      <!-- <ion-item>
         <ion-label floating>{{'PHONENUMBER' | translate}}</ion-label>
-        <ion-input [(ngModel)]="phonenumber" (ionFocus)="focusFunction()" name="phonenumber" id="phonenumber" type="number"></ion-input>
-      </ion-item>
+        <ion-input [(ngModel)]="phonenumber" (ionFocus)="focusFunction()" name="phonenumber" id="phonenumber" type="tel"></ion-input>
+      </ion-item> -->
 
       <div padding>
           <button block ion-button type="button" (click)="addDriver()">{{'ADDDRIVER' | translate }}</button>                  

@@ -13,7 +13,7 @@ $app-direction: ltr;
 
 
 @import "ionic.globals";
-
+@import "ionicons";
 
 // Shared Variables
 // --------------------------------------------------
@@ -48,6 +48,7 @@ $app-direction: multi;
 $toolbar-ios-background: #2f9610;
 $button-ios-background-color: #2f9610;
 $item-ios-detail-push-show: true;
+$content-ios-padding: 8px; 
 
 
 // App Material Design Variables
@@ -56,7 +57,7 @@ $item-ios-detail-push-show: true;
 $toolbar-md-background: #2f9610;
 $button-md-background-color: #2f9610;
 $item-md-detail-push-show: true;
-
+$content-md-padding: 8px;
 
 
 // App Windows Variables
@@ -65,7 +66,7 @@ $item-md-detail-push-show: true;
 $toolbar-wp-background: #2f9610;
 $button-wp-background-color: #2f9610;
 $item-wp-detail-push-show: true;
-
+$content-wp-padding: 16px;
 
 
 // App Theme
@@ -84,7 +85,7 @@ $item-wp-detail-push-show: true;
 // http://ionicframework.com/docs/ionicons/
 
 @import "ionic.ionicons";
-
+//  @import "ionicons";
 
 // Fonts
 // --------------------------------------------------

@@ -91,5 +91,10 @@
     "STARTTIME":"Start time",
     "CLOSETIME":"Close time",
     "DURATION":"Duration",
-    "TRUCK":"Truck"
+    "TRUCK":"Truck",
+    "LICENSE" : "License number",
+    "NATIONALID" : "National Id",
+    "ADDITIONALCHARGES": "Additional charges",
+    "CITIES" : "Cities",
+    "TRUCKTYPES" : "Truck Types"
 }

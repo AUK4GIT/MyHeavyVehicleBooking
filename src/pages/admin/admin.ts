@@ -8,6 +8,9 @@ import { TruckOwnersListPage } from '../truck-owners-list/truck-owners-list';
 import { CustomersListPage } from '../customers-list/customers-list';
 import { TripsListPage } from '../trips-list/trips-list';
 import { AdminOffersListPage } from '../admin-offers-list/admin-offers-list';
+import { AdminDriversListPage } from '../admin-drivers-list/admin-drivers-list';
+import { CitiesPage } from '../cities/cities';
+import { TruckTypesPage } from '../truck-types/truck-types';
 
 @IonicPage()
 @Component({
@@ -57,9 +60,22 @@ export class AdminPage {
     this.pageIndex = 5;
     this.nav.setRoot(AdminOffersListPage);
   }
+  go_to_DriverslistPage(){
+    this.pageIndex = 6;
+    this.nav.setRoot(AdminDriversListPage);
+  }
+
+  go_to_Cities(){
+    this.pageIndex = 7;
+    this.nav.setRoot(CitiesPage);
+  }
+  go_to_TruckTypes(){
+    this.pageIndex = 8;
+    this.nav.setRoot(TruckTypesPage);
+  }
 
   logout_go_to_App(){
-    this.pageIndex = 6;
+    this.pageIndex = 9;
     console.log("logout_go_to_App");
     this.events.publish('logout', 'logout');    
   }

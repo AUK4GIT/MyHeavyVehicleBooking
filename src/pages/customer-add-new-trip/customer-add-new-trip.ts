@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,  ModalController, Modal, Events, PopoverController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ModalController, Modal, Events, PopoverController, AlertController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip, AppTruck, AppTruckType } from '../../providers/app-model-service/app-model-service'
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
@@ -20,8 +20,10 @@ export class CustomerAddNewTripPage {
   tempTrip: any;
   trucks : AppTruckType[];
   cities: [any];
+  private loading: any;
+  searchTrip: any;
 
-  constructor(private alertCtrl: AlertController, private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -30,6 +32,14 @@ export class CustomerAddNewTripPage {
     this.maxdate = c.getFullYear().toString();
     this.mindate = this.getMinDate(day, month, year);
     this.tempTrip = {};
+
+    this.searchTrip = this.navParams.get("trip");
+    if(this.searchTrip != null){
+      this.dropcity = this.searchTrip.endlocation;
+      this.pickupcity = this.searchTrip.startlocation;
+      this.frieght = this.searchTrip.freight;
+      this.startdate = this.searchTrip.startdate;
+    }
   }
 
   private getMinDate(day: number, month: number, year: number): string {
@@ -38,7 +48,22 @@ export class CustomerAddNewTripPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CustomerAddNewTripPage');
-    this.trucks = this.appService.getTruckTypes(); 
+    this.presentLoadingCustom();
+    this.appService.getTruckTypes((resp) => {
+      this.dismissLoading();
+      if (resp.result == "failure") {
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        this.trucks = resp["data"];
+        if(this.searchTrip){
+          let trucks = this.trucks.filter((truck: any) => (truck.trucktypeid == this.searchTrip.truckid));
+          if(trucks.length>0) {
+            this.truckid = trucks[0].trucktypeid;
+          }
+        }
+      }
+    }); 
     this.cities = ["Riyadh", "Jeddah", "Mecca", "Medina", "Al-Ahsa", "Taif", "Dammam", "Buraidah", "Khobar", "Tabuk"]; 
   }
 
@@ -59,17 +84,23 @@ export class CustomerAddNewTripPage {
         createddate: this.mindate,
         rating: "0",
         ispredefined: "false",
-        quoteidforpretrip: "",
+        qidpdefinedtrip: "",
         remarks: "",
         cost:"",
         duration:"",
         ownerid:""
       };
-        this.appService.createTripWithCustomerid(this.tempTrip, ()=>{
-          this.presentAlert("Trip created successfully. Wait for the quotations from the Truck providers.",["OK"],()=>{
-            this.navCtrl.pop();
-            this.tempTrip = {};
-          });
+        this.appService.createTripWithCustomerid(this.tempTrip, (resp)=>{
+          this.dismissLoading();
+          if (resp.result == "failure") {
+            console.log("resp.error");
+            this.presentAlert(resp.error, ["OK"], null);
+          } else if (resp["message"]) {
+            this.presentAlert("Trip created successfully. Wait for the quotations from the Truck providers.",["OK"],()=>{
+              this.navCtrl.pop();
+              this.tempTrip = {};
+            });
+          }
         });
         // this.tempTrip = {};  
     }
@@ -77,6 +108,27 @@ export class CustomerAddNewTripPage {
 
   focusFunction() {
   }
+
+  presentLoadingCustom() {
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
+  }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
 
   presentAlert(message, buttontexts, callback) {
     var buttons = [];
@@ -110,9 +162,17 @@ export class CustomerAddNewTripPage {
           this.presentAutoComplete(type)
         } else {
           if(type == 'pickup'){
-            this.pickupcity = _data;
+            if(_data == this.dropcity && _data != ""){
+              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+            } else {
+              this.pickupcity = _data;
+            }
           } else {
-            this.dropcity = _data;
+            if(_data == this.pickupcity && _data != ""){
+              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+            } else {
+              this.dropcity = _data;
+            }
           }
         }
       },

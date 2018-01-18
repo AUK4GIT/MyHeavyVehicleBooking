@@ -37,7 +37,16 @@
                 <ion-item detail-push [class.activeHighlight]="checkActivated(5)" (click)="go_to_OfferslistPage()" menuClose>
                     {{'OFFERS' | translate}}
                 </ion-item>
-                <ion-item detail-push [class.activeHighlight]="checkActivated(6)" (click)="logout_go_to_App()" menuClose>
+                <ion-item detail-push [class.activeHighlight]="checkActivated(6)" (click)="go_to_DriverslistPage()" menuClose>
+                    {{'DRIVER' | translate}}
+                </ion-item>
+                <ion-item detail-push [class.activeHighlight]="checkActivated(7)" (click)="go_to_Cities()" menuClose>
+                    {{'CITIES' | translate}}
+                </ion-item>
+                <ion-item detail-push [class.activeHighlight]="checkActivated(8)" (click)="go_to_TruckTypes()" menuClose>
+                    {{'TRUCKTYPES' | translate}}
+                </ion-item>
+                <ion-item detail-push [class.activeHighlight]="checkActivated(9)" (click)="logout_go_to_App()" menuClose>
                     {{'LOGOUT' | translate}}
                 </ion-item>
             </ion-list>

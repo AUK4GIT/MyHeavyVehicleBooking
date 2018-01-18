@@ -4,7 +4,7 @@
         <ion-radio value="others"></ion-radio>
       </ion-item>  
   <ion-item *ngFor="let place of places">
-      <ion-label>{{place}} </ion-label>
-      <ion-radio value="{{place}}"></ion-radio>
+      <ion-label>{{place.name}} </ion-label>
+      <ion-radio value="{{place.name}}"></ion-radio>
     </ion-item>
   </ion-list>

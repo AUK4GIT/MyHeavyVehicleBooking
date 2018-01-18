@@ -14,6 +14,7 @@ import { OwnerAddDriverPage } from '../owner-add-driver/owner-add-driver';
 import { OwnerAddTruckPage } from '../owner-add-truck/owner-add-truck';
 import { OwnerCreateTripPage } from '../owner-create-trip/owner-create-trip'
 import { OwnerAddEditOfferPage } from '../owner-add-edit-offer/owner-add-edit-offer'
+import { ImagePicker } from '@ionic-native/image-picker';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { OwnerAddEditOfferPage } from '../owner-add-edit-offer/owner-add-edit-of
     OwnerAddTruckPage,
     OwnerCreateTripPage,
     OwnerAddEditOfferPage
-  ]
+  ],
+  providers: [ImagePicker]
 })
 export class TruckOwnerPageModule {}

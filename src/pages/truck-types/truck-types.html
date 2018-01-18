@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+      <ion-buttons start>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+        </ion-buttons>
+    <ion-title>
+      Truck Types
+    </ion-title>
+    <ion-buttons end>
+        <button ion-button (click)="addNewTruckType()">
+          <ion-icon name="add" ></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content  id="page1">
+    <ion-list id="page-list1">
+      <ion-item-sliding  *ngFor="let item of items; let index = index;">
+      <ion-item id="page-list-item10">
+        <ion-thumbnail item-left>
+          <img src="assets/imgs/logo_transparent.jpg"/>
+          <!-- <div class="icon-truck-1" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
+        </ion-thumbnail>
+        <h2><b>
+            {{item.type}}
+            </b>
+        </h2>
+        <h3>
+          {{ item.truckdescription }}
+        </h3>
+        <h6 icon-end style="float: right; color: #bbb; font-size:1.2rem;">
+          Swipe left to see more options
+          <ion-icon name="arrow-round-back"></ion-icon>
+      </h6>
+      </ion-item>
+      <ion-item-options side="end">
+        <button ion-button color="danger" (click)="deleteItem(item, index)">
+          <ion-icon name="delete"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+    </ion-list>
+  </ion-content>

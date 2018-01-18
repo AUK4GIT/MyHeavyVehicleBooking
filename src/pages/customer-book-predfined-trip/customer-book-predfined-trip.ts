@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip } from '../../providers/app-model-service/app-model-service';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip, AppOffer } from '../../providers/app-model-service/app-model-service';
 
 
 @Component({
@@ -15,9 +15,12 @@ export class CustomerBookPredfinedTripPage {
   // driver: AppUser;
   maxdate : string;
   mindate : string;
+  private loading: any;
+  offer: AppOffer;
 
-  constructor(private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
-    this.trip = this.navParams.get("trip");  
+  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    this.trip = this.navParams.get("trip"); 
+    this.offer = this.navParams.get("offer"); 
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -33,15 +36,47 @@ export class CustomerBookPredfinedTripPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CustomerBookPredfinedTripPage');
-    this.quotation = this.appService.getQuotationForId(this.trip.quoteidforpretrip);  
-    this.owner = this.appService.getUserById(this.quotation.ownerid);
+    this.presentLoadingCustom();
+    this.appService.getQuotationForId(this.trip.qidpdefinedtrip, (resp) => {
+      this.dismissLoading();
+      if (resp.result == "failure") {
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        this.quotation = resp["data"][0];
+        this.getOwnerDetailsForQuotationId(this.quotation.ownerid);
+      }
+    });  
+  }
+
+  getOwnerDetailsForQuotationId(qid){
+    this.presentLoadingCustom();
+    this.appService.getUserById(qid, (resp)=>{
+      this.dismissLoading();
+      if(resp.result == "failure"){
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        this.owner  = resp["data"][0];
+      }
+    });
   }
 
   bookTrip() {
+
     if(this.trip.startdate && this.trip.freight && true) {
-      this.appService.createNewCompleteTripForPredefinedTripBooking(this.trip, this.quotation, this.appService.currentUser.userid);
-      this.presentAlert("Your booking is registered successfully. Please track the status in 'Booking History' or 'Custom Trips'",["OK"],()=>{
-        this.navCtrl.pop();
+      this.quotation.ownername = this.appService.currentUser.name;
+      this.presentLoadingCustom();
+      this.appService.createNewCompleteTripForPredefinedTripBooking(this.trip, this.quotation, this.appService.currentUser.userid, (resp)=>{
+          this.loading.dismiss();
+          if(resp.result == "failure"){
+            console.log("resp.error");
+            this.presentAlert(resp.error, ["OK"], null);
+          } else if (resp["message"]) {
+            this.presentAlert("Your booking is registered successfully. Please track the status in 'Booking History' or 'Custom Trips'",["OK"],()=>{
+              this.navCtrl.pop();
+            });
+          }
       });
     } else {
       this.presentAlert("Please fill the mandatory fields 'Schedule Date' & 'Freight'",["OK"], null);
@@ -71,4 +106,27 @@ export class CustomerBookPredfinedTripPage {
     });
     alert.present();
   }
+
+  presentLoadingCustom() {
+    if(!this.loading) {
+      this.loading = this.loadingCtrl.create({
+        duration: 10000
+      });
+    
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+    
+      this.loading.present();
+    }
+  }
+  
+  dismissLoading(){
+    if(this.loading){
+        this.loading.dismiss();
+        this.loading = null;
+    }
+}
+
+
 }
