@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { Storage } from '@ionic/storage';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { AppModelServiceProvider } from '../../providers/app-model-service/app-model-service'
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
@@ -16,7 +15,7 @@ export class LoginPage {
   loginForm;
   private serverError: String;
   private loading: any;
-  constructor(private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, translate: TranslateService, public viewCtrl: ViewController,public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  constructor(private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, translate: TranslateService, public viewCtrl: ViewController,public navCtrl: NavController, public navParams: NavParams) {
     // translate.setDefaultLang('ar-sa');
     this.serverError = "";
   }

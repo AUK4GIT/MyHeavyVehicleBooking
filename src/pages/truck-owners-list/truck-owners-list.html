@@ -41,10 +41,9 @@
               <h5>
                   DOJ: {{ owner.timestamp | date : 'dd MMM yyyy' }}
               </h5>
-                <h6 icon-end style="float: right; color: #bbb; font-size:1.2rem;">
-                    Swipe left to see more options
-                    <ion-icon name="arrow-round-back"></ion-icon>
-                </h6>
+              <div class="hint_more_options">
+                <ion-icon icon-start name="arrow-round-back">Swipe left to see more options</ion-icon>
+              </div>
             </ion-item>
             <ion-item-options side="end">
                 <button ion-button color="danger" (click)="deleteItem(owner, gindex, iindex)">

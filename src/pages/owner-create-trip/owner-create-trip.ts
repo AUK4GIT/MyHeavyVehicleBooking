@@ -77,7 +77,8 @@ export class OwnerCreateTripPage {
         qidpdefinedtrip: "",
         cost:this.cost,
         duration:this.duration,
-        ownerid:this.appService.currentUser.userid
+        ownerid:this.appService.currentUser.userid,
+        ownername:this.appService.currentUser.name
       };
       this.presentLoadingCustom();
       this.appService.createTripWithOwnerid(tempTrip, (resp)=>{

@@ -3,6 +3,7 @@ import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTruck } from '../../providers/app-model-service/app-model-service'
 import { OwnerAddTruckPage } from '../owner-add-truck/owner-add-truck';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'page-owner-trucks-list',
@@ -27,6 +28,11 @@ export class OwnerTrucksListPage {
     });        
     console.log('ionViewDidLoad OwnerTrucksListPage');
   }
+getImage(truckid){
+  return "http://zamilrenttruck.com/api.php/get/truck/imagebytruckid/"+truckid;
+  // return "assets/imgs/logo_transparent.jpg";//"http://zamilrenttruck.com/api.php/get/truck/imagebytruckid/"+truckid;
+}
+  
 
   onModelChange(event) {
 
@@ -34,6 +40,25 @@ export class OwnerTrucksListPage {
 
   addTruck() {
     this.navCtrl.push(OwnerAddTruckPage);
+  }
+
+  deleteTruck(truck) {
+    let self = this;
+    this.presentAlert("Do you want to Delete the truck ?", ["No", "Yes"], (type) => {
+      if (type == 0) {
+        console.log("Delete Cancelled");
+      } else {
+        console.log("Delete executed");
+        self.appService.deleteTruck(truck, (data) => {
+          if (data.result == 'success') {
+            const index: number = self.items.indexOf(truck);
+            self.items.splice(index, 1);
+          } else {
+            self.presentAlert("Delete UnSuccessful! Try again", ["OK"], null);
+          }
+        });
+      }
+    })
   }
 
   presentAlert(message, buttontexts, callback) {

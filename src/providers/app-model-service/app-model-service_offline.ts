@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
 
@@ -18,7 +17,7 @@ export class AppModelServiceProvider {
   header : any;
 
   // status: pending, approved, rejected
-  constructor(public http: HttpClient, private storage: Storage) {
+  constructor(public http: HttpClient) {
     console.log('Hello AppModelServiceProvider Provider');
     this.header = { "headers": {"Content-Type": "application/json"} };
     this.getCurrentUser();
@@ -83,7 +82,7 @@ export class AppModelServiceProvider {
   setCurrentUser(item){
     this.currentUser = new AppUser(item.name, item.email, item.password, item.phonenumber, item.role, item.userid, item.status, item.ownerid)
     localStorage.setItem("user",JSON.stringify(this.currentUser));
-    this.storage.set('user', this.currentUser);
+    // this.storage.set('user', this.currentUser);
   }
 
   getCurrentUser() {

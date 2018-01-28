@@ -13,7 +13,7 @@ import { CustomerQuotationsDetailsPage } from '../customer-quotations-details/cu
 import { CustomerBookPredfinedTripPage } from '../customer-book-predfined-trip/customer-book-predfined-trip'
 import { CustomerTripeRatingPage } from '../customer-tripe-rating/customer-tripe-rating'
 import { SearchedTripModalPage } from "../searched-trip-modal/searched-trip-modal"
-
+import { CustomerTripsOngoingListPage } from "../customer-trips-ongoing-list/customer-trips-ongoing-list"
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { SearchedTripModalPage } from "../searched-trip-modal/searched-trip-moda
     CustomerQuotationsDetailsPage,
     CustomerBookPredfinedTripPage,
     CustomerTripeRatingPage,
-    SearchedTripModalPage
+    SearchedTripModalPage,
+    CustomerTripsOngoingListPage
   ],
   imports: [
     IonicPageModule.forChild(CustomerPage),
@@ -40,7 +41,8 @@ import { SearchedTripModalPage } from "../searched-trip-modal/searched-trip-moda
     CustomerQuotationsDetailsPage,
     CustomerBookPredfinedTripPage,
     CustomerTripeRatingPage,
-    SearchedTripModalPage
+    SearchedTripModalPage,
+    CustomerTripsOngoingListPage
   ]
 })
 export class CustomerPageModule {}

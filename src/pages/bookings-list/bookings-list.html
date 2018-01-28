@@ -24,12 +24,12 @@
           {{ item.trucktype }}
         </h3>
         <h4>
-            {{ item.startdate }}
+            {{ item.startdate  | date:'dd/MM/yy' }}
         </h4>
         <h5>
             {{ item.freight }}  
         </h5>
-        <button ion-button outline item-end>{{item.status}}</button>              
+        <button class="status_trip" ion-button outline item-end>{{item.status}}</button>              
       </ion-item>
     </ion-list>
   </ion-content>

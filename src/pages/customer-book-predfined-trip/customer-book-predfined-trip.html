@@ -55,8 +55,28 @@
             <h5>
                 {{ quotation?.duration }} hrs
             </h5>
+            <h3 *ngIf="offer">
+              Total after discount <b> {{ quotation?.cost - (quotation?.cost * offer?.discount / 100) }} </b>SR
+            </h3>
           </ion-card-content>
         </ion-card>
+
+        <ion-card *ngIf="offer">
+            <ion-card-header>
+              Offer
+            </ion-card-header>
+            <ion-card-content>
+              <ion-card-title>
+                  {{offer?.message}}
+                </ion-card-title>
+                  <h3>
+                    Discount: {{ offer?.discount }} %
+                  </h3>
+                  <h4>
+                    Validity: {{ offer?.startdate }} - {{ offer?.enddate }}
+                  </h4>
+            </ion-card-content>
+          </ion-card>
 
         <ion-card>
             <ion-card-header>
@@ -74,23 +94,6 @@
                     </h4>
             </ion-card-content>
           </ion-card>
-
-          <ion-card *ngIf="offer">
-              <ion-card-header>
-                Offer
-              </ion-card-header>
-              <ion-card-content>
-                <ion-card-title>
-                    {{offer?.message}}
-                  </ion-card-title>
-                    <h3>
-                      Discount: {{ offer?.discount }} %
-                    </h3>
-                    <h4>
-                      Validity: {{ offer?.startdate }} - {{ offer?.enddate }}
-                    </h4>
-              </ion-card-content>
-            </ion-card>
             <ion-row padding-top >
                 <ion-col text-center>
                     <button (click)="bookTrip()" ion-button medium >{{ 'BOOK' | translate }}</button>

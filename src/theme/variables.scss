@@ -49,7 +49,7 @@ $toolbar-ios-background: #2f9610;
 $button-ios-background-color: #2f9610;
 $item-ios-detail-push-show: true;
 $content-ios-padding: 8px; 
-
+$item-ios-thumbnail-size: 54px;
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -57,8 +57,8 @@ $content-ios-padding: 8px;
 $toolbar-md-background: #2f9610;
 $button-md-background-color: #2f9610;
 $item-md-detail-push-show: true;
-$content-md-padding: 8px;
-
+$content-md-padding: 4px;
+$item-md-thumbnail-size: 54px;
 
 // App Windows Variables
 // --------------------------------------------------
@@ -67,7 +67,7 @@ $toolbar-wp-background: #2f9610;
 $button-wp-background-color: #2f9610;
 $item-wp-detail-push-show: true;
 $content-wp-padding: 16px;
-
+$item-wp-thumbnail-size: 80px;
 
 // App Theme
 // --------------------------------------------------

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { Storage } from '@ionic/storage';
 import { AppModelServiceProvider } from '../../providers/app-model-service/app-model-service'
 
 @IonicPage()
@@ -14,7 +13,7 @@ export class RegistrationPage {
   registrationForm;
   private serverError: String;
   private loading: any;
-  constructor(public loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  constructor(public loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.serverError = "";
   }  
   

@@ -82,6 +82,19 @@ ion-icon {
   font-size: 2em;
 }
 
+.status_trip {
+  position: absolute;
+  right: 8px;
+}
+
+div.hint_more_options {
+  text-align: right;
+}
+div.hint_more_options>ion-icon{
+  font-size: 0.7em;
+  color: #555;
+}
+
 // .error::before {
 //   content: "* ";
 // }

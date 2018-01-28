@@ -26,7 +26,7 @@
             {{ item.trucktype }}
           </h3>
           <h4>
-              {{ item.startdate }}
+              {{ item.startdate  | date:'dd/MM/yy' }}
           </h4>
           <h5>
               {{ item.freight }}  

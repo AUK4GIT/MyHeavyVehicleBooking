@@ -9,12 +9,12 @@ import { CustomerBookPredfinedTripPage } from '../customer-book-predfined-trip/c
 import { SearchedTripModalPage } from "../searched-trip-modal/searched-trip-modal"
 
 @Component({
-  selector: 'page-customer-trips-list',
-  templateUrl: 'customer-trips-list.html',
+  selector: 'page-customer-trips-ongoing-list',
+  templateUrl: 'customer-trips-ongoing-list.html',
 })
-export class CustomerTripsListPage {
+export class CustomerTripsOngoingListPage  {
   items: AppTrip[];
-  segment: string;
+  // segment: string;
   search: any;
   searchItems: AppTrip[];
   offers: AppOffer[];
@@ -50,7 +50,7 @@ export class CustomerTripsListPage {
     // if(this.appService.customTripCreated == true){
     //   this.segment = 'customtrips';
     // } else {
-    this.segment = 'availabletrips';
+    // this.segment = 'availabletrips';
     // }
     this.search = {
       query: ''
@@ -87,11 +87,11 @@ export class CustomerTripsListPage {
       }
     });
 
-    if (this.segment == 'availabletrips') {
-      this.loadAvailableTrips();
-    } else {
+    // if (this.segment == 'availabletrips') {
+    //   this.loadAvailableTrips();
+    // } else {
       this.loadCustomTrips();
-    }
+    // }
   }
 
   presentSearchRelatedTrips() {

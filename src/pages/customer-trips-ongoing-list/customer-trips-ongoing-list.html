@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-navbar>
+      <ion-buttons start>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+        </ion-buttons>
+    <ion-title>
+      {{'TRIPS' | translate}}
+    </ion-title>
+    <ion-buttons end>
+        <button ion-button (click)="addNewTrip()">
+          <ion-icon name="add" ></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content id="page1">
+                <ion-row>
+                        <ion-col>
+                            <ion-label>Filter By: 
+                                <button ion-button color="light" small icon-end (click)="clearFilters()">clear
+                                    <ion-icon name="close"></ion-icon>
+                                  </button>
+                            </ion-label> 
+                            <ion-item margin-top class="item-leave-height">
+            
+                              <ion-select (ionChange)="filterSelected(1)" name="pickupcities" placeholder="pickup" [(ngModel)]="pickupcity">
+                                <ion-option value="{{city}}" *ngFor="let city of pickupcities">{{ city }}</ion-option>
+                              </ion-select>
+                            
+                              <ion-select (ionChange)="filterSelected(2)" name="dropcities" placeholder="drop" [(ngModel)]="dropcity">
+                                <ion-option value="{{city}}" *ngFor="let city of dropcities">{{ city }}</ion-option>
+                              </ion-select>
+                            
+                              <ion-select (ionChange)="filterSelected(3)" name="trucks" placeholder="trucktype" [(ngModel)]="truck">
+                                <ion-option value="{{truck}}" *ngFor="let truck of trucks">{{ truck }}</ion-option>
+                              </ion-select>
+                            </ion-item>
+                          </ion-col>
+                        </ion-row>
+            <ion-list id="page-list2">
+                <ion-item-sliding *ngFor="let item of searchItems">                 
+                <ion-item (click)="viewQuotationsForTrip(item)" color="none" id="page-list-item" >
+                  <ion-thumbnail item-left>
+                    <img src="assets/imgs/logo_transparent.jpg"/>
+                  </ion-thumbnail>
+                  <h2><b>
+                      {{item.startlocation}} - {{item.endlocation}}
+                      </b>
+                  </h2>
+                  <h3>
+                    {{ item.trucktype }}
+                  </h3>
+                  <h4>
+                      {{ item.startdate   | date:'dd/MM/yy'}}
+                  </h4>
+                  <h5>
+                      {{ item.freight }}  
+                  </h5>
+                  <button class="status_trip" ion-button outline item-end>{{item.status}}</button>
+                  <div class="hint_more_options">
+                    <ion-icon icon-start name="arrow-round-back">Swipe left to see more options</ion-icon>
+                  </div>             
+                </ion-item>
+                <ion-item-options side="end">
+                    <button ion-button color="danger" (click)="cancelCustomTrip(item)">
+                      <ion-icon name="delete"></ion-icon>
+                      Cancel
+                    </button>
+                  </ion-item-options>
+                </ion-item-sliding>
+              </ion-list>
+        
+</ion-content>

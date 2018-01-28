@@ -8,6 +8,7 @@ import { DriversListPage } from '../drivers-list/drivers-list';
 import { OffersListPage } from '../offers-list/offers-list';
 import { OwnerTripsListPage } from '../owner-trips-list/owner-trips-list';
 import { BookingsListPage } from '../bookings-list/bookings-list';
+import { OwnerTripsOngoingListPage } from '../owner-trips-ongoing-list/owner-trips-ongoing-list';
 
 @IonicPage()
 @Component({
@@ -16,7 +17,7 @@ import { BookingsListPage } from '../bookings-list/bookings-list';
 })
 export class TruckOwnerPage {
 
-  rootPage:any = BookingsListPage;
+  rootPage:any = OwnerTripsOngoingListPage;
   user: any;
   pageIndex: Number;
   @ViewChild(Nav) nav: Nav;
@@ -35,12 +36,12 @@ export class TruckOwnerPage {
   }
 
   go_to_TrucksListPage(Page){
-    this.pageIndex = 3;
+    this.pageIndex = 4;
     this.nav.setRoot(OwnerTrucksListPage);
   }
 
   go_to_DriverssListPage(){
-    this.pageIndex = 4;
+    this.pageIndex = 5;
     this.nav.setRoot(DriversListPage);  
   }
 
@@ -49,19 +50,25 @@ export class TruckOwnerPage {
     this.nav.setRoot(OwnerTripsListPage);
   }
 
+  go_to_OngoingTripsListPage(){
+    this.pageIndex = 2;
+    this.nav.setRoot(OwnerTripsOngoingListPage);
+  }
+  
+
   go_to_OffersListPage(){
-    this.pageIndex = 5;
+    this.pageIndex = 6;
     this.nav.setRoot(OffersListPage);
   }
 
   go_to_BookingsListPage(){
-    this.pageIndex = 2;
+    this.pageIndex = 3;
     this.nav.setRoot(BookingsListPage);    
   }
 
   logout_go_to_App(){
     console.log("logout_go_to_App");
-    this.pageIndex = 6;
+    this.pageIndex = 7;
     this.events.publish('logout', 'logout');    
   }
 

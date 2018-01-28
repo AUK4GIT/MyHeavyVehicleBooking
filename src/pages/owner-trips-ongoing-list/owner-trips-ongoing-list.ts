@@ -5,10 +5,10 @@ import { OwnerTripQuotationPage } from '../owner-trip-quotation/owner-trip-quota
 import { OwnerCreateTripPage } from '../owner-create-trip/owner-create-trip'
 
 @Component({
-  selector: 'page-owner-trips-list',
-  templateUrl: 'owner-trips-list.html',
+  selector: 'page-owner-trips-ongoing-list',
+  templateUrl: 'owner-trips-ongoing-list.html',
 })
-export class OwnerTripsListPage {
+export class OwnerTripsOngoingListPage {
   items: AppTrip[];
   segment: string;
   search: any;
@@ -24,7 +24,7 @@ export class OwnerTripsListPage {
   truck: string;
 
   constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
-    this.segment = 'availabletrips';
+    this.segment = 'mytrips';
     this.search = {
       query: ''
     };
@@ -39,7 +39,7 @@ export class OwnerTripsListPage {
 
   ionViewDidEnter() {
     console.log('ionViewDidLoad OwnerTripsListPage');
-    if(this.segment == 'availabletrips'){
+    if(this.segment == 'mytrips'){
       this.loadAvailableTrips();      
     }  else {
       this.loadCustomTrips();      
@@ -87,7 +87,7 @@ export class OwnerTripsListPage {
 
   loadAvailableTrips() {
     this.presentLoadingCustom();
-    this.appService.getOwnerAvailableTrips(this.appService.currentUser.userid, (resp) => {
+    this.appService.getRequestedTripsForOwnerid(this.appService.currentUser.userid, (resp) => {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
@@ -117,7 +117,7 @@ export class OwnerTripsListPage {
 
   segmentChanged(event) {
     this.clearFilters();
-    if(event.value == "availabletrips") {
+    if(event.value == "mytrips") {
       this.loadAvailableTrips();
     } else {
       this.loadCustomTrips();

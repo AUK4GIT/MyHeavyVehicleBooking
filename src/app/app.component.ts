@@ -31,10 +31,12 @@ export class MyApp {
       if (this.platform.is('android')) {
         localStorage.setItem("platform","android");
         console.log("running on Android device!: ANdroid");
+        this.configureFCM();
     }
     else if (this.platform.is('ios')) {
       localStorage.setItem("platform","ios");
         console.log("running on iOS device!: iOS");
+        this.configureFCM();
     }
     else if (this.platform.is('mobileweb')) {
       localStorage.setItem("platform","mobileweb");
@@ -43,7 +45,6 @@ export class MyApp {
       localStorage.setItem("platform","browser");
       console.log("running in a browser on mobile!: Browser");
     }
-      this.configureFCM();
     });
 
     events.subscribe('language:changed', (lang) => {    

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewController, NavController, NavParams } from 'ionic-angular';
-import {googlemaps} from 'googlemaps';
+import { googlemaps } from 'googlemaps';
 
 @Component({
   selector: 'page-auto-complete-search',

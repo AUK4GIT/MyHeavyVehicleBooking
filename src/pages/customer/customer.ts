@@ -5,6 +5,7 @@ import { AppModelServiceProvider } from '../../providers/app-model-service/app-m
 
 import { CustomerTripsListPage } from '../customer-trips-list/customer-trips-list';
 import { CustomerBookingsListPage } from '../customer-bookings-list/customer-bookings-list';
+import { CustomerTripsOngoingListPage } from "../customer-trips-ongoing-list/customer-trips-ongoing-list"
 
 @IonicPage()
 @Component({
@@ -13,13 +14,13 @@ import { CustomerBookingsListPage } from '../customer-bookings-list/customer-boo
 })
 export class CustomerPage {
 
-  rootPage:any = CustomerTripsListPage;
+  rootPage:any = CustomerTripsOngoingListPage;
   user: any;
   pageIndex: Number;
   @ViewChild(Nav) nav: Nav;
 
   constructor(private appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
-    this.pageIndex = 1;
+    this.pageIndex = 2;
     this.user = this.appService.currentUser;  
   }
 
@@ -36,14 +37,19 @@ export class CustomerPage {
     this.nav.setRoot(CustomerTripsListPage);
   }
 
-  go_to_BookingsListPage(){
+  go_to_OngoingTripsListPage(){
     this.pageIndex = 2;
+    this.nav.setRoot(CustomerTripsOngoingListPage);
+  }
+
+  go_to_BookingsListPage(){
+    this.pageIndex = 3;
     this.nav.setRoot(CustomerBookingsListPage);  
   }
 
   logout_go_to_App(){
     console.log("logout_go_to_App");
-    this.pageIndex = 3;
+    this.pageIndex = 4;
     this.events.publish('logout', 'logout');    
   }
 }

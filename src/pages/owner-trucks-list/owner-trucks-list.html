@@ -17,16 +17,23 @@
 </ion-header>
 <ion-content  id="page1">
   <ion-list id="page-list1">
-    <ion-item color="none" id="page-list-item10" *ngFor="let item of items">
+    <ion-item-sliding *ngFor="let item of items">                 
+    <ion-item color="none" id="page-list-item10" >
       <ion-thumbnail item-left>
-        <img src="assets/imgs/logo_transparent.jpg" />
+        <!-- <img src="assets/imgs/logo_transparent.jpg" /> -->
+        <!-- <img [src]="DomSanitizer.bypassSecurityTrustUrl(getImage(item.truckid))" /> -->
+        <!-- <img [src]="getImage(item.truckid)" /> -->
+        <!-- <img src="{{getImage(item.truckid)}}" /> -->
+        <!-- <ion-img src="http://zamilrenttruck.com/api.php/get/truck/imagebytruckid/23"></ion-img> -->
+        <ion-img [src]="getImage(item.truckid)"></ion-img>
+
       </ion-thumbnail>
       <h2>
         {{item.trucktype}}
       </h2>
       <h3>{{item.capacity}}</h3>
       <p>{{item.regno}}</p>
-      <button ion-button outline item-end>{{item.status}}</button>      
+      <button class="status_trip" ion-button outline item-end>{{item.status}}</button>      
       
       <!-- <rating [(ngModel)]="item.rating" readOnly="true" max="5"
         emptyStarIconName="star-outline"
@@ -36,5 +43,12 @@
         (ngModelChange)="onModelChange($event)">
       </rating> -->
     </ion-item>
+    <ion-item-options side="end">
+                    <button ion-button color="danger" (click)="deleteTruck(item)">
+                      <ion-icon name="delete"></ion-icon>
+                      Delete
+                    </button>
+                  </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

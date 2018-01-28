@@ -109,7 +109,7 @@ buttontitle : string;
   }
 
   addQuotation() {
-    if (this.cost && this.starttime) {
+    if (this.cost && true) {
       this.presentLoadingCustom();
       this.appService.addQuotationForTrip({
         truck: this.trucktype,
@@ -142,7 +142,7 @@ buttontitle : string;
   }
 
   updateQuote() {
-    if(this.cost && this.starttime && true){
+    if(this.cost && true){
       this.appService.updateQuotationForTripAndConfirm({
         truck: this.trucktype,
         driver: this.driver,

@@ -11,7 +11,7 @@
   <ion-grid>
 
     <ion-row>
-      <ion-col>
+       <ion-col col-12 col-sm>
         <ion-item margin-top class="item-leave-height">
           <ion-label>{{'DRIVER' | translate}}</ion-label>
           <ion-select name="driver" [(ngModel)]="driver">
@@ -19,7 +19,7 @@
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col>
+       <ion-col col-12 col-sm>
           <ion-item margin-top class="item-leave-height">
             <ion-label>{{'COST' | translate}}</ion-label>
             <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="cost" name="cost" id="cost" type="number" [(ngModel)]="cost"></ion-input>
@@ -27,31 +27,31 @@
         </ion-col>
     </ion-row>
 
-    <ion-row>
+    <!-- <ion-row>
       
-      <ion-col>
+       <ion-col col-12 col-sm>
         <ion-item margin-top class="item-leave-height">
           <ion-label>{{'STARTTIME' | translate}}</ion-label>
           <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="starttime"></ion-datetime>
         </ion-item>
       </ion-col>
-      <ion-col>
+       <ion-col col-12 col-sm>
         <ion-item margin-top class="item-leave-height">
           <ion-label>{{'CLOSETIME' | translate}}</ion-label>
           <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="closetime"></ion-datetime>
         </ion-item>
       </ion-col>
 
-    </ion-row>
+    </ion-row> -->
 
     <ion-row>
-        <ion-col>
+         <ion-col col-12 col-sm>
           <ion-item margin-top class="item-leave-height">
             <ion-label>{{'DURATION' | translate}}</ion-label>
             <ion-input class="hours" (ionFocus)="focusFunction()" placeholder="duration in hours" name="duration" id="duration" type="number" [(ngModel)]="duration"></ion-input>
           </ion-item>
         </ion-col>
-        <ion-col>
+         <ion-col col-12 col-sm>
             <ion-item margin-top class="item-leave-height">
               <ion-label>{{'TRUCK' | translate}}</ion-label>
               <ion-select name="driver" [(ngModel)]="truckid">
@@ -62,16 +62,16 @@
     </ion-row>
 
     <ion-row>
-        <ion-col>
+         <ion-col col-12 col-sm>
           <ion-item margin-top class="item-leave-height">
             <ion-label>{{'COMMENTS' | translate}}</ion-label>
             <ion-input (ionFocus)="focusFunction()" placeholder="Add Comments" name="comments" id="comments" type="text" [(ngModel)]="comments"></ion-input>
           </ion-item>
         </ion-col>
-        <ion-col>
+         <ion-col col-12 col-sm>
             <ion-item margin-top class="item-leave-height">
               <ion-label>{{'ADDITIONALCHARGES' | translate}}</ion-label>
-              <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="Additional charges" name="charges" id="charges" type="number" [(ngModel)]="charges"></ion-input>
+              <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="charges" name="charges" id="charges" type="number" [(ngModel)]="charges"></ion-input>
             </ion-item>
           </ion-col>
     </ion-row>

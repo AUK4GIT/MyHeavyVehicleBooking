@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { IonicStorageModule } from '@ionic/storage';
+// import { IonicStorageModule } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { FCM } from '@ionic-native/fcm';
@@ -21,6 +21,7 @@ import { HomepopoverComponent } from '../components/homepopover/homepopover';
 import { AppModelServiceProvider } from '../providers/app-model-service/app-model-service';
 import { AutoCompleteSearchPage } from '../pages/auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../components/placespicker/placespicker';
+import {ImgPickerOptionsComponent } from '../components/img-picker-options/img-picker-options'
 
 @NgModule({
   declarations: [
@@ -32,7 +33,6 @@ import { PlacespickerComponent } from '../components/placespicker/placespicker';
     BrowserModule,
     ComponentsModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot(),
     HttpClientModule,
     AdminPageModule,
     TruckOwnerPageModule,
@@ -53,7 +53,8 @@ import { PlacespickerComponent } from '../components/placespicker/placespicker';
     HomePage,
     HomepopoverComponent,
     AutoCompleteSearchPage,
-    PlacespickerComponent
+    PlacespickerComponent,
+    ImgPickerOptionsComponent
   ],
   providers: [
     StatusBar,

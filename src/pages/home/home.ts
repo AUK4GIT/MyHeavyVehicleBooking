@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
-import { Slides, App, LoadingController, PopoverController, NavParams, NavController, ModalController, Modal, Events, AlertController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { App, LoadingController, PopoverController, NavController, ModalController, Modal, Events, AlertController } from 'ionic-angular';
 import { HomepopoverComponent } from '../../components/homepopover/homepopover';
-import { AppModelServiceProvider, AppTrip, AppTruckType, AppOffer, AppCity } from '../../providers/app-model-service/app-model-service'
+import { AppModelServiceProvider, AppTruckType, AppOffer, AppCity } from '../../providers/app-model-service/app-model-service'
 import { Popover } from 'ionic-angular/components/popover/popover';
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
