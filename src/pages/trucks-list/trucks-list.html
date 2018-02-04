@@ -17,7 +17,8 @@
       <ion-item-sliding *ngFor="let truck of group.list; let iindex = index">       
       <ion-item color="none" id="page-list-item10">
         <ion-thumbnail item-left>
-          <img src="assets/imgs/logo_transparent.jpg" />
+            <img [src]="getImage(truck)" />
+          <!-- <img src="assets/imgs/logo_transparent.jpg" /> -->
           <!-- <div class="icon-truck" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
         </ion-thumbnail>
         <h2>

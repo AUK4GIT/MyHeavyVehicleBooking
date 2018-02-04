@@ -20,6 +20,11 @@ export class DriverPage {
   constructor(private appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
     this.user = this.appService.currentUser;    
   }
+  
+  getProfileImage(){
+    var imgPath = "user_"+this.user.userid+"/thumb_"+this.user.userid+".jpeg";
+    return "http://zamilrenttruck.com/images/profiles/"+imgPath;
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DriverPage');

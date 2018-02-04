@@ -28,6 +28,11 @@ export class TrucksListPage {
     
     }
 
+    getImage(truck){
+      var imgPath = "owner_"+truck.ownerid+"/thumb_"+truck.truckid+".jpeg";
+      return "http://zamilrenttruck.com/images/trucks/"+imgPath;
+    }
+    
   groupItems() {
     this.truckGroups = this.appService.groupByreturningArray(this.trucks, "status", false);
   }

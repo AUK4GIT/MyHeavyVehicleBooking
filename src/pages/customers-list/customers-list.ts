@@ -45,6 +45,10 @@ export class CustomersListPage {
   showTripsForUser(user) {
     this.navCtrl.push(AdminCustomerTripsListPage, {user: user});
   }
+  getProfileImage(userid){
+    var imgPath = "user_"+userid+"/thumb_"+userid+".jpeg";
+    return "http://zamilrenttruck.com/images/profiles/"+imgPath;
+  }
 
   sortData(){
     if(this.sortIsAscending == true){

@@ -31,6 +31,11 @@ export class TruckOwnerPage {
     console.log('ionViewDidLoad TruckOwnerPage');
   }
 
+  getProfileImage(){
+    var imgPath = "user_"+this.user.userid+"/thumb_"+this.user.userid+".jpeg";
+    return "http://zamilrenttruck.com/images/profiles/"+imgPath;
+  }
+
   checkActivated(page) {
     return (page == this.pageIndex);
   }

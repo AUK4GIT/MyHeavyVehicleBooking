@@ -14,13 +14,13 @@ import { CustomerTripsOngoingListPage } from "../customer-trips-ongoing-list/cus
 })
 export class CustomerPage {
 
-  rootPage:any = CustomerTripsOngoingListPage;
+  rootPage:any = CustomerTripsListPage;
   user: any;
   pageIndex: Number;
   @ViewChild(Nav) nav: Nav;
 
   constructor(private appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
-    this.pageIndex = 2;
+    this.pageIndex = 1;
     this.user = this.appService.currentUser;  
   }
 
@@ -30,6 +30,11 @@ export class CustomerPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CustomerPage');
+  }
+
+  getProfileImage(){
+    var imgPath = "user_"+this.user.userid+"/thumb_"+this.user.userid+".jpeg";
+    return "http://zamilrenttruck.com/images/profiles/"+imgPath;
   }
 
   go_to_TripsListPage(){

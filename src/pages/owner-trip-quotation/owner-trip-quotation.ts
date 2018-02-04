@@ -29,7 +29,7 @@ buttontitle : string;
     this.tripid = this.navParams.get("tripid");
     this.trucktype = this.navParams.get("trucktype");
     this.tripstatus = this.navParams.get("status");
-   this.buttontitle = "Add Quotation";
+    this.buttontitle = "Add Quotation";
   }
 
   ionViewDidLoad() {
@@ -77,8 +77,12 @@ buttontitle : string;
       this.buttontitle = "Add Quotation";
     } else if (this.tripstatus == "requested") {
       this.buttontitle = "Update Quotation";
+    } else {
+      this.buttontitle = "Update Quotation";
     }
     if(quotation){
+      this.buttontitle = "Update Quotation";
+
       this.trucktype = quotation.truck,
       this.duration = quotation.duration,
       this.cost = quotation.cost,

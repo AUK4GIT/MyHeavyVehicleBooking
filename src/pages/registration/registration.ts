@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { Platform, IonicPage, NavController, NavParams, AlertController, LoadingController, PopoverController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { AppModelServiceProvider } from '../../providers/app-model-service/app-model-service'
+import { ImagePicker } from '@ionic-native/image-picker';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { ImgPickerOptionsComponent } from '../../components/img-picker-options/img-picker-options';
 
 @IonicPage()
 @Component({
@@ -13,8 +16,18 @@ export class RegistrationPage {
   registrationForm;
   private serverError: String;
   private loading: any;
-  constructor(public loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  profileImage: any;
+  isWeb: boolean;
+  imageData: any;
+
+  constructor(private platform: Platform, private popoverCtrl: PopoverController, private camera: Camera, private imagePicker: ImagePicker, public loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.serverError = "";
+    // if (this.platform.is('cordova') == false) {
+      if(this.platform.is('core') || this.platform.is('mobileweb')) {
+        this.isWeb = true;
+      } else {
+        this.isWeb = false;
+      }
   }  
   
     ngOnInit() {
@@ -30,10 +43,98 @@ export class RegistrationPage {
   
     ionViewDidLoad() {
       console.log('ionViewDidLoad RegistrationPage');
-  
+  this.profileImage = "assets/imgs/logo.png";
       // this.registrationForm.controls['username'].setValue("test@gmail.com");
       // this.registrationForm.controls['password'].setValue("12345");
     }
+
+    fileUpload(event) {
+      let fd = new FormData();
+      fd.append('file', event.srcElement.files[0]);
+      // this.data.emit(fd);
+      var reader = new FileReader();
+     reader.readAsDataURL(event.srcElement.files[0]);
+     reader.onload =  ()=> {
+       console.log(reader.result);
+      //  let base64Image = 'data:image/jpeg;base64,' + reader.result;
+      var base64result = reader.result.substr(reader.result.indexOf(',') + 1);
+      this.imageData = base64result;        
+       this.profileImage = reader.result;
+     };
+     reader.onerror = function (error) {
+       console.log('Error: ', error);
+     };
+    }
+
+    addImage() {
+
+      if(this.isWeb){
+        this.pickImage();
+        // this.fileInput.nativeElement.click();
+        setTimeout(function(){
+          let element: HTMLElement = document.getElementsByClassName('cordova-camera-select')[0] as HTMLElement;
+          element.click();
+        },700);
+      } else {
+  
+        let popover = this.popoverCtrl.create(ImgPickerOptionsComponent,
+          { callback: (_data) => {
+            console.log(JSON.stringify(_data+" - "+this))
+            if(_data == 1){
+              this.pickImage();
+            } else if (_data == 2){
+              this.pickFromCamera();
+            } else {
+              this.pickImage();
+            }
+          }
+         });
+        popover.present({
+          ev: event
+        });
+  
+      }
+    }
+  
+    pickImage() {
+      const options: CameraOptions = {
+        quality: 50,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+        targetWidth: 300,
+        targetHeight: 300
+      }
+      
+      this.camera.getPicture(options).then((imageData) => {
+        let base64Image = 'data:image/jpeg;base64,' + imageData;
+       this.imageData = imageData;
+       this.profileImage = base64Image;
+      }, (err) => {
+       // Handle error
+      });
+    }
+  
+    pickFromCamera() {
+      const options: CameraOptions = {
+        quality: 50,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        sourceType: this.camera.PictureSourceType.CAMERA,
+        targetWidth: 300,
+        targetHeight: 300
+      }
+      
+      this.camera.getPicture(options).then((imageData) => {
+       let base64Image = 'data:image/jpeg;base64,' + imageData;
+       this.imageData = imageData;
+       this.profileImage = base64Image;
+      }, (err) => {
+      });
+    }
+  
   
     navigateToLoginPage() {
       this.navCtrl.pop();
@@ -50,8 +151,12 @@ export class RegistrationPage {
       if(loginItem.username == "" || loginItem.password == "" || loginItem.phonenumber == "" || loginItem.email == "") {
         return;
       }
+      if(this.imageData == "" || this.imageData == null){
+        this.presentAlert("Please upload a profile picture.",["OK"],null);
+        return;
+      }
       this.presentLoadingCustom();
-      this.appService.registrationService({email: loginItem.email, password: loginItem.password, name: loginItem.username, phonenumber: loginItem.phonenumber, role: loginItem.role, status: "pending"},
+      this.appService.registrationService({email: loginItem.email, password: loginItem.password, name: loginItem.username, phonenumber: loginItem.phonenumber, role: loginItem.role, status: "pending", imagedata: this.imageData},
         (response) => {
          if(response.result == 'success') {
           this.presentConfirm();
@@ -62,6 +167,18 @@ export class RegistrationPage {
      });
      this.dismissLoading();
     }
+
+    // uploadTruck(truckid) {
+    //   this.presentLoadingCustom();
+    //   this.appService.uploadTruckImage({truckid: truckid, imagedata: this.imageData, ownerid: this.appService.currentUser.userid},(resp)=>{
+    //     if(resp.result == "failure"){
+    //       console.log("resp.error");
+    //     } else {
+    //         this.presentConfirm(); 
+    //     }
+    //     this.dismissLoading();
+    //   }); 
+    // }
     
     presentAlert(message, buttontexts, callback) {
       var buttons = [];
@@ -91,7 +208,7 @@ export class RegistrationPage {
     presentConfirm() {
       let alert = this.alertCtrl.create({
         title: 'Rent a Truck',
-        message: 'Registration Successful. A verfication link has been sent to your mailid. Please verify the link and then login.',
+        message: 'Registration Successful. A verification link has been sent to your mailid. Please verify the link and then login.',
         buttons: [
           {
             text: 'Login',

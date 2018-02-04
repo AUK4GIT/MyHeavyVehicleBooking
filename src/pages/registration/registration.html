@@ -18,11 +18,24 @@
   
           <ion-list>
   
-              <ion-row>
+              <!-- <ion-row>
                   <ion-col align="center">
                       <img src="assets/imgs/logo.png" />
                   </ion-col>
-                </ion-row>
+                </ion-row> -->
+                <ion-row>
+                  <ion-col align="center" style="max-width: 150px; margin: auto;">
+                      <img [src]="profileImage" class="avatar" />
+                      <button *ngIf="!isWeb" ion-button color="normal" (tap)="addImage()">
+                          Add Image
+                      </button>
+                      <div *ngIf="isWeb" class="fileUpload btn btn-primary">
+                          <span>Add Image</span>
+                          <input type="file" class="upload" (change)="fileUpload($event)" #fileInp/>
+                      </div>
+                  </ion-col>
+              </ion-row>
+
                 <p>{{'LOGINHINT' | translate}}</p>
                 
                 <ion-item>

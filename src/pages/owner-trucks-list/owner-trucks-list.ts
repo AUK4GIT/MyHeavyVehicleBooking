@@ -29,8 +29,8 @@ export class OwnerTrucksListPage {
     console.log('ionViewDidLoad OwnerTrucksListPage');
   }
 getImage(truckid){
-  return "http://zamilrenttruck.com/api.php/get/truck/imagebytruckid/"+truckid;
-  // return "assets/imgs/logo_transparent.jpg";//"http://zamilrenttruck.com/api.php/get/truck/imagebytruckid/"+truckid;
+  var imgPath = "owner_"+this.appService.currentUser.userid+"/thumb_"+truckid+".jpeg";
+  return "http://zamilrenttruck.com/images/trucks/"+imgPath;
 }
   
 

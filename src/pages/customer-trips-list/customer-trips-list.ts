@@ -94,6 +94,10 @@ export class CustomerTripsListPage {
     }
   }
 
+  ionViewDidLeave(){
+    localStorage.setItem("tripSearch","false");
+  }
+
   presentSearchRelatedTrips() {
     if (this.tripSearched == true) {
       const stModal: Modal = this.modal.create(SearchedTripModalPage,{trips: this.items, searchedTrip: this.searchedTrip});

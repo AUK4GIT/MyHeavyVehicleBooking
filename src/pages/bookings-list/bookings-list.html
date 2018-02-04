@@ -1,35 +1,42 @@
 <ion-header>
   <ion-navbar>
-      <ion-buttons start>
-          <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-          </button>
-        </ion-buttons>
+    <ion-buttons start>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>
       {{'BOOKINGS' | translate}}
     </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content  id="page">
-    <ion-list id="page-list">
-      <ion-item (click)="giveQuotationsForTrip(item)" color="none" id="page-list-item10" *ngFor="let item of items">
-        <ion-thumbnail item-left>
-          <img src="assets/imgs/logo_transparent.jpg"/>
-        </ion-thumbnail>
-        <h2><b>
-            {{item.startlocation}} - {{item.endlocation}}
-            </b>
-        </h2>
-        <h3>
-          {{ item.trucktype }}
-        </h3>
-        <h4>
-            {{ item.startdate  | date:'dd/MM/yy' }}
-        </h4>
-        <h5>
-            {{ item.freight }}  
-        </h5>
-        <button class="status_trip" ion-button outline item-end>{{item.status}}</button>              
-      </ion-item>
-    </ion-list>
-  </ion-content>
+<ion-content id="page">
+  <ion-list id="page-list">
+    <ion-item (click)="giveQuotationsForTrip(item)" color="none" id="page-list-item10" *ngFor="let item of items">
+      <ion-thumbnail item-left>
+        <img src="assets/imgs/logo_transparent.jpg" />
+      </ion-thumbnail>
+      <h2>
+        <b>
+          {{item.startlocation}} - {{item.endlocation}}
+        </b>
+      </h2>
+      <h3>
+        {{ item.trucktype }}
+      </h3>
+      <h4>
+        {{ item.startdate | date:'dd/MM/yy' }}
+      </h4>
+      <h5>
+        {{ item.freight }}
+      </h5>
+      <p style="white-space: normal; word-wrap: break-word; color: #555;">
+        <b>Remarks:</b> <i>{{ item.customerremarks }}</i>
+      </p>
+      <rating [(ngModel)]="item.rating" readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star"
+        nullable="false">
+      </rating>
+      <button class="status_trip" ion-button outline item-end>{{item.status}}</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

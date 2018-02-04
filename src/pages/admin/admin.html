@@ -8,7 +8,8 @@
         <ion-content>
                 <ion-card class="profile-card">
                         <ion-item>
-                            <img src="assets/imgs/logo.png" class="custom-avatar" />
+                            <img [src]="getProfileImage()" class="custom-avatar" />
+                            <!-- <img src="assets/imgs/logo.png" class="custom-avatar" /> -->
                         </ion-item>
                         <ion-card-content>
                                 <h2>Name: <b>{{user.name}}</b></h2>

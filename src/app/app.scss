@@ -37,8 +37,18 @@
   ion-card.profile-card img {
     display: block;
     width: 40%;
+    height: 40%;
     margin: auto;
     border-radius: 50%;
+    max-width: 280px;
+    background-color: green;
+    background-image: url('../assets/imgs/icon_144.png');
+    min-width: 150px;
+    min-height: 150px;
+  }
+
+  ion-item ion-thumbnail img {
+    background-image: url('../assets/imgs/icon_48.png');
   }
 
   .activeHighlight, .card-header {

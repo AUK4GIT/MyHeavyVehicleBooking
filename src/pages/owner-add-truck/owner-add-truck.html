@@ -11,14 +11,14 @@
 
     <ion-row>
         <ion-col align="center" style="max-width: 150px; margin: auto;">
-            <img [src]="truckimage" class="avatar"/>
+            <img [src]="truckimage" class="avatar" />
             <button *ngIf="!isWeb" ion-button color="normal" (tap)="addImage()">
-                    Add Image
+                Add Image
             </button>
-            <div  *ngIf="isWeb" class="fileUpload btn btn-primary">
-                    <span>Add Image</span>
-                    <input type="file" class="upload" (change)="fileUpload($event)" #fileInp/>
-                </div>
+            <div *ngIf="isWeb" class="fileUpload btn btn-primary">
+                <span>Add Image</span>
+                <input type="file" class="upload" (change)="fileUpload($event)" #fileInp/>
+            </div>
             <!-- <input class="cordova-camera-select" type="file" name="files[]"> -->
         </ion-col>
     </ion-row>

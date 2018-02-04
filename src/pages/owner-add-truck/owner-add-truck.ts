@@ -61,7 +61,8 @@ export class OwnerAddTruckPage {
    reader.onload =  ()=> {
      console.log(reader.result);
     //  let base64Image = 'data:image/jpeg;base64,' + reader.result;
-    this.imageData = reader.result;        
+    var base64result = reader.result.substr(reader.result.indexOf(',') + 1);
+    this.imageData = base64result;        
      this.truckimage = reader.result;
    };
    reader.onerror = function (error) {
@@ -128,7 +129,7 @@ export class OwnerAddTruckPage {
     
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
-     this.imageData = base64Image;
+     this.imageData = imageData;
      this.truckimage = base64Image;
     }, (err) => {
      // Handle error
@@ -148,7 +149,7 @@ export class OwnerAddTruckPage {
     
     this.camera.getPicture(options).then((imageData) => {
      let base64Image = 'data:image/jpeg;base64,' + imageData;
-     this.imageData = base64Image;
+     this.imageData = imageData;
      this.truckimage = base64Image;
     }, (err) => {
     });
@@ -156,7 +157,7 @@ export class OwnerAddTruckPage {
 
   uploadTruck(truckid) {
     this.presentLoadingCustom();
-    this.appService.uploadTruckImage({truckid: truckid, imagedata: this.imageData},(resp)=>{
+    this.appService.uploadTruckImage({truckid: truckid, imagedata: this.imageData, ownerid: this.appService.currentUser.userid},(resp)=>{
       if(resp.result == "failure"){
         console.log("resp.error");
       } else {
@@ -181,6 +182,7 @@ export class OwnerAddTruckPage {
         color: this.color,
         modeldate: this.modeldate
       },(resp)=>{
+        this.dismissLoading();
         if(resp.result == "failure"){
           console.log("resp.error");
         } else {
@@ -194,7 +196,6 @@ export class OwnerAddTruckPage {
             this.presentConfirm(); 
           }
         }
-        this.dismissLoading();
       });     
     } else {
       this.presentAlert("Please fill all the details.",["OK"],null);

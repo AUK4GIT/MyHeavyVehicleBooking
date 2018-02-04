@@ -1,4 +1,25 @@
-page-registration img{
-    width: 30%;
-    max-width: 100px;
+// page-registration img{
+//     width: 30%;
+//     max-width: 100px;
+// }
+
+page-registration .fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+page-registration .fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+} 
+
+page-registration .cordova-camera-select {
+    visibility: hidden;
 }

@@ -32,6 +32,11 @@ export class AdminPage {
     console.log('ionViewDidLoad AdminPage');
   }
 
+  getProfileImage(){
+    var imgPath = "user_"+this.user.userid+"/thumb_"+this.user.userid+".jpeg";
+    return "http://zamilrenttruck.com/images/profiles/"+imgPath;
+  }
+
   checkActivated(page) {
     return (page == this.pageIndex);
   }

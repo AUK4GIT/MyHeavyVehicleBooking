@@ -92,6 +92,7 @@ export class OwnerAddEditOfferPage {
   addorUpdateOffer() {
     if(this.offer.startdate && this.offer.enddate && this.offer.discount && this.offer.message && this.selectedTripId && true){
      this.presentLoadingCustom();
+     this.offer.status = "pending";
       this.appService.createOffer(this.offer, (resp) => {
         this.dismissLoading();
         if (resp.result == "failure") {
