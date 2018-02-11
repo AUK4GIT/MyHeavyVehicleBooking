@@ -105,6 +105,14 @@ div.hint_more_options>ion-icon{
   color: #555;
 }
 
+ion-item h2, .alert-radio-label, ion-card-title {
+  white-space: normal !important; 
+  word-wrap: break-word;
+}
+ion-item i {
+  color: #555;
+}
+
 // .error::before {
 //   content: "* ";
 // }

@@ -11,6 +11,7 @@ import { AdminOffersListPage } from '../admin-offers-list/admin-offers-list';
 import { AdminDriversListPage } from '../admin-drivers-list/admin-drivers-list';
 import { CitiesPage } from '../cities/cities';
 import { TruckTypesPage } from '../truck-types/truck-types';
+import { AdminUpdateVatPage } from '../admin-update-vat/admin-update-vat'
 
 @IonicPage()
 @Component({
@@ -78,9 +79,13 @@ export class AdminPage {
     this.pageIndex = 8;
     this.nav.setRoot(TruckTypesPage);
   }
+  go_to_UpdateVAT(){
+    this.pageIndex = 9;
+    this.nav.setRoot(AdminUpdateVatPage);
+  }
 
   logout_go_to_App(){
-    this.pageIndex = 9;
+    this.pageIndex = 10;
     console.log("logout_go_to_App");
     this.events.publish('logout', 'logout');    
   }

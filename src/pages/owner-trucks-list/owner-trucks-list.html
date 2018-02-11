@@ -22,11 +22,12 @@
       <ion-thumbnail item-left>        
         <img [src]="getImage(item.truckid)" />
       </ion-thumbnail>
+      <h6>( <i>Ref id: {{ item.truckid }}</i> )</h6>
       <h2>
         {{item.trucktype}}
       </h2>
       <h3>{{item.capacity}}</h3>
-      <p>{{item.regno}}</p>
+      <p>Reg No - {{item.regno}}</p>
       <button class="status_trip" ion-button outline item-end>{{item.status}}</button>      
       
       <!-- <rating [(ngModel)]="item.rating" readOnly="true" max="5"

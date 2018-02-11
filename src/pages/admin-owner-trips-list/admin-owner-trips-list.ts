@@ -41,7 +41,11 @@ export class AdminOwnerTripsListPage {
         console.log("resp.error");
         this.presentAlert(resp.error, ["OK"], null);
       } else if (resp["data"]) {
-        this.items = resp["data"];
+        // this.items = resp["data"];
+        this.items = resp["data"].map((value) => {
+          value.startdate = value.startdate.replace(/\s/g, "T");
+          return value;
+        });
         this.searchItems = this.items;           
       }
     });
@@ -55,7 +59,11 @@ export class AdminOwnerTripsListPage {
         console.log("resp.error");
         this.presentAlert(resp.error, ["OK"], null);
       } else if (resp["data"]) {
-        this.items = resp["data"];
+        // this.items = resp["data"];
+        this.items = resp["data"].map((value) => {
+          value.startdate = value.startdate.replace(/\s/g, "T");
+          return value;
+        });
         this.searchItems = this.items;           
       }
     });
@@ -69,7 +77,11 @@ export class AdminOwnerTripsListPage {
         console.log("resp.error");
         this.presentAlert(resp.error, ["OK"], null);
       } else if (resp["data"]) {
-        this.items = resp["data"];
+        // this.items = resp["data"];
+        this.items = resp["data"].map((value) => {
+          value.startdate = value.startdate.replace(/\s/g, "T");
+          return value;
+        });
       }
     });            
   }

@@ -22,10 +22,13 @@
           <!-- <div class="icon-truck" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
         </ion-thumbnail>
         <h2>
-          {{truck.trucktype}}
+          {{truck.trucktype}} <i>(Ref id: {{ truck.truckid }})</i>
         </h2>
         <h3>{{truck.capacity}}</h3>
-        <p>{{truck.regno}}</p>
+        <p>Reg No - {{truck.regno}}</p>
+        <h2>Owner: {{truck.name}} <i>(Ref: {{ truck.ownerid }})</i></h2>
+        <h3>{{truck.email}}</h3>
+        <h3>{{truck.phonenumber}}</h3>
         <button class="status_trip" ion-button outline item-end>{{truck.status}}</button> 
         <div class="hint_more_options">
           <ion-icon icon-start name="arrow-round-back">Swipe left to see more options</ion-icon>

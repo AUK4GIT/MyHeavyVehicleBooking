@@ -16,7 +16,7 @@ export class AdminDriversListPage {
 
   ionViewDidEnter() {
     this.presentLoadingCustom();
-    this.appService.getUsersByRole("driver",(resp)=>{
+    this.appService.getAllDrivers((resp)=>{
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");

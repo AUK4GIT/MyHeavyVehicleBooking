@@ -16,21 +16,6 @@
   </ion-navbar>
 </ion-header>
 <ion-content id="page1">
-
-    <!-- <ion-segment padding [(ngModel)]="segment" color="primary" (ionChange)="segmentChanged($event)">
-        <ion-segment-button value="availabletrips">
-            {{ 'AVAILABLETRIPS' | translate }}
-        </ion-segment-button>
-        <ion-segment-button value="customtrips">
-            {{ 'CUSTOMTRIPS' | translate }}
-        </ion-segment-button>
-    </ion-segment> -->
-
-    <!-- <div [ngSwitch]="segment"> -->
-        <!-- <div padding-top *ngSwitchCase="'availabletrips'"> -->
-            <!-- <ion-searchbar [(ngModel)]="search.query" [showCancelButton]="true" (ionInput)="updateSearch()" (ionCancel)="dismiss()"
-            placeholder="Search based on pickup, drop cities & trucktypes">
-          </ion-searchbar> -->
           <ion-row>
                 <ion-col>
                     <ion-label>Filter By: 
@@ -60,6 +45,7 @@
                   <ion-thumbnail item-left>
                     <img src="assets/imgs/logo_transparent.jpg"/>
                   </ion-thumbnail>
+                  <h6>( <i>Ref id: {{ item.tripid }}</i> )</h6>
                   <h2><b>
                       {{item.startlocation}} - {{item.endlocation}}
                       </b>
@@ -74,83 +60,13 @@
                       {{ item.duration }}  hrs
                   </h5>
                   <h5>
-                      <b  style="color: green;">Owner: {{ item.ownername }}(Ref: {{item.ownerid}}) </b>
+                      <b  style="color: green;  white-space: normal; word-wrap: break-word;">Owner: {{ item.ownername }}( Ref: {{item.ownerid}} ) </b>
                   </h5>
                   <span class="offer-label" item-end>
                     <ion-icon *ngIf="isOfferAvailableForTrip(item)" style="color: #2f9610" name="star-outline">{{getOfferMessage(item)}}</ion-icon>
                   </span>
                 </ion-item>
-                <!-- <ion-item-options side="end">
-                    <button ion-button color="danger" (click)="deleteTrip(trip, gindex, iindex)">
-                      <ion-icon name="delete"></ion-icon>
-                      Delete
-                    </button>
-                  </ion-item-options> -->
                 </ion-item-sliding>
               </ion-list>
-        <!-- </div>
-    </div> -->
-
-    <!-- <div [ngSwitch]="segment">
-        <div padding-top *ngSwitchCase="'customtrips'">
-                <ion-row>
-                        <ion-col>
-                            <ion-label>Filter By: 
-                                <button ion-button color="light" small icon-end (click)="clearFilters()">clear
-                                    <ion-icon name="close"></ion-icon>
-                                  </button>
-                            </ion-label> 
-                            <ion-item margin-top class="item-leave-height">
-            
-                              <ion-select (ionChange)="filterSelected(1)" name="pickupcities" placeholder="pickup" [(ngModel)]="pickupcity">
-                                <ion-option value="{{city}}" *ngFor="let city of pickupcities">{{ city }}</ion-option>
-                              </ion-select>
-                            
-                              <ion-select (ionChange)="filterSelected(2)" name="dropcities" placeholder="drop" [(ngModel)]="dropcity">
-                                <ion-option value="{{city}}" *ngFor="let city of dropcities">{{ city }}</ion-option>
-                              </ion-select>
-                            
-                              <ion-select (ionChange)="filterSelected(3)" name="trucks" placeholder="trucktype" [(ngModel)]="truck">
-                                <ion-option value="{{truck}}" *ngFor="let truck of trucks">{{ truck }}</ion-option>
-                              </ion-select>
-                            </ion-item>
-                          </ion-col>
-                        </ion-row>
-            <ion-list id="page-list2">
-                <ion-item-sliding *ngFor="let item of searchItems">                 
-                <ion-item (click)="viewQuotationsForTrip(item)" color="none" id="page-list-item" >
-                  <ion-thumbnail item-left>
-                    <img src="assets/imgs/logo_transparent.jpg"/>
-                  </ion-thumbnail>
-                  <h2><b>
-                      {{item.startlocation}} - {{item.endlocation}}
-                      </b>
-                  </h2>
-                  <h3>
-                    {{ item.trucktype }}
-                  </h3>
-                  <h4>
-                      {{ item.startdate  | date:'dd/MM/yy' }}
-                  </h4>
-                  <h5>
-                      {{ item.freight }}  
-                  </h5>
-                  <button class="status_trip" ion-button outline item-end>{{item.status}}</button>
-                  <h6 icon-end style="float: right; color: #bbb; font-size:1.2rem;">
-                        Swipe left to see more options
-                        <ion-icon name="arrow-round-back"></ion-icon>
-                    </h6>              
-                </ion-item>
-                <ion-item-options side="end">
-                    <button ion-button color="danger" (click)="cancelCustomTrip(item)">
-                      <ion-icon name="delete"></ion-icon>
-                      Cancel
-                    </button>
-                  </ion-item-options>
-                </ion-item-sliding>
-              </ion-list>
-        </div>
-    </div> -->
-
-  
+   
 </ion-content>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
+import { AdminTripDetailsPage } from '../admin-trip-details/admin-trip-details'
 
 @Component({
   selector: 'page-trips-list',
@@ -20,9 +21,17 @@ export class TripsListPage {
         console.log("resp.error");
         this.presentAlert(resp.error, ["OK"], null);
       } else if (resp["data"]) {
-        this.items = resp["data"];
+        // this.items = resp["data"];
+        this.items = resp["data"].map((value) => {
+          value.startdate = value.startdate.replace(/\s/g, "T");
+          return value;
+        });
       }
     });           
+  }
+
+  showTripDetails(trip){
+    this.navCtrl.push(AdminTripDetailsPage);
   }
 
 

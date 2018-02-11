@@ -1,6 +1,13 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Offers</ion-title>
+    <ion-buttons start>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      {{'OFFERS' | translate}}
+    </ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -12,6 +19,7 @@
           <ion-thumbnail item-left>
             <img src="assets/imgs/logo_transparent.jpg" />
           </ion-thumbnail>
+          <h6>( <i>Ref id: {{ item.offerid }}</i> )</h6>
           <h2>
             {{item.fromlocation}} - {{item.tolocation}}
           </h2>
@@ -24,6 +32,12 @@
           <h3>
             {{item.startdate}} - {{item.enddate}}
           </h3>
+          <h4>
+            Trip Ref - {{item.tripid}}
+          </h4>
+          <h4>
+           Owner: {{item.ownername}} (Ref- {{ item.userid }})
+          </h4>
           <div class="hint_more_options">
             <ion-icon icon-start name="arrow-round-back">Swipe left to see more options</ion-icon>
           </div>

@@ -18,7 +18,7 @@ export class AdminOffersListPage {
 
   ionViewDidEnter() {
     this.presentLoadingCustom();
-    this.appService.getOffers((resp)=>{
+    this.appService.getAllOffers((resp)=>{
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");

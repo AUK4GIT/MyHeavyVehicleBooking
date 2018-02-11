@@ -13,11 +13,12 @@
   <ion-content  id="page1">
 
       <ion-list id="page-list1">
-        <ion-item id="page-list-item10" *ngFor="let item of items">
+        <ion-item id="page-list-item10" (click)="showTripDetails(item)" *ngFor="let item of items">
           <ion-thumbnail item-left>
             <img src="assets/imgs/logo_transparent.jpg"/>
             <!-- <div class="icon-road" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
           </ion-thumbnail>
+          <h6>( <i>Ref id: {{ item.tripid }}</i> )</h6>
           <h2><b>
               {{item.startlocation}} - {{item.endlocation}}
               </b>

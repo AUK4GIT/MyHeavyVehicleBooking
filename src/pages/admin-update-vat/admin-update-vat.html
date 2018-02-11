@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+      <ion-buttons start>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+        </ion-buttons>
+    <ion-title>
+      Update VAT
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-row>
+        <ion-item margin-top class="item-leave-height">
+            <ion-label>VAT</ion-label>
+            <ion-input placeholder="vat" name="type" id="type" type="number" [(ngModel)]="vat"></ion-input>                        
+        </ion-item> 
+    </ion-row>
+
+    <ion-row padding-top >
+        <ion-col text-center>
+            <button (click)="updateVAT()" ion-button medium >Update</button>
+        </ion-col>
+    </ion-row>
+</ion-content>

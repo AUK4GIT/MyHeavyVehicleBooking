@@ -16,6 +16,8 @@ import { TruckTypesPage } from '../truck-types/truck-types';
 import { AddTruckTypePage } from '../add-truck-type/add-truck-type'
 import { AdminCustomerTripsListPage } from '../admin-customer-trips-list/admin-customer-trips-list'
 import { AdminOwnerTripsListPage } from '../admin-owner-trips-list/admin-owner-trips-list'
+import { AdminTripDetailsPage } from '../admin-trip-details/admin-trip-details'
+import { AdminUpdateVatPage } from '../admin-update-vat/admin-update-vat'
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { AdminOwnerTripsListPage } from '../admin-owner-trips-list/admin-owner-t
     AddTruckTypePage,
     DateToIsoPipe,
     AdminCustomerTripsListPage,
-    AdminOwnerTripsListPage
+    AdminOwnerTripsListPage,
+    AdminTripDetailsPage,
+    AdminUpdateVatPage
   ],
   imports: [
     IonicPageModule.forChild(AdminPage),
@@ -50,7 +54,9 @@ import { AdminOwnerTripsListPage } from '../admin-owner-trips-list/admin-owner-t
     TruckTypesPage,
     AddTruckTypePage,
     AdminOwnerTripsListPage,
-    AdminCustomerTripsListPage
+    AdminCustomerTripsListPage,
+    AdminTripDetailsPage,
+    AdminUpdateVatPage
   ],
   exports: [DateToIsoPipe]
 })

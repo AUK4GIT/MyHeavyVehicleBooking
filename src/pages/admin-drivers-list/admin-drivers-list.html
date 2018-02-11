@@ -19,6 +19,7 @@
             <ion-thumbnail item-left>
               <img src="assets/imgs/logo_transparent.jpg" />
             </ion-thumbnail>
+            <h6>( <i>Ref id: {{ customer.userid }}</i> )</h6>
             <h2><b>
                 {{customer.name}}
                 </b>
@@ -26,8 +27,17 @@
             <h3>
               {{ customer.email }}
             </h3>
+            <h3>
+              {{ customer.nationalidfordriver }}
+            </h3>
+            <h3>
+              {{ customer.licensefordriver }}
+            </h3>
             <h2>
                 {{ customer.phonenumber }}
+              </h2>
+              <h2>
+                Owner: {{ customer.ownername }} (Ref: {{ customer.owneridfordriver }})
               </h2>
               <div class="hint_more_options">
                 <ion-icon icon-start name="arrow-round-back">Swipe left to see more options</ion-icon>

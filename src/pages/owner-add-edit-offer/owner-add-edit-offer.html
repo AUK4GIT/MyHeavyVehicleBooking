@@ -17,7 +17,7 @@
               <ion-item margin-top class="item-leave-height">
                 <ion-label>Trip</ion-label>
                 <ion-select *ngIf="!isEdit" name="trip" [(ngModel)]="selectedTripId" (ionChange)="tripSelected($event)">
-                  <ion-option value="{{trip.tripid}}" *ngFor="let trip of trips">{{ trip.startlocation }} - {{ trip.endlocation}}</ion-option>
+                  <ion-option value="{{trip.tripid}}" *ngFor="let trip of trips">{{ trip.startlocation }} - {{ trip.endlocation}} <i>(Ref id: {{ trip.tripid}} )</i></ion-option>
                 </ion-select>
                 <ion-input *ngIf="isEdit" placeholder="trip" [readonly]=true name="trip" [(ngModel)]="tripDetails"></ion-input>
               </ion-item>
