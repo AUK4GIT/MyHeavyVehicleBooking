@@ -88,7 +88,7 @@ buttontitle : string;
       this.cost = quotation.cost,
       this.starttime = quotation.starttime,
       this.closetime = quotation.closetime,
-      this.charges = quotation.additionalcharges,
+      // this.charges = quotation.additionalcharges,
       this.comments = quotation.comments,
       this.appService.currentUser.userid = quotation.ownerid,
       this.quotationid = quotation.quotationid;
@@ -109,6 +109,8 @@ buttontitle : string;
       this.addQuotation();
     } else if (this.tripstatus == "requested") {
       this.updateQuote();
+    } else {
+      this.updateQuote();//by adding driver
     }
   }
 
@@ -123,7 +125,7 @@ buttontitle : string;
         status: "",
         starttime: this.starttime,
         closetime: this.closetime,
-        additionalcharges: this.charges,
+        // additionalcharges: this.charges,
         comments: this.comments,
         appliedofferid: "",
         discount: "",
@@ -155,7 +157,7 @@ buttontitle : string;
         status: "",
         starttime: this.starttime,
         closetime: this.closetime,
-        additionalcharges: this.charges,
+        // additionalcharges: this.charges,
         comments: this.comments,
         appliedofferid: "",
         discount: "",
