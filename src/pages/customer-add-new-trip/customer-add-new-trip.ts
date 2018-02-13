@@ -3,6 +3,7 @@ import { NavController, NavParams, LoadingController, ModalController, Modal, Ev
 import { AppModelServiceProvider, AppTrip, AppTruck, AppTruckType } from '../../providers/app-model-service/app-model-service'
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
+import { SearchedTripModalPage } from "../searched-trip-modal/searched-trip-modal"
 
 @Component({
   selector: 'page-customer-add-new-trip',
@@ -22,8 +23,9 @@ export class CustomerAddNewTripPage {
   cities: [any];
   private loading: any;
   searchTrip: any;
+  trips: any[];
 
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public events: Events, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -34,6 +36,8 @@ export class CustomerAddNewTripPage {
     this.tempTrip = {};
 
     this.searchTrip = this.navParams.get("trip");
+    this.trips = this.navParams.get("trips");
+
     if(this.searchTrip != null){
       this.dropcity = this.searchTrip.endlocation;
       this.pickupcity = this.searchTrip.startlocation;
@@ -68,8 +72,25 @@ export class CustomerAddNewTripPage {
   }
 
   requestQuote(){
+
+    var trucks: AppTruckType[] = this.trucks.filter((truck: AppTruckType) => truck.trucktypeid == this.truckid);
+
+    let items = this.trips.filter((item: any) => {
+      console.log("item trucktype:- ",item.trucktype);
+      return ((item.startlocation == this.pickupcity) && (item.endlocation == this.dropcity) && (item.trucktype == trucks[0].type));
+    });
+
+    if(items.length > 0){
+      this.presentSearchRelatedTrips(items, {startlocation: this.pickupcity, endlocation: this.dropcity, trucktype: trucks[0].type});
+    } else {
+      this.continueRequestQuote();
+    }
+  }
+
+  continueRequestQuote() {
+    var trucks: AppTruckType[] = this.trucks.filter((truck: AppTruckType) => truck.trucktypeid == this.truckid);
+
     if(this.truckid && this.dropcity && this.pickupcity && this.frieght && this.startdate && true){
-      var trucks: AppTruckType[] = this.trucks.filter((truck: AppTruckType) => truck.trucktypeid == this.truckid);
       
       this.tempTrip = {
         truckid: this.truckid,
@@ -152,6 +173,25 @@ export class CustomerAddNewTripPage {
       buttons: buttons
     });
     alert.present();
+  }
+
+  presentSearchRelatedTrips(items, searchedTrip) {
+      const stModal: Modal = this.modal.create(SearchedTripModalPage,{trips: items, searchedTrip: searchedTrip});
+      stModal.present();
+      stModal.onDidDismiss((data) => {
+        if (data) {
+          if (data.trip) {
+            data.trip.startdate = this.startdate;
+            data.trip.freight = this.frieght;
+            this.navCtrl.popToRoot();
+            this.events.publish('select:predefinedtrip', data.trip);
+          } else {
+            this.continueRequestQuote();
+          }
+        } else {
+          this.continueRequestQuote();
+        }
+      });
   }
 
   presentPredefinedPlaces(ev, type) {

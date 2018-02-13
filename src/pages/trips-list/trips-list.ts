@@ -31,7 +31,7 @@ export class TripsListPage {
   }
 
   showTripDetails(trip){
-    this.navCtrl.push(AdminTripDetailsPage);
+    this.navCtrl.push(AdminTripDetailsPage,{"trip":trip});
   }
 
 

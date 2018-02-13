@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController, ModalController, Modal } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, ModalController, Modal, Events } from 'ionic-angular';
 import { AppModelServiceProvider, AppTruck, AppTrip, AppOffer } from '../../providers/app-model-service/app-model-service'
 
 import { CustomerAddNewTripPage } from '../customer-add-new-trip/customer-add-new-trip';
@@ -33,7 +33,7 @@ export class CustomerTripsListPage {
   truck: string;
 
 
-  constructor(private modal: ModalController, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public events: Events, private modal: ModalController, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
 
     let tripSearched = localStorage.getItem("tripSearch");
 
@@ -66,6 +66,10 @@ export class CustomerTripsListPage {
     this.pickupcity = "";
     this.dropcity = "";
     this.truck = "";
+
+    this.events.subscribe('select:predefinedtrip', (trip)=>{
+      this.viewDetailsAndBookPredefinedTrip(trip);
+    })
   }
 
   ionViewDidEnter() {
@@ -119,7 +123,7 @@ export class CustomerTripsListPage {
   }
 
   isOfferAvailableForTrip(trip) {
-    console.log("trip:- " + trip.tripid);
+    // console.log("trip:- " + trip.tripid);
     return (this.tripidsofoffer.length > 0 ? (this.tripidsofoffer.indexOf(trip.tripid) != -1) : false);
   }
 
@@ -224,8 +228,9 @@ export class CustomerTripsListPage {
   }
 
   addNewTrip() {
-    this.navCtrl.push(CustomerAddNewTripPage,{ trip: this.searchedTrip });
+    this.navCtrl.push(CustomerAddNewTripPage,{ trip: this.searchedTrip, trips : this.items });
   }
+
 
   viewDetailsAndBookPredefinedTrip(trip) {
     var offers = this.offers.filter((offer: AppOffer) => (offer.tripid == trip.tripid));
@@ -237,7 +242,7 @@ export class CustomerTripsListPage {
   }
 
   viewQuotationsForTrip(trip) {
-    console.log("trip: " + trip);
+    // console.log("trip: " + trip);
     this.navCtrl.push(CustomerViewQuotationsPage, { trip: trip });
   }
 

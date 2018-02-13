@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar>
@@ -8,95 +7,103 @@
 </ion-header>
 
 
-<ion-content >
+<ion-content>
 
-    <ion-card>
-        <ion-card-header>
-          {{'TRIPDETAILS'|translate}}
-        </ion-card-header>
-        <ion-card-content>
-          <ion-card-title>
-              {{trip?.startlocation}} - {{trip?.endlocation}}
-          </ion-card-title>
+  <ion-card>
+    <ion-card-header>
+      {{'TRIPDETAILS'|translate}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-card-title>
+        {{trip?.startlocation}} - {{trip?.endlocation}}
+      </ion-card-title>
 
-          <ion-item item-start class="editable">
-            <ion-label>{{ 'STARTDATE' | translate }}</ion-label>
-            <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="trip.startdate"></ion-datetime>
-          </ion-item>
-        
-          <ion-item item-start class="editable">
-            <ion-label>{{ 'FREIGHT' | translate }}</ion-label>
-            <ion-input  name="freight" id="freight" type="text" [(ngModel)]="trip.freight"></ion-input>
-          </ion-item>
-          <!-- <h4>
+      <ion-item item-start class="editable">
+        <ion-label>{{ 'STARTDATE' | translate }}</ion-label>
+        <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="trip.startdate"></ion-datetime>
+      </ion-item>
+
+      <ion-item item-start class="editable">
+        <ion-label>{{ 'FREIGHT' | translate }}</ion-label>
+        <ion-input name="freight" id="freight" type="text" [(ngModel)]="trip.freight"></ion-input>
+      </ion-item>
+      <!-- <h4>
               {{ trip?.startdate }}
           </h4>
           <h5>
               {{ trip?.freight }}  
           </h5> -->
-        </ion-card-content>
-      </ion-card>
+    </ion-card-content>
+  </ion-card>
 
-      <ion-card>
-          <ion-card-header>
-            {{'QUOTATIONDETAILS'|translate}}
-          </ion-card-header>
-          <ion-card-content>
-            <ion-card-title>
-                {{ quotation?.trucktype }}
-              </ion-card-title>
-            <h2><b>
-                {{ quotation?.cost }} SR
-                </b>
-            </h2>
-            <h4>
-                {{ quotation?.starttime }}
-            </h4>
-            <h5>
-                {{ quotation?.duration }} hrs
-            </h5>
-            <h3 *ngIf="offer">
-              Total after discount <b> {{ quotation?.cost - (quotation?.cost * offer?.discount / 100) }} </b>SR
-            </h3>
-          </ion-card-content>
-        </ion-card>
+  <ion-card>
+    <ion-card-header>
+      {{'QUOTATIONDETAILS'|translate}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-card-title>
+        {{ quotation?.trucktype }}
+      </ion-card-title>
+      <h4>
+        {{ quotation?.starttime }}
+      </h4>
+      <h5>
+        {{ quotation?.duration }} hrs
+      </h5>
+      <h5>
+        <b>
+          {{ quotation?.cost }} SR
+        </b>
+      </h5>
+      <h5>
+        VAT: {{ trip?.vat }} %
+      </h5>
+      <h5 *ngIf="offer">
+        Discount: {{ offer?.discount }} %
+      </h5>
+      <h3 *ngIf="quotation && trip">
+        Total amount
+        <b> {{ getTotalAmount(trip, quotation, offer) }} </b>SR
+      </h3>
+    </ion-card-content>
+  </ion-card>
 
-        <ion-card *ngIf="offer">
-            <ion-card-header>
-              Offer
-            </ion-card-header>
-            <ion-card-content>
-              <ion-card-title>
-                  {{offer?.message}}
-                </ion-card-title>
-                  <h3>
-                    Discount: {{ offer?.discount }} %
-                  </h3>
-                  <h4>
-                    Validity: {{ offer?.startdate }} - {{ offer?.enddate }}
-                  </h4>
-            </ion-card-content>
-          </ion-card>
+  <ion-card *ngIf="offer">
+    <ion-card-header>
+      Offer
+    </ion-card-header>
+    <ion-card-content>
+      <ion-card-title>
+        {{offer?.message}}
+      </ion-card-title>
+      <h3>
+        Discount: {{ offer?.discount }} %
+      </h3>
+      <h4>
+        Validity: {{ offer?.startdate }} - {{ offer?.enddate }}
+      </h4>
+    </ion-card-content>
+  </ion-card>
 
-        <ion-card>
-            <ion-card-header>
-              {{'OWNERDETAILS'|translate}}
-            </ion-card-header>
-            <ion-card-content>
-                <ion-card-title>
-                    {{owner?.name}}
-                  </ion-card-title>
-                    <h3>
-                      {{ owner?.email }}
-                    </h3>
-                    <h4>
-                        {{ owner?.phonenumber }}
-                    </h4>
-            </ion-card-content>
-          </ion-card>
-            <ion-row padding-top >
-                <ion-col text-center>
-                    <button (click)="bookTrip()" ion-button medium >{{ 'BOOK' | translate }}</button>
-                </ion-col>
-            </ion-row>
+  <ion-card>
+    <ion-card-header>
+      {{'OWNERDETAILS'|translate}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-card-title>
+        {{owner?.name}}
+      </ion-card-title>
+      <h3>
+        {{ owner?.email }}
+      </h3>
+      <h4>
+        {{ owner?.phonenumber }}
+      </h4>
+    </ion-card-content>
+  </ion-card>
+  <ion-row padding-top>
+    <ion-col text-center>
+      <button (click)="bookTrip()" ion-button medium>{{ 'BOOK' | translate }}</button>
+    </ion-col>
+  </ion-row>
 </ion-content>

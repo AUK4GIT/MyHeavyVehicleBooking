@@ -83,6 +83,15 @@ export class CustomerBookPredfinedTripPage {
     }
   }
 
+  getTotalAmount(trip?: any, quotation?: any, offer?: any) {
+    var total = 0;
+    total = total + Number(quotation.cost) + (trip.vat * quotation.cost/100);
+    if(offer && offer.discount && offer.discount!="" && offer.discount!=undefined && offer.discount!=null){
+      total = total - (quotation.cost * offer.discount / 100);
+    }
+    return total;
+  }
+
   presentAlert(message, buttontexts, callback) {
     var buttons = [];
     var createCallback =  ( i ) => {

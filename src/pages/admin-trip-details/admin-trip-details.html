@@ -11,7 +11,7 @@
 
   <ion-card>
     <ion-card-header>
-      {{'TRIPDETAILS'|translate}}
+      {{'TRIPDETAILS'|translate}} ( {{ trip.status }} )
     </ion-card-header>
     <ion-card-content>
       <ion-card-title>
@@ -24,8 +24,8 @@
       <h5>
         {{ trip?.freight }}
       </h5>
-      <ion-textarea placeholder="Enter Remarks or Comments" [(ngModel)]="trip.customerremarks"></ion-textarea>
-      <rating [(ngModel)]="trip.rating" readOnly="false" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half"
+      <h3 style="white-space:normal;word-wrap: break-word;">{{ trip?.customerremarks }}</h3>
+      <rating *ngIf="trip" [(ngModel)]="trip.rating" readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half"
         starIconName="star" nullable="false">
       </rating>
     </ion-card-content>
@@ -37,19 +37,26 @@
     </ion-card-header>
     <ion-card-content>
       <ion-card-title>
-        {{ quotation?.trucktype }}
+        {{ trip?.trucktype }}
       </ion-card-title>
-      <h2>
-        <b>
-          {{ quotation?.cost }} SR
-        </b>
-      </h2>
       <h4>
-        {{ quotation?.starttime }}
+        {{ trip?.startdate }}
       </h4>
       <h5>
-        {{ quotation?.duration }} hrs
+        {{ trip?.duration }} hrs
       </h5>
+      <h5>
+        <b>
+          {{ trip?.cost }} SR
+        </b>
+      </h5>
+      <h5>
+        VAT: {{ trip?.vat }} %
+      </h5>
+      <h3 *ngIf="trip">
+        Total amount
+        <b> {{ getTotalAmount(trip, trip, null) }} </b>SR
+      </h3>
     </ion-card-content>
   </ion-card>
 
@@ -71,6 +78,27 @@
     </ion-card-content>
   </ion-card>
 
+<ion-card>
+    <ion-card-header>
+        Customer Details
+      </ion-card-header>
+<ion-card-content>
+    <ion-card-title>
+        {{customer?.name}} (
+        <i>Ref id- {{ customer?.userid }}</i> )
+      </ion-card-title>
+    <h3>
+      {{ customer?.email }}
+    </h3>
+    <h4>
+        {{ customer?.phonenumber }}
+      </h4>
+    <h5>
+        DOJ: {{ customer?.timestamp | date : 'dd MMM yyyy' }}
+    </h5>
+</ion-card-content>
+</ion-card>
+
   <ion-card>
     <ion-card-header>
       {{'DRIVERDETAILS'|translate}}
@@ -88,9 +116,4 @@
       </h4>
     </ion-card-content>
   </ion-card>
-  <ion-row padding-top>
-    <ion-col text-center>
-      <button (click)="rateTheTrip()" ion-button medium>Submit Rating</button>
-    </ion-col>
-  </ion-row>
 </ion-content>
