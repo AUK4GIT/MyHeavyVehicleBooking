@@ -31,6 +31,8 @@ export class DriverTripDetailsPage {
        } else if (resp["data"]) {
          if(resp["data"].length > 0){
           this.quotation = resp["data"][0];
+          this.comments = this.quotation.comments;
+          this.charges = this.quotation.additionalcharges;
           this.getTruckForTruckId(this.quotation.truckid);
          }
        }

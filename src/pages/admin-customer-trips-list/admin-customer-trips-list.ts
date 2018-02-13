@@ -18,7 +18,7 @@ export class AdminCustomerTripsListPage {
 
   constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     
-    // this.user = this.navParams.get("user");
+    this.user = this.navParams.get("user");
     // if(this.appService.customTripCreated == true){
     //   this.segment = 'customtrips';
     // } else {
@@ -91,7 +91,11 @@ export class AdminCustomerTripsListPage {
         console.log("resp.error");
         this.presentAlert(resp.error, ["OK"], null);
       } else if (resp["data"]) {
-        this.items = resp["data"];
+        // this.items = resp["data"];
+        this.items = resp["data"].map((value) => {
+          value.startdate = value.startdate.replace(/\s/g, "T");
+          return value;
+        });
       }
     });            
   }

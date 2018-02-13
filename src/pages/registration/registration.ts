@@ -164,8 +164,9 @@ export class RegistrationPage {
           //  this.serverError = response.error;
           this.presentAlert(response.error,["OK"],null);
          }
+         this.dismissLoading();
      });
-     this.dismissLoading();
+     
     }
 
     // uploadTruck(truckid) {

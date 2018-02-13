@@ -73,7 +73,7 @@ export class CustomerBookPredfinedTripPage {
             console.log("resp.error");
             this.presentAlert(resp.error, ["OK"], null);
           } else if (resp["message"]) {
-            this.presentAlert("Your booking is registered successfully. Please track the status in 'Booking History' or 'Custom Trips'",["OK"],()=>{
+            this.presentAlert("Your booking is registered successfully. Please track the status in 'Booking History' or 'Requested Trips'",["OK"],()=>{
               this.navCtrl.pop();
             });
           }

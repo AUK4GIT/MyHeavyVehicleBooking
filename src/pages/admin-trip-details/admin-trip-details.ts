@@ -10,7 +10,7 @@ import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip } from '../../p
 export class AdminTripDetailsPage {
 
 
-  quotation: AppQuotation;
+  quotation: any;
   trip: AppTrip;
   owner: AppUser;
   driver: AppUser;
@@ -18,66 +18,74 @@ export class AdminTripDetailsPage {
   private loading: any;
 
   constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
-    this.trip = this.navParams.get("trip");
+    let trip = this.navParams.get("trip");;
+    trip.startdate = trip.startdate.replace(/\s/g, "T");
+    this.trip = trip;
   }
 
   getTotalAmount(trip?: any, quotation?: any, offer?: any) {
     var total = 0;
-    total = total + Number(quotation.cost) + (trip.vat * quotation.cost / 100);
+    total = total + Number(trip.cost) + (trip.vat * trip.cost / 100);
     if (offer && offer.discount && offer.discount != "" && offer.discount != undefined && offer.discount != null) {
-      total = total - (quotation.cost * offer.discount / 100);
+      total = total - (trip.cost * offer.discount / 100);
+    }
+    if (quotation.additionalcharges != "" && quotation.additionalcharges != null && quotation.additionalcharges != undefined && Number(quotation.additionalcharges) != NaN) {
+      total = total + Number(quotation.additionalcharges);
     }
     return total;
   }
 
   ionViewDidEnter() {
     this.presentLoadingCustom();
-
-    this.appService.getUserById(this.trip.ownerid, (resp) => {
-      this.dismissLoading();
-      if (resp.result == "failure") {
-        console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
-      } else if (resp["data"]) {
-        if (resp["data"].length > 0) {
-          this.owner = resp["data"][0];
-        }
-      }
-    });
-
+    let self = this;
     this.appService.getConfirmedQuotationForTripId(this.trip.tripid, (resp) => {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        self.presentAlert(resp.error, ["OK"], null);
       } else if (resp["data"]) {
         if (resp["data"].length > 0) {
-          this.quotation = resp["data"][0];
+          self.quotation = resp["data"][0];
 
-          if (this.quotation.driver != "") {
-            this.appService.getUserById(this.quotation.driver, (resp) => {
-              this.dismissLoading();
+          if (self.quotation.driver != "") {
+            self.appService.getUserById(self.quotation.driver, (resp) => {
+              self.dismissLoading();
               if (resp.result == "failure") {
                 console.log("resp.error");
-                this.presentAlert(resp.error, ["OK"], null);
+                self.presentAlert(resp.error, ["OK"], null);
               } else if (resp["data"]) {
                 if (resp["data"].length > 0) {
-                  this.driver = resp["data"][0];
+                  self.driver = resp["data"][0];
                 }
               }
             });
           }
+
+          self.appService.getUserById(self.quotation.ownerid, (resp) => {
+            self.dismissLoading();
+            if (resp.result == "failure") {
+              console.log("resp.error");
+              self.presentAlert(resp.error, ["OK"], null);
+            } else if (resp["data"]) {
+              if (resp["data"].length > 0) {
+                self.owner = resp["data"][0];
+              }
+            }
+          });
+
         }
       }
     });
     this.appService.getUserById(this.trip.userid, (resp) => {
-      this.dismissLoading();
+      self.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        self.presentAlert(resp.error, ["OK"], null);
       } else if (resp["data"]) {
         if (resp["data"].length > 0) {
-          this.customer = resp["data"][0];
+          let cust = resp["data"][0];
+          cust.timestamp = cust.timestamp.replace(/\s/g, "T");
+          self.customer = cust;
         }
       }
     });

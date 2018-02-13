@@ -13,7 +13,7 @@ export class DriverTripsListPage {
   constructor(public alertCtrl :AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.presentLoadingCustom();
     console.log('ionViewDidLoad DriverTripsListPage');
     this.appService.getConfirmedTripsforDriverId(this.appService.currentUser.userid, (resp)=>{

@@ -68,17 +68,18 @@
             <ion-input (ionFocus)="focusFunction()" placeholder="Add Comments" name="comments" id="comments" type="text" [(ngModel)]="comments"></ion-input>
           </ion-item>
         </ion-col>
-         <ion-col col-12 col-sm>
+         <!-- <ion-col col-12 col-sm>
             <ion-item margin-top class="item-leave-height">
               <ion-label>{{'ADDITIONALCHARGES' | translate}}</ion-label>
               <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="charges" name="charges" id="charges" type="number" [(ngModel)]="charges"></ion-input>
             </ion-item>
-          </ion-col>
+          </ion-col> -->
     </ion-row>
 
     <ion-row padding-top>
       <ion-col text-center>
-        <button (click)="addQuote()" [disabled]="(tripstatus != 'pending')" ion-button medium>{{ buttontitle }}</button>
+        <!-- <button (click)="addQuote()" [disabled]="(tripstatus != 'pending' && tripstatus != 'requested')" ion-button medium>{{ buttontitle }}</button> -->
+        <button (click)="addQuote()" ion-button medium>{{ buttontitle }}</button>
       </ion-col>
     </ion-row>
   </ion-grid>

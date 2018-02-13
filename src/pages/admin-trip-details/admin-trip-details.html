@@ -19,7 +19,7 @@
         <i>Ref id- {{ trip?.tripid }}</i> )
       </ion-card-title>
       <h4>
-        {{ trip?.startdate }}
+        {{ trip?.startdate | date : 'dd MMM yyyy' }}
       </h4>
       <h5>
         {{ trip?.freight }}
@@ -40,7 +40,7 @@
         {{ trip?.trucktype }}
       </ion-card-title>
       <h4>
-        {{ trip?.startdate }}
+        {{ trip?.startdate | date : 'dd MMM yyyy' }}
       </h4>
       <h5>
         {{ trip?.duration }} hrs
@@ -53,9 +53,12 @@
       <h5>
         VAT: {{ trip?.vat }} %
       </h5>
-      <h3 *ngIf="trip">
+      <h5>
+          Additional charges: {{ quotation?.additionalcharges }}
+        </h5>
+      <h3 *ngIf="trip && quotation">
         Total amount
-        <b> {{ getTotalAmount(trip, trip, null) }} </b>SR
+        <b> {{ getTotalAmount(trip, quotation, null) }} </b>SR
       </h3>
     </ion-card-content>
   </ion-card>
