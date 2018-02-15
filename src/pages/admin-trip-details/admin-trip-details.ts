@@ -25,13 +25,14 @@ export class AdminTripDetailsPage {
 
   getTotalAmount(trip?: any, quotation?: any, offer?: any) {
     var total = 0;
-    total = total + Number(trip.cost) + (trip.vat * trip.cost / 100);
+    total = total + Number(trip.cost);
     if (offer && offer.discount && offer.discount != "" && offer.discount != undefined && offer.discount != null) {
       total = total - (trip.cost * offer.discount / 100);
     }
     if (quotation.additionalcharges != "" && quotation.additionalcharges != null && quotation.additionalcharges != undefined && Number(quotation.additionalcharges) != NaN) {
       total = total + Number(quotation.additionalcharges);
     }
+    total = total + (trip.vat * total / 100);
     return total;
   }
 

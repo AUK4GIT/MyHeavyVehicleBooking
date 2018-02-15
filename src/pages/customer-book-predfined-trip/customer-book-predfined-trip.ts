@@ -85,10 +85,11 @@ export class CustomerBookPredfinedTripPage {
 
   getTotalAmount(trip?: any, quotation?: any, offer?: any) {
     var total = 0;
-    total = total + Number(quotation.cost) + (trip.vat * quotation.cost/100);
+    total = total + Number(quotation.cost);
     if(offer && offer.discount && offer.discount!="" && offer.discount!=undefined && offer.discount!=null){
       total = total - (quotation.cost * offer.discount / 100);
     }
+    total = total + (trip.vat * total / 100);
     return total;
   }
 

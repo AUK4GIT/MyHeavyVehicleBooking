@@ -67,10 +67,11 @@ export class DriverTripDetailsPage {
   
   getTotalAmount(trip?: any, quotation?: any, offer?: any) {
     var total = 0;
-    total = total + Number(quotation.cost) + (trip.vat * quotation.cost/100);
+    total = total + Number(quotation.cost);
     if(trip.offerdiscount && trip.offerdiscount!="" && trip.offerdiscount!=undefined && trip.offerdiscount!=null){
       total = total - (quotation.cost * trip.offerdiscount / 100);
     }
+    total = total + (trip.vat * total / 100);
     return total;
   }
 
