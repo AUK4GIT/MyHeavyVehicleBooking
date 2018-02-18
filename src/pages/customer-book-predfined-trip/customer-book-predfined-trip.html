@@ -20,7 +20,7 @@
 
       <ion-item item-start class="editable">
         <ion-label>{{ 'STARTDATE' | translate }}</ion-label>
-        <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="trip.startdate"></ion-datetime>
+        <ion-datetime [max]="maxdate" [min]="mindate" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="trip.startdate"></ion-datetime>
       </ion-item>
 
       <ion-item item-start class="editable">

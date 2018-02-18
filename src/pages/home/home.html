@@ -62,7 +62,7 @@
                 <ion-col col-12 col-sm>
                     <ion-item margin-top class="item-leave-height">
                         <ion-label stacked>{{'STARTDATE' | translate}}</ion-label>
-                        <ion-datetime placeholder="{{'STARTDATE' | translate}}" max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="startdate"></ion-datetime>
+                        <ion-datetime placeholder="{{'STARTDATE' | translate}}" [max]="maxdate" [min]="mindate" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="startdate"></ion-datetime>
                     </ion-item>
                 </ion-col>
                 <ion-col col-12 col-sm>

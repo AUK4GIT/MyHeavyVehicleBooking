@@ -29,7 +29,7 @@ export class OwnerCreateTripPage {
     var day = d.getDate();
     var c = new Date(year + 1, month, day)
     this.maxdate = c.getFullYear().toString();
-    this.mindate = this.getMinDate(day, month, year);
+    this.mindate = this.getMinDate(day, month+1, year);
   }
   private getMinDate(day: number, month: number, year: number): string {
     return year.toString() + "-" + (month.toString().length==1 ? "0"+month.toString() : month.toString()) + "-" + (day.toString().length==1 ? "0"+day.toString() : day.toString());

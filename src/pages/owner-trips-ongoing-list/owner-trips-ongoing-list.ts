@@ -138,7 +138,7 @@ export class OwnerTripsOngoingListPage {
   }
 
   giveQuotationsForTrip(trip){
-        this.navCtrl.push(OwnerTripQuotationPage, { tripid: trip.tripid, trucktype: trip.trucktype, status:trip.status});    
+        this.navCtrl.push(OwnerTripQuotationPage, { "trip" : trip});    
   }
 
   updateSearch() {

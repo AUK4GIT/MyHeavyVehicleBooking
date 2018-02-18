@@ -27,7 +27,7 @@ export class CustomerBookPredfinedTripPage {
     var day = d.getDate();
     var c = new Date(year + 1, month, day)
     this.maxdate = c.getFullYear().toString();
-    this.mindate = this.getMinDate(day, month, year);
+    this.mindate = this.getMinDate(day, month+1, year);
   }
   private getMinDate(day: number, month: number, year: number): string {
     return year.toString() + "-" + (month.toString().length==1 ? "0"+month.toString() : month.toString()) + "-" + (day.toString().length==1 ? "0"+day.toString() : day.toString());
@@ -66,6 +66,13 @@ export class CustomerBookPredfinedTripPage {
 
     if(this.trip.startdate && this.trip.freight && true) {
       this.quotation.ownername = this.appService.currentUser.name;
+      if(this.offer) {
+        this.trip.offerid = this.offer.offerid;
+        this.trip.offerdescription = this.offer.message;
+        this.trip.offerdiscount = this.offer.discount;
+        this.trip.ostartdate = this.offer.startdate;
+        this.trip.oenddate = this.offer.enddate;
+      }
       this.presentLoadingCustom();
       this.appService.createNewCompleteTripForPredefinedTripBooking(this.trip, this.quotation, this.appService.currentUser.userid, (resp)=>{
           this.loading.dismiss();
@@ -88,6 +95,9 @@ export class CustomerBookPredfinedTripPage {
     total = total + Number(quotation.cost);
     if(offer && offer.discount && offer.discount!="" && offer.discount!=undefined && offer.discount!=null){
       total = total - (quotation.cost * offer.discount / 100);
+    }
+    if (quotation.additionalcharges != "" && quotation.additionalcharges != null && quotation.additionalcharges != undefined && Number(quotation.additionalcharges) != NaN) {
+      total = total + Number(quotation.additionalcharges);
     }
     total = total + (trip.vat * total / 100);
     return total;

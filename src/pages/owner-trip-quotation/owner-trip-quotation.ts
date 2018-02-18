@@ -21,15 +21,21 @@ drivers: AppUser[];
 trucks: AppTruck[];
 quotationid: string;
 tripstatus: string;
+discount: string;
 private loading: any;
 buttontitle : string;
+updatemode: boolean;
+istripcompleted: boolean;
 
   constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
-    // let self = this;
-    this.tripid = this.navParams.get("tripid");
-    this.trucktype = this.navParams.get("trucktype");
-    this.tripstatus = this.navParams.get("status");
+    let trip = this.navParams.get("trip");
+    this.tripid = trip.tripid;
+    this.trucktype = trip.trucktype;
+    this.tripstatus = trip.status;
+    this.discount = trip.offerdiscount;
     this.buttontitle = "Add Quotation";
+    this.updatemode = false;
+    this.istripcompleted = false;
   }
 
   ionViewDidLoad() {
@@ -75,14 +81,21 @@ buttontitle : string;
   setQuotation(quotation){
     if (this.tripstatus == "pending") {
       this.buttontitle = "Add Quotation";
+      this.updatemode = false;
     } else if (this.tripstatus == "requested") {
       this.buttontitle = "Update Quotation";
+      this.updatemode = true;
+    } else if (this.tripstatus == "completed") {
+      this.buttontitle = "Update Quotation";
+      this.updatemode = false;
+      this.istripcompleted = true;
     } else {
       this.buttontitle = "Update Quotation";
+      this.updatemode = true;
     }
     if(quotation){
       this.buttontitle = "Update Quotation";
-
+      this.updatemode = true;
       this.trucktype = quotation.truck,
       this.duration = quotation.duration,
       this.cost = quotation.cost,
@@ -115,7 +128,7 @@ buttontitle : string;
   }
 
   addQuotation() {
-    if (this.cost && true) {
+    if (this.cost && this.trucktype && this.driver && true) {
       this.presentLoadingCustom();
       this.appService.addQuotationForTrip({
         truck: this.trucktype,
@@ -144,6 +157,8 @@ buttontitle : string;
           });
         }
       });
+    } else {
+      this.presentAlert("Please fill all the details.", ["OK"], () => {});
     }     
   }
 

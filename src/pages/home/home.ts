@@ -46,7 +46,7 @@ export class HomePage {
     var day = d.getDate();
     var c = new Date(year + 1, month, day)
     this.maxdate = c.getFullYear().toString();
-    this.mindate = this.getMinDate(day, month, year);
+    this.mindate = this.getMinDate(day, month+1, year);
     this.tempTrip = {};
     this.hideSlide = true;
   }

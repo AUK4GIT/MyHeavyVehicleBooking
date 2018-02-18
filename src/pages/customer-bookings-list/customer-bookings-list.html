@@ -16,6 +16,7 @@
           <ion-thumbnail item-left>
             <img src="assets/imgs/logo_transparent.jpg"/>
           </ion-thumbnail>
+          <h6>( <i>Ref id: {{ item.tripid }}</i> )</h6>
           <h2><b>
               {{item.startlocation}} - {{item.endlocation}}
               </b>
@@ -24,11 +25,20 @@
             {{ item.trucktype }}
           </h3>
           <h4>
+            {{ item.startdate   | date:'dd/MM/yy'}}
+        </h4>
+          <h4>
               {{ item.cost }} SR
           </h4>
           <h5>
               {{ item.duration }}  hrs
           </h5>
+          <h5>
+            {{ item.freight }}  
+        </h5>
+        <h5 *ngIf="item.offerid != null" style="white-space: normal; word-wrap: break-word">
+          <b  style="color: green;">Discount: {{ item.offerdiscount }} % </b> ( <i>exp dt: {{ item.oenddate | date:'dd/MM/yy' }} </i> )
+      </h5>
           <button class="status_trip" ion-button outline item-end>{{item.status}}</button>              
         </ion-item>
   </ion-list>

@@ -14,10 +14,15 @@
         <ion-thumbnail item-left>
           <img src="assets/imgs/logo_transparent.jpg"/>
         </ion-thumbnail>
+        <h6>( <i>Ref id: {{ quotation.quotationid }}</i> )</h6>
         <h2><b>
             {{ quotation.cost }} SR
             </b>
         </h2>
+        <h2><b>
+          {{ quotation.ownername }}
+          </b>
+      </h2>
         <h3>
           {{ quotation.trucktype }}
         </h3>
@@ -27,6 +32,7 @@
         <h5>
             {{ quotation.duration }} hrs
         </h5>
+        <button class="status_trip" ion-button outline item-end>{{quotation.status}}</button>
       </ion-item>
     </ion-list>
   </ion-content>

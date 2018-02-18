@@ -22,33 +22,16 @@
        <ion-col col-12 col-sm>
           <ion-item margin-top class="item-leave-height">
             <ion-label>{{'COST' | translate}}</ion-label>
-            <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="cost" name="cost" id="cost" type="number" [(ngModel)]="cost"></ion-input>
+            <ion-input [readonly]="updatemode" class="currency" (ionFocus)="focusFunction()" placeholder="cost" name="cost" id="cost" type="number" [(ngModel)]="cost"></ion-input>
           </ion-item>
         </ion-col>
     </ion-row>
-
-    <!-- <ion-row>
-      
-       <ion-col col-12 col-sm>
-        <ion-item margin-top class="item-leave-height">
-          <ion-label>{{'STARTTIME' | translate}}</ion-label>
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="starttime"></ion-datetime>
-        </ion-item>
-      </ion-col>
-       <ion-col col-12 col-sm>
-        <ion-item margin-top class="item-leave-height">
-          <ion-label>{{'CLOSETIME' | translate}}</ion-label>
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="closetime"></ion-datetime>
-        </ion-item>
-      </ion-col>
-
-    </ion-row> -->
 
     <ion-row>
          <ion-col col-12 col-sm>
           <ion-item margin-top class="item-leave-height">
             <ion-label>{{'DURATION' | translate}}</ion-label>
-            <ion-input class="hours" (ionFocus)="focusFunction()" placeholder="duration in hours" name="duration" id="duration" type="number" [(ngModel)]="duration"></ion-input>
+            <ion-input [readonly]="updatemode" class="hours" (ionFocus)="focusFunction()" placeholder="duration in hours" name="duration" id="duration" type="number" [(ngModel)]="duration"></ion-input>
           </ion-item>
         </ion-col>
          <ion-col col-12 col-sm>
@@ -68,13 +51,33 @@
             <ion-input (ionFocus)="focusFunction()" placeholder="Add Comments" name="comments" id="comments" type="text" [(ngModel)]="comments"></ion-input>
           </ion-item>
         </ion-col>
-         <!-- <ion-col col-12 col-sm>
+         <ion-col col-12 col-sm *ngIf="discount" >
             <ion-item margin-top class="item-leave-height">
-              <ion-label>{{'ADDITIONALCHARGES' | translate}}</ion-label>
-              <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="charges" name="charges" id="charges" type="number" [(ngModel)]="charges"></ion-input>
+              <ion-label>Offer</ion-label>
+              <ion-input class="percentage" [readonly]="true" (ionFocus)="focusFunction()" placeholder="discount" name="discount" id="discount" type="number" [(ngModel)]="discount"></ion-input>
             </ion-item>
-          </ion-col> -->
+          </ion-col>
     </ion-row>
+
+
+    <ion-row *ngIf="istripcompleted">
+      <ion-col col-12 col-sm>
+       <ion-item margin-top class="item-leave-height">
+         <ion-label>Additional Charges: </ion-label>
+         <ion-input (ionFocus)="focusFunction()" placeholder="Add Charges" name="addcharges" id="comments" type="text" [(ngModel)]="additionalcharges"></ion-input>
+       </ion-item>
+     </ion-col>
+      <ion-col col-12 col-sm>
+         <ion-item margin-top class="item-leave-height">
+          <rating [(ngModel)]="item.rating" readOnly="true" [max]="5"
+          emptyStarIconName="star-outline"
+          halfStarIconName="star-half"
+          starIconName="star"
+          nullable="false" >
+        </rating>   
+        </ion-item>
+       </ion-col>
+ </ion-row>
 
     <ion-row padding-top>
       <ion-col text-center>

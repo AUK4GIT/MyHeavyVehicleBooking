@@ -113,10 +113,23 @@ ion-item i {
   color: #555;
 }
 
-// .error::before {
-//   content: "* ";
-// }
+ .fileUpload {
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+}
+ .fileUpload input.upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+} 
 
-  // #c8b496 text
-  //#ffb450 border
-  // 00b496 bars
+ .cordova-camera-select {
+  visibility: hidden;
+}

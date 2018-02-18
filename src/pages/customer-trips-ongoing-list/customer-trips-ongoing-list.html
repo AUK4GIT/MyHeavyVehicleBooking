@@ -56,9 +56,18 @@
                   <h4>
                       {{ item.startdate   | date:'dd/MM/yy'}}
                   </h4>
+                  <h4>
+                    {{ item.cost }} SR
+                </h4>
+                <h5>
+                    {{ item.duration }}  hrs
+                </h5>
                   <h5>
                       {{ item.freight }}  
                   </h5>
+                  <h5 *ngIf="item.offerid != null" style="white-space: normal; word-wrap: break-word">
+                    <b  style="color: green;">Discount: {{ item.offerdiscount }} % </b> ( <i>exp dt: {{ item.oenddate | date:'dd/MM/yy' }} </i> )
+                </h5>
                   <button class="status_trip" ion-button outline item-end>{{item.status}}</button>
                   <div class="hint_more_options">
                     <ion-icon icon-start name="arrow-round-back">Swipe left to see more options</ion-icon>

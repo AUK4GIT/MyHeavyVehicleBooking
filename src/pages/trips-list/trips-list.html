@@ -32,6 +32,9 @@
           <h5>
               {{ item.freight }}  
           </h5>
+          <h5 *ngIf="item?.offerdiscount">
+            Discount: {{ item?.offerdiscount }} %
+          </h5>
           <button class="status_trip" ion-button outline item-end>{{item.status}}</button>
         </ion-item>
       </ion-list>

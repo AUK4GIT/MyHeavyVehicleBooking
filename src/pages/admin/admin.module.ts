@@ -18,6 +18,7 @@ import { AdminCustomerTripsListPage } from '../admin-customer-trips-list/admin-c
 import { AdminOwnerTripsListPage } from '../admin-owner-trips-list/admin-owner-trips-list'
 import { AdminTripDetailsPage } from '../admin-trip-details/admin-trip-details'
 import { AdminUpdateVatPage } from '../admin-update-vat/admin-update-vat'
+import { AdminCreateUserPage } from '../admin-create-user/admin-create-user'
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AdminUpdateVatPage } from '../admin-update-vat/admin-update-vat'
     AdminCustomerTripsListPage,
     AdminOwnerTripsListPage,
     AdminTripDetailsPage,
-    AdminUpdateVatPage
+    AdminUpdateVatPage,
+    AdminCreateUserPage
   ],
   imports: [
     IonicPageModule.forChild(AdminPage),
@@ -56,7 +58,8 @@ import { AdminUpdateVatPage } from '../admin-update-vat/admin-update-vat'
     AdminOwnerTripsListPage,
     AdminCustomerTripsListPage,
     AdminTripDetailsPage,
-    AdminUpdateVatPage
+    AdminUpdateVatPage,
+    AdminCreateUserPage
   ],
   exports: [DateToIsoPipe]
 })

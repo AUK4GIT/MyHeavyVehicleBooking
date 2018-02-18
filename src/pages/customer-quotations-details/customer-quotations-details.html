@@ -45,9 +45,13 @@
           {{ quotation?.cost }} SR
         </b>
       </h5>
+      <h5 *ngIf="trip?.offerdiscount">
+        Discount: {{ trip?.offerdiscount }} %
+      </h5>
       <h5>
         VAT: {{ trip?.vat }} %
       </h5>
+
       <h3 *ngIf="quotation && trip">
         Total amount
         <b> {{ getTotalAmount(trip, quotation, null) }} </b>SR

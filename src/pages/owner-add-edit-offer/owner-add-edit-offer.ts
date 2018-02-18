@@ -28,7 +28,7 @@ export class OwnerAddEditOfferPage {
     var day = d.getDate();
     var c = new Date(year + 1, month, day)
     this.maxdate = c.getFullYear().toString();
-    this.mindate = this.getMinDate(day, month, year);
+    this.mindate = this.getMinDate(day, month+1, year);
     if(this.navParams.get("offer")) {
       this.offer = this.navParams.get("offer");
       this.isEdit = true;

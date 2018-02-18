@@ -94,7 +94,7 @@
     
               <ion-item margin-top class="item-leave-height">
                 <ion-label>{{'STARTDATE' | translate}}</ion-label>
-                <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="offer.startdate"></ion-datetime>
+                <ion-datetime [max]="maxdate" [min]="mindate" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="offer.startdate"></ion-datetime>
               </ion-item>
     
             </ion-col>
@@ -102,7 +102,7 @@
     
                 <ion-item margin-top class="item-leave-height">
                   <ion-label>{{'ENDDATE' | translate}}</ion-label>
-                  <ion-datetime max="{{maxdate}}" min="{{mindate}}" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="offer.enddate"></ion-datetime>
+                  <ion-datetime [max]="maxdate" [min]="mindate" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="offer.enddate"></ion-datetime>
                 </ion-item>
       
               </ion-col>
