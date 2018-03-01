@@ -67,7 +67,7 @@ export class CustomerTripsListPage {
     this.dropcity = "";
     this.truck = "";
 
-    this.events.subscribe('select:predefinedtrip', (trip)=>{
+    this.events.subscribe('select:predefinedtrip', (trip) => {
       this.viewDetailsAndBookPredefinedTrip(trip);
     })
   }
@@ -98,13 +98,13 @@ export class CustomerTripsListPage {
     }
   }
 
-  ionViewDidLeave(){
-    localStorage.setItem("tripSearch","false");
+  ionViewDidLeave() {
+    localStorage.setItem("tripSearch", "false");
   }
 
   presentSearchRelatedTrips() {
     if (this.tripSearched == true) {
-      const stModal: Modal = this.modal.create(SearchedTripModalPage,{trips: this.items, searchedTrip: this.searchedTrip});
+      const stModal: Modal = this.modal.create(SearchedTripModalPage, { trips: this.items, searchedTrip: this.searchedTrip });
       stModal.present();
       stModal.onDidDismiss((data) => {
         if (data) {
@@ -124,12 +124,43 @@ export class CustomerTripsListPage {
 
   isOfferAvailableForTrip(trip) {
     // console.log("trip:- " + trip.tripid);
-    return (this.tripidsofoffer.length > 0 ? (this.tripidsofoffer.indexOf(trip.tripid) != -1) : false);
+    return (this.tripidsofoffer.length > 0 ? (this.checkExistenceAndExpiry(trip)) : false);
+  }
+
+  checkExistenceAndExpiry(trip) {
+    if (this.tripidsofoffer.indexOf(trip.tripid) != -1) {
+      var offers = this.offers.filter((item: AppOffer) => {
+        var d1 = new Date(item.enddate);
+        var d2 = new Date();
+        if (d1 >= d2) {
+          return (item.tripid == trip.tripid);
+        } else {
+          return false;
+        }
+      });
+      if(offers.length > 0){
+        return true;
+      }
+    } else {
+      return false;
+    }
+    return false;
   }
 
   getOfferMessage(trip) {
-    var offers = this.offers.filter((item: AppOffer) => (item.tripid == trip.tripid));
-    return offers[0].discount + "% discount";
+    var offers = this.offers.filter((item: AppOffer) => {
+      var d1 = new Date(item.enddate);
+      var d2 = new Date();
+      if (d1 >= d2) {
+        return (item.tripid == trip.tripid);
+      } else {
+        return false;
+      }
+    });
+    if(offers.length > 0){
+      return offers[0].discount + "% discount";
+    }
+    return "";
   }
 
   segmentChanged(event) {
@@ -148,7 +179,7 @@ export class CustomerTripsListPage {
     this.trucks = this.getUniqueArray(this.items.map((value) => value.trucktype));
   }
 
-  getUniqueArray(array){
+  getUniqueArray(array) {
     return array.filter((elem, index, array) => {
       return array.indexOf(elem) === index;
     });
@@ -161,7 +192,7 @@ export class CustomerTripsListPage {
     this.searchItems = this.items;
   }
 
-  filterSelected(index){
+  filterSelected(index) {
     switch (index) {
       case 1: {
         this.searchItems = this.searchItems.filter((item: AppTrip) => ((item.startlocation.toLowerCase().indexOf(this.pickupcity.toLowerCase()) > -1)));
@@ -192,7 +223,7 @@ export class CustomerTripsListPage {
       } else if (resp["data"]) {
         this.items = resp["data"];
         this.searchItems = this.items;
-        this.makeFilters(); 
+        this.makeFilters();
         this.presentSearchRelatedTrips();
       }
     });
@@ -208,7 +239,7 @@ export class CustomerTripsListPage {
       } else if (resp["data"]) {
         this.items = resp["data"];
         this.searchItems = this.items;
-        this.makeFilters(); 
+        this.makeFilters();
       }
     });
   }
@@ -228,7 +259,7 @@ export class CustomerTripsListPage {
   }
 
   addNewTrip() {
-    this.navCtrl.push(CustomerAddNewTripPage,{ trip: this.searchedTrip, trips : this.items });
+    this.navCtrl.push(CustomerAddNewTripPage, { trip: this.searchedTrip, trips: this.items });
   }
 
 

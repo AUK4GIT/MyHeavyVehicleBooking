@@ -65,7 +65,7 @@
                   <h5>
                       {{ item.freight }}  
                   </h5>
-                  <h5 *ngIf="item.offerid != null" style="white-space: normal; word-wrap: break-word">
+                  <h5 *ngIf="(item.offerid != null) && (item.offerid != '')" style="white-space: normal; word-wrap: break-word">
                     <b  style="color: green;">Discount: {{ item.offerdiscount }} % </b> ( <i>exp dt: {{ item.oenddate | date:'dd/MM/yy' }} </i> )
                 </h5>
                   <button class="status_trip" ion-button outline item-end>{{item.status}}</button>
