@@ -46,11 +46,17 @@ plugins/android.json
 
 plugins/ios.json
 
+resources/ios
+
+Resources/android
+
 www/
 
 $RECYCLE.BIN/
 
 .DS_Store
+
+.sourcemaps
 
 Thumbs.db
 
