@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { Ionic2RatingModule } from 'ionic2-rating';
+import { IonicImageLoader } from 'ionic-image-loader';
 
 import { CustomerPage } from './customer';
 import { CustomerTripsListPage } from '../customer-trips-list/customer-trips-list';
@@ -31,7 +32,8 @@ import { CustomerTripsOngoingListPage } from "../customer-trips-ongoing-list/cus
   imports: [
     IonicPageModule.forChild(CustomerPage),
     TranslateModule,
-    Ionic2RatingModule
+    Ionic2RatingModule,
+    IonicImageLoader
   ],
   entryComponents: [
     CustomerTripsListPage,

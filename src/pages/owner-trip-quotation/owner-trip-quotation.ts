@@ -26,14 +26,20 @@ private loading: any;
 buttontitle : string;
 updatemode: boolean;
 istripcompleted: boolean;
+rating: string;
+
+trip: any;
+quotation: any;
 
   constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     let trip = this.navParams.get("trip");
+    this.trip = trip;
     this.tripid = trip.tripid;
     this.trucktype = trip.trucktype;
     this.tripstatus = trip.status;
     this.discount = trip.offerdiscount;
     this.buttontitle = "Add Quotation";
+    this.rating = trip.rating;
     this.updatemode = false;
     this.istripcompleted = false;
   }
@@ -79,11 +85,15 @@ istripcompleted: boolean;
   }
 
   setQuotation(quotation){
+    this.quotation = quotation;
     if (this.tripstatus == "pending") {
       this.buttontitle = "Add Quotation";
       this.updatemode = false;
     } else if (this.tripstatus == "requested") {
       this.buttontitle = "Update Quotation";
+      this.updatemode = true;
+    } else if (this.tripstatus == "confirmed") {
+      this.buttontitle = "Complete Trip";
       this.updatemode = true;
     } else if (this.tripstatus == "completed") {
       this.buttontitle = "Update Quotation";
@@ -94,7 +104,7 @@ istripcompleted: boolean;
       this.updatemode = true;
     }
     if(quotation){
-      this.buttontitle = "Update Quotation";
+      // this.buttontitle = "Update Quotation";
       this.updatemode = true;
       this.trucktype = quotation.truck,
       this.duration = quotation.duration,
@@ -122,9 +132,26 @@ istripcompleted: boolean;
       this.addQuotation();
     } else if (this.tripstatus == "requested") {
       this.updateQuote();
+    } else if(this.tripstatus == "confirmed"){
+      this.completeTrip();
     } else {
       this.updateQuote();//by adding driver
     }
+  }
+
+  completeTrip(){
+    this.quotation.comments = this.comments;
+    this.quotation.additionalcharges = this.charges;
+    this.presentLoadingCustom();
+    this.appService.completeTripWithId(this.trip.tripid, this.quotation.quotationid, this.quotation.comments, this.quotation.additionalcharges, (resp)=>{
+      this.dismissLoading();
+      if(resp.result == "failure"){
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["message"]) {
+        this.presentConfirm();
+      }
+    });
   }
 
   addQuotation() {
@@ -231,6 +258,23 @@ istripcompleted: boolean;
     
       this.loading.present();
     }
+  }
+
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Rent a Truck',
+      message: 'Trip Completed Successfully',
+      buttons: [
+        {
+          text: "OK",
+          role: 'cancel',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
   
   dismissLoading(){

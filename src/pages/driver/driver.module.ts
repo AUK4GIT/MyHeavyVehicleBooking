@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
+import { IonicImageLoader } from 'ionic-image-loader';
 
 import { DriverPage } from './driver';
 import { DriverTripsListPage } from '../driver-trips-list/driver-trips-list';
@@ -16,7 +17,8 @@ import { DriverTripDetailsPage } from '../driver-trip-details/driver-trip-detail
   ],
   imports: [
     IonicPageModule.forChild(DriverPage),
-    TranslateModule
+    TranslateModule,
+    IonicImageLoader
   ],
   entryComponents: [
     DriverPage,

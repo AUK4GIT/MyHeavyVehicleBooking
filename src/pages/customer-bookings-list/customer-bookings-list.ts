@@ -36,7 +36,7 @@ export class CustomerBookingsListPage {
     if(trip.status == "completed"){
       this.navCtrl.push(CustomerTripeRatingPage,{trip: trip});
     } else {
-      this.presentAlert("The trip will be available to you for review and rating once the driver marks it complete.",["OK"],null);
+      this.presentAlert("The trip will be available to you for review and rating once it is marked complete. by the owner",["OK"],null);
     }
   }
 

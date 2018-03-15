@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { RegistrationPage } from './registration';
 import { TranslateModule } from '@ngx-translate/core';
+import { IonicImageLoader } from 'ionic-image-loader';
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   imports: [
     IonicPageModule.forChild(RegistrationPage),
-    TranslateModule
+    TranslateModule,
+    IonicImageLoader
   ],
 })
 export class RegistrationPageModule {}

@@ -85,12 +85,19 @@ export class CustomerBookPredfinedTripPage {
           this.trip.offerdiscount = "";
           this.trip.ostartdate = "";
           this.trip.oenddate = "";
-          this.presentAlert("The Offer is not applicable for the trip date selected. You will be charged "+this.quotation.cost+" SR + VAT. Would you like to continue ?", ["No", "Yes"], (index)=>{
-            if(index == 1){
+          this.presentAlert("The Offer is not applicable for the trip date selected. You will be charged " + this.quotation.cost + " SR + VAT. Would you like to continue ?", ["No", "Yes"], (index) => {
+            if (index == 1) {
               this.book();
             }
           });
         }
+      } else {
+        this.trip.offerid = "";
+        this.trip.offerdescription = "";
+        this.trip.offerdiscount = "";
+        this.trip.ostartdate = "";
+        this.trip.oenddate = "";
+        this.book();
       }
     } else {
       this.presentAlert("Please fill the mandatory fields 'Schedule Date' & 'Freight'", ["OK"], null);

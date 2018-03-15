@@ -35,7 +35,7 @@
         <h5 *ngIf="(trip.offerid != null) && (trip.offerid != '')" style="white-space: normal; word-wrap: break-word">
           <b  style="color: green;">Discount: {{ trip.offerdiscount }} % </b> ( <i>exp dt: {{ trip.oenddate | date:'dd/MM/yy' }} </i> )
       </h5>
-        <button class="status_trip" ion-button outline item-end>{{quotation.status}}</button>
+        <button *ngIf="quotation.status!=''" class="status_trip" ion-button outline item-end>{{quotation.status}}</button>
       </ion-item>
     </ion-list>
   </ion-content>

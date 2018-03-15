@@ -168,8 +168,9 @@ export class OwnerAddTruckPage {
   }
 
   addTruck() {
-    if(this.truckid && this.capacity && this.regnum  && this.color  && this.modeldate && true){
-      this.presentLoadingCustom();
+    // if(this.truckid && this.capacity && this.regnum  && this.color  && this.modeldate && true){
+    if(this.truckid && this.regnum  && true){  
+    this.presentLoadingCustom();
       var trucks: AppTruckType[] = this.trucks.filter((truck: AppTruckType) => truck.trucktypeid == this.truckid);
       this.appService.addTruck({
         trucktype: trucks[0].type,

@@ -2,12 +2,6 @@ import { Component } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular'
 // import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 
-/**
- * Generated class for the HomepopoverComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'homepopover',
   templateUrl: 'homepopover.html'

@@ -96,6 +96,9 @@ ion-icon {
   position: absolute;
   right: 8px;
 }
+[dir="rtl"] .status_trip {
+  left: 8px;
+}
 
 div.hint_more_options {
   text-align: right;

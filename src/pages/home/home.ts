@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { App, LoadingController, PopoverController, NavController, ModalController, Modal, Events, AlertController } from 'ionic-angular';
 import { HomepopoverComponent } from '../../components/homepopover/homepopover';
 import { AppModelServiceProvider, AppTruckType, AppOffer, AppCity } from '../../providers/app-model-service/app-model-service'
@@ -11,7 +11,7 @@ import { PlacespickerComponent } from '../../components/placespicker/placespicke
   templateUrl: 'home.html'
 })
 export class HomePage {
-// @ViewChild(Slides) slider: Slides;
+@ViewChild("popoverbutton") popoverbutton: any;
 
   segment: string;
   trucks : AppTruckType[];
@@ -308,6 +308,7 @@ export class HomePage {
     if(this.loading){
         this.loading.dismiss();
         this.loading = null;
+        this.popoverbutton._elementRef.nativeElement.click();
     }
 }
 }

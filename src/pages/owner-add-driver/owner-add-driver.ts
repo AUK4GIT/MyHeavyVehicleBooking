@@ -33,8 +33,10 @@ export class OwnerAddDriverPage {
   }
 
   addDriver() {
-    if(this.name && this.password && this.email && this.phonenumber && this.license && this.nationalid && true){
+    // if(this.name && this.password && this.email && this.phonenumber && this.license && this.nationalid && true){
+    if(this.name && this.phonenumber && true){
       this.presentLoadingCustom();
+      // this.email = null;
       this.appService.addUser({
         name: this.name,
         email: this.email,

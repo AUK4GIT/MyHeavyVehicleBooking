@@ -55,7 +55,7 @@ export class CustomerQuotationsDetailsPage {
       return;
     } 
     this.presentLoadingCustom();
-    this.appService.confirmQuotation(this.quotation.quotationid, this.quotation.cost, this.quotation.duration, this.quotation.tripid, this.quotation.ownername, (resp)=>{
+    this.appService.confirmQuotation(this.quotation.quotationid, this.quotation.cost, this.quotation.duration, this.quotation.tripid, this.quotation.ownername, this.quotation.ownerid, (resp)=>{
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");

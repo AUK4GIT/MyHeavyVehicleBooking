@@ -19,7 +19,7 @@
                     <ion-row>
                         <img *ngIf="!isEdit" [src]="profileImgPath" class="custom-avatar" />
                         <ion-col *ngIf="isEdit" align="center" style="max-width: 150px; margin: auto;">
-                            <img [src]="profileImage" class="avatar" />
+                            <img [src]="profileImage" class="avatar"  />
                             <button *ngIf="!isWeb" ion-button color="normal" (tap)="addImage()">
                                 Add Image
                             </button>

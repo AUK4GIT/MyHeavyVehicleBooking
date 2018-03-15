@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { TruckOwnerPage } from './truck-owner';
 import { TranslateModule } from '@ngx-translate/core';
 import { Ionic2RatingModule } from 'ionic2-rating';
+import { IonicImageLoader } from 'ionic-image-loader';
 
 import { OwnerTrucksListPage } from '../owner-trucks-list/owner-trucks-list';
 import { DriversListPage } from '../drivers-list/drivers-list';
@@ -36,7 +37,8 @@ import { OwnerTripsOngoingListPage } from '../owner-trips-ongoing-list/owner-tri
   imports: [
     IonicPageModule.forChild(TruckOwnerPage),
     TranslateModule,
-    Ionic2RatingModule
+    Ionic2RatingModule,
+    IonicImageLoader
   ],
   entryComponents: [
     TruckOwnerPage,

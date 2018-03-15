@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
 
@@ -14,36 +13,17 @@ export class AppModelServiceProvider {
   trips: AppTrip[];
   offers: AppOffer[];
   quotations: AppQuotation[];
-  predefinedlistofplaces: String[];
+  predefinedlistofplaces: AppCity[];
   header : any;
+  customTripCreated: any;
 
   // status: pending, approved, rejected
-  constructor(public http: HttpClient, private storage: Storage) {
+  constructor(public http: HttpClient) {
     console.log('Hello AppModelServiceProvider Provider');
     this.header = { "headers": {"Content-Type": "application/json"} };
     this.getCurrentUser();
-    this.predefinedlistofplaces = [
-      "Riyadh",
-      "Jeddah",
-      "Mecca",
-      "Medina",
-      "Al-Ahsa",
-      "Ta'if",
-      "Dammam",
-      "Buraidah",
-      "Khobar",
-      "Tabuk",
-      "Qatif",
-      "Khamis Mushait",
-      "Ha'il",
-      "Hafar Al-Batin",
-      "Jubail",
-      "Al-Kharj",
-      "Abha",
-      "Najran",
-      "Yanbu",
-      "Al Qunfudhah"
-    ];
+    
+    this.predefinedlistofplaces = [];
     this.users = [new AppUser("admin1", "admin1@gmail.com", "admin", "1234567890", "admin", "1", "pending", ""),
                    new AppUser("admin2", "admin2@gmail.com", "admin", "1234567890", "admin", "2", "pending", ""),
                    new AppUser("driver1", "driver1@gmail.com", "driver", "1234567890", "driver", "3", "pending", "5"),
@@ -83,7 +63,6 @@ export class AppModelServiceProvider {
   setCurrentUser(item){
     this.currentUser = new AppUser(item.name, item.email, item.password, item.phonenumber, item.role, item.userid, item.status, item.ownerid)
     localStorage.setItem("user",JSON.stringify(this.currentUser));
-    this.storage.set('user', this.currentUser);
   }
 
   getCurrentUser() {
@@ -97,48 +76,51 @@ export class AppModelServiceProvider {
       } else {
         return null;
       }
-      // this.storage.get('user').then((val) => {
-      //   this.currentUser = val;
-      //   return this.currentUser;
-      // });
     }
   }
 
-  addUser(item) {
-    return this.users[this.users.push(
-      new AppUser(item.name, item.email, item.password, item.phonenumber, item.role, String(this.users.length+1), item.status, item.ownerid)
-    )-1];
-  }
-
-  removeUser(item) {
-    for (var i = 0; i < this.users.length; i++) {
-      if (this.users[i] == item) {
-        this.users.splice(i, 1);
-      }
-    }
+  addUser(item, callback) {
+    this.http.post('http://zamilrenttruck.com/api.php/user/create',
+      item, this.header).toPromise().then(response => {
+        console.log("data: "+response);
+        if(response["error"]){
+          callback({result: 'failure', error: response["error"]});
+        } else if(response["message"]){
+          let msg = response["message"];
+          callback({result: 'success', message: msg});
+        } else {
+          callback({result: 'failure', error: "Unkown error."});
+        }
+      }).catch(error => {
+        console.log(error);
+        callback({result: 'failure', error: "Server Error. Please try after sometime."});
+      });
+    // return this.users[this.users.push(
+    //   new AppUser(item.name, item.email, item.password, item.phonenumber, item.role, String(this.users.length+1), item.status, item.ownerid)
+    // )-1];
   }
 
   loginService(item, callback) {
-    // this.http.post('http://zamilrenttruck.com/login',
-    //   { username: item.email,
-    //     password: item.password,
-    //     token : localStorage.getItem("fcmtoken"),
-    //     platform: localStorage.getItem("platform")
-    //   }, this.header).toPromise().then(response => {
-    //     console.log("data: "+response);
-    //     if(response["error"]){
-    //       callback({result: 'failure', error: response["error"]});
-    //     } else if(response["message"]){
-    //       let msg = response["message"];
-    //       callback({result: 'success', data: msg});
-    //     } else {
-    //       callback({result: 'failure', error: "Unkown error."});
-    //     }
-    //   }).catch(error => {
-    //     console.log(error);
-    //     callback({result: 'failure', error: "Server Error. Please try after sometime."});
-    //   });
-    
+    this.http.post('http://zamilrenttruck.com/api.php/login',
+      { username: item.email,
+        password: item.password,
+        token : localStorage.getItem("fcmtoken"),
+        platform: localStorage.getItem("platform")
+      }, this.header).toPromise().then(response => {
+        console.log("data: "+response);
+        if(response["error"]){
+          callback({result: 'failure', error: response["error"]});
+        } else if(response["data"]){
+          let data = response["data"];
+          callback({result: 'success', data: data});
+        } else {
+          callback({result: 'failure', error: "Unkown error."});
+        }
+      }).catch(error => {
+        console.log(error);
+        callback({result: 'failure', error: "Server Error. Please try after sometime."});
+      });
+    /*
     let users = this.users.filter((user: AppUser) => user.email == item.email);
     if(users.length > 0){
       let user = users[0];
@@ -150,12 +132,12 @@ export class AppModelServiceProvider {
     } else {
       callback({result: 'failure', error: "User doesn't exist. Please register."});       
     }
-    
+    */
   }
 
   registrationService(item, callback){
 
-    this.http.post('http://zamilrenttruck.com/user/create',
+    this.http.post('http://zamilrenttruck.com/api.php/user/create',
       { role: item.role,
         name: item.name,
         phonenumber: item.phonenumber,
@@ -163,422 +145,1059 @@ export class AppModelServiceProvider {
         password: item.password,
         status: item.status,
         token : localStorage.getItem("fcmtoken"),
-        platform: localStorage.getItem("platform")
+        platform: localStorage.getItem("platform"),
+        imagedata: item.imagedata
       }, this.header).toPromise().then(response => {
         console.log("data: "+response);
-        if(response["message"]){
-          callback({result: 'failure', error: response["message"]});
-        } else if(response["data"]){
-          let user = response["data"];
-          callback({result: 'success', data: user.length>0 ? user[0] : []});
+        if(response["error"]){
+          callback({result: 'failure', error: response["error"]});
+        } else if(response["message"]){
+          let msg = response["message"];
+          callback({result: 'success', message: msg});
         }
       }).catch(error => {
         console.log(error);
         callback({result: 'failure', error: "Server Error. Please try after sometime."});
       });
+  }
 
-    // let users = this.users.filter((user: AppUser) => user.email == item.email);
+  updateprofile(profile, callback) {
+    this.http.post('http://zamilrenttruck.com/api.php/user/updateprofile',
+    profile, this.header).toPromise().then(response => {
+        console.log("data: "+response);
+        if(response["error"]){
+          callback({result: 'failure', error: response["error"]});
+        } else if(response["message"]){
+          let msg = response["message"];
+          callback({result: 'success', message: msg});
+        }
+      }).catch(error => {
+        console.log(error);
+        callback({result: 'failure', error: "Server Error. Please try after sometime."});
+      });
+  }
+
+  getUsersByRole(role, callback){
+    this.http.post('http://zamilrenttruck.com/api.php/get/usersbyrole', {role:role},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // let users = this.users.filter((user: AppUser) => user.role == role);
+    // return <any>users;
+  }
+
+  getUserById(userid, callback) {
+    this.http.post('http://zamilrenttruck.com/api.php/get/usersbyid', {userid:userid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // let users = this.users.filter((user: AppUser) => user.userid == userid);
     // if(users.length > 0){
-    //   callback({result: 'failure', error: "Emailid already exists. Please register with new emailid."});             
+    //   return users[0];
     // } else {
-    //   callback({result: 'success', data: this.addUser(item)});
+    //   return null;
     // }
   }
 
-  getUsersByRole(role){
-    let users = this.users.filter((user: AppUser) => user.role == role);
-    return <any>users;
+  getDriversForOwner(ownerid, callback) {
+    this.http.post('http://zamilrenttruck.com/api.php/get/driversforowner', {ownerid:ownerid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // let users = this.users.filter((user: AppUser) => user.owneridfordriver == ownerid);
+    // return <any>users;
   }
 
-  getUserById(userid) {
-    let users = this.users.filter((user: AppUser) => user.userid == userid);
-    if(users.length > 0){
-      return users[0];
-    } else {
-      return null;
-    }
+  getTruckTypes(callback) {
+    // return this.trucktypes;
+    this.http.get('http://zamilrenttruck.com/api.php/get/trucktypes',
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
-  getDriversForOwner(ownerid) {
-    let users = this.users.filter((user: AppUser) => user.owneridfordriver == ownerid);
-    return <any>users;
+  getPlaces(callback) {
+    // return this.trucktypes;
+    this.http.get('http://zamilrenttruck.com/api.php/get/places',
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
-  getTruckTypes() {
-    return this.trucktypes;
+  getTruckTypesAndPlaces(callback) {
+    // return this.trucktypes;
+    this.http.get('http://zamilrenttruck.com/api.php/get/trucksplaces',
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
-  getTrucks() {
-    return this.trucks;
+  getTrucks(callback) {
+    // return this.trucks;
+    this.http.get('http://zamilrenttruck.com/api.php/get/trucks',
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
-  getTrucksForOwnerid(ownerid) {
-    let trucks = this.trucks.filter((truck: AppTruck) => truck.ownerid == ownerid);    
-    return trucks;
+  getTrucksForOwnerid(ownerid, callback) {
+    this.http.post('http://zamilrenttruck.com/api.php/get/truckbyownerid', {ownerid:ownerid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // let trucks = this.trucks.filter((truck: AppTruck) => truck.ownerid == ownerid);    
+    // return trucks;
   }
 
-  getTruckForTripId(truckid) {
-    let trucks = this.trucks.filter((truck: AppTruck) => truck.truckid == truckid);    
-    return trucks.length > 0 ? trucks[0] : null;
+  getTruckForTruckId(truckid, callback) {
+    this.http.post('http://zamilrenttruck.com/api.php/get/truckbytruckid', {truckid:truckid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // let trucks = this.trucks.filter((truck: AppTruck) => truck.truckid == truckid);    
+    // return trucks.length > 0 ? trucks[0] : null;
   }
   
-  getTrips() {
-    return this.trips;
-  }
+  getTrips(callback) {
+    // return this.trips;
 
-  getTripsForCustomerid(userid) {
-    let trips = this.trips.filter((trip: AppTrip) => ((trip.userid == userid) && (trip.status != 'completed')));    
-    return trips;
-  }
-
-  getCustomPendingTrips() {
-    let trips = this.trips.filter((trip: AppTrip) => (((trip.status == "pending") || (trip.status == "requested")) && (trip.ispredefined == "false")));    
-    return trips;
-  }
-
-  // getBookingsForOwnerid(userid) {
-  //   let trips = this.trips.filter((trip: AppTrip) => trip.ownerid == userid);    
-  //   return trips;
-  // }
-
-  getAvailableTrips(){
-    let trips = this.trips.filter((trip: AppTrip) => trip.ispredefined == 'true');    
-    return trips;
-  }
-
-  getOwnerAvailableTrips(userid){
-    let trips = this.trips.filter((trip: AppTrip) => (trip.ispredefined == 'true' && trip.userid == userid));    
-    return trips;
-  }
-
-  getRequestedTripsForOwnerid(userid) {
-    let trips = this.trips.filter((trip: AppTrip) => (trip.ispredefined == 'false' && trip.ownerid == userid));    
-    return trips;
-  }
-
-  getConfirmedTripsforDriverId(userid) {
-    //first get confirmed quotations for driverid
-      let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.driver) == userid && (quotation.status == "confirmed")));    
-      // return quotations;
-      var trips : any[] = [];
-      for(var i=0; i<quotations.length; i++){
-        let ftrips = this.trips.filter((trip: AppTrip) => (trip.ispredefined == 'false' && trip.tripid == quotations[i].tripid));    
-        trips.push(ftrips[0]);
+    this.http.get('http://zamilrenttruck.com/api.php/get/trips',
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
       }
-    return trips;
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
-  getOffers() {
-    return this.offers;
+  getTripsForCustomerid(userid, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/get/tripsforuserid', {userid:userid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let trips = this.trips.filter((trip: AppTrip) => ((trip.userid == userid) && (trip.status != 'completed')));    
+    // return trips;
   }
 
-  getOffersByOwnerId(userid) {
-    let offers = this.offers.filter((offer: AppOffer) => offer.userid == userid);    
-    return offers;
+  getTripsForOwnerId(userid, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/get/tripsforownerid', {userid:userid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let trips = this.trips.filter((trip: AppTrip) => ((trip.userid == userid) && (trip.status != 'completed')));    
+    // return trips;
   }
-  getApprovedOffers() {
-    let offers = this.offers.filter((offer: AppOffer) => offer.status == 'approved');    
-    return offers;
+
+  getPredefinedTripsForOwnerId(userid, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/get/pretripsforownerid', {userid:userid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let trips = this.trips.filter((trip: AppTrip) => ((trip.userid == userid) && (trip.status != 'completed')));    
+    // return trips;
+  }
+
+  getAllTripsForId(userid, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/get/alltripsforuserid', {userid:userid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let trips = this.trips.filter((trip: AppTrip) => ((trip.userid == userid) && (trip.status != 'completed')));    
+    // return trips;
+  }
+  
+
+  getCustomPendingTrips(callback) {
+
+    this.http.get('http://zamilrenttruck.com/api.php/get/custompendingtrips',
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let trips = this.trips.filter((trip: AppTrip) => (((trip.status == "pending") || (trip.status == "requested")) && (trip.ispredefined == "false")));    
+    // return trips;
+  }
+
+  getAvailableTrips(callback){
+
+    this.http.get('http://zamilrenttruck.com/api.php/get/predefinedtrips',
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let trips = this.trips.filter((trip: AppTrip) => trip.ispredefined == 'true');    
+    // return trips;
+  }
+
+  getOwnerAvailableTrips(userid, callback){
+
+    this.http.post('http://zamilrenttruck.com/api.php/get/predefinedtripsforuserid', {userid:userid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let trips = this.trips.filter((trip: AppTrip) => (trip.ispredefined == 'true' && trip.userid == userid));    
+    // return trips;
+  }
+
+  getRequestedTripsForOwnerid(userid, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/get/requestedtripsforownerid', {userid:userid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let trips = this.trips.filter((trip: AppTrip) => (trip.ispredefined == 'false' && trip.ownerid == userid));    
+    // return trips;
+  }
+
+  getConfirmedTripsforDriverId(userid, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/get/confirmedtripsfordriverid', {userid:userid},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        callback({result: 'success', data: response["data"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  }
+
+  getOffers(callback) {
+    this.http.get('http://zamilrenttruck.com/api.php/get/offers',this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // return this.offers;
+  }
+
+  getAllOffers(callback) {
+    this.http.get('http://zamilrenttruck.com/api.php/get/alloffers',this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // return this.offers;
+  }
+
+  getAllDrivers(callback) {
+    this.http.get('http://zamilrenttruck.com/api.php/get/alldrivers',this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // return this.offers;
+  }
+
+  createOffer(offer, callback){
+    this.http.post('http://zamilrenttruck.com/api.php/offer/create',offer,this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  }
+
+  getOffersByOwnerId(userid, callback) {
+    this.http.post('http://zamilrenttruck.com/api.php/offers/ownerid',{ownerid:userid},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let offers = this.offers.filter((offer: AppOffer) => offer.userid == userid);    
+    // return offers;
+  }
+
+  getApprovedOffers(callback) {
+    
+    this.http.get('http://zamilrenttruck.com/api.php/get/approvedoffers',this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let offers = this.offers.filter((offer: AppOffer) => offer.status == 'approved');    
+    // return offers;
   }
 
   createTripWithCustomerid(item, callback) {
-     this.trips[this.trips.push(
-      new AppTrip(item.truckid, 
-                  item.trucktype,
-                  item.startlocation, 
-                  item.endlocation, 
-                  item.status, 
-                  item.startdate, 
-                  item.comments, 
-                  String(this.trips.length+1), 
-                  item.freight, 
-                  item.userid, 
-                  item.createddate, 
-                  item.rating, 
-                  item.ispredefined,
-                  item.quoteidforpretrip,
-                  item.remarks,
-                  item.cost,
-                  item.duration,
-                  item.ownerid)
-    )-1];
-    callback();
+
+    this.http.post('http://zamilrenttruck.com/api.php/trip/create',item,this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
-  createNewCompleteTripForPredefinedTripBooking(trip, quotation, userid) {
-    let ntrip: AppTrip = Object.assign({}, trip);
-    let nquotation: AppQuotation = Object.assign({}, quotation);
+  createTruckType(item, callback) {
 
-    ntrip.ownerid = trip.userid;
-    ntrip.userid = userid;
-    ntrip.tripid = this.trips.length.toString();
-    ntrip.ispredefined = "false";
-    nquotation.quotationid = this.quotations.length.toString();
-    ntrip.status = "requested";
-    nquotation.status = "requested";
-    ntrip.tripid = (this.trips.length+1).toString();
-    nquotation.quotationid = (this.quotations.length+1).toString();
-    nquotation.tripid = ntrip.tripid ;
-    this.trips.push(ntrip);
-    this.quotations.push(nquotation);
+    this.http.post('http://zamilrenttruck.com/api.php/trucktype/create',item,this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  }
+
+  createPlace(item, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/place/create',item,this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  }
+
+  
+
+  createNewCompleteTripForPredefinedTripBooking(trip, quotation, userid, callback) {
+  
+    this.http.post('http://zamilrenttruck.com/api.php/trip/createnew',{trip:[trip], quotation:[quotation], userid:userid},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        let offers = response["message"];
+        callback({result: 'success', message: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
   //Bookings History in Customer module
-  getRequestedTripsForUserId(userid) {
-    let trips = this.trips.filter((trip: AppTrip) => (((trip.status == 'requested') || (trip.status == 'confirmed') || (trip.status == 'completed')) && (trip.userid == userid)));    
-    return trips;
+  getRequestedTripsForUserId(userid, callback) {
+    
+    this.http.post('http://zamilrenttruck.com/api.php/get/requestedtripsforuserid',{userid:userid},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let trips = this.trips.filter((trip: AppTrip) => (((trip.status == 'requested') || (trip.status == 'confirmed') || (trip.status == 'completed')) && (trip.userid == userid)));    
+    // return trips;
   }
 
-  createTripWithOwnerid(item) {
-    return this.trips[this.trips.push(
-      new AppTrip(item.truckid, 
-                  item.trucktype,
-                  item.startlocation, 
-                  item.endlocation, 
-                  item.status, 
-                  item.startdate, 
-                  item.comments, 
-                  String(this.trips.length), 
-                  item.freight, 
-                  item.userid, 
-                  item.createddate, 
-                  item.rating, 
-                  item.ispredefined,
-                  item.quoteidforpretrip,
-                  item.remarks,
-                  item.cost,
-                  item.duration,
-                  item.ownerid)
-    )-1];
+  createTripWithOwnerid(item, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/trip/createpredefined',item,this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
   }
 
   addQuotationForTrip(item, callback) {
-     this.quotations[this.quotations.push(
-      new AppQuotation(item.truck , 
-        item.driver , 
-        item.duration,
-        item.cost,
-        item.status,
-        item.starttime,
-        item.closetime,
-        item.additionalcharges,
-        item.comments,
-        item.appliedofferid,
-        item.discount,
-        String(this.quotations.length+1),
-        item.tripid,
-        item.ownerid,
-        item.ownername,
-        item.truckid)
-    )-1];
-    callback();
+
+    this.http.post('http://zamilrenttruck.com/api.php/quotation/create',item,this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
   updateQuotationForTripAndConfirm(item, callback) {
-    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == item.quotationid);
-    if (quotations.length > 0) {
-      let quotation = quotations[0];
-      quotation.driver = item.driver;
-      quotation.starttime = item.starttime;
-      quotation.closetime = item.closetime;
-      quotation.duration = item.duration;
-      quotation.truckid = item.truckid;
-      quotation.additionalcharges = item.additionalcharges;
-      quotation.comments = item.comments;
-      quotation.cost = item.cost;
 
-      let trips = this.trips.filter((trip: AppTrip) => ((trip.tripid == quotation.tripid) && (trip.ispredefined == 'false')));
-      let trip = trips[0];
-      trip.status = "confirmed";
-      quotation.status = "confirmed";
-      trip.cost = quotation.cost;
-      trip.duration = quotation.duration;
-    }
-    callback();
-  }
-
-  getAllQuotations() {
-    return this.quotations;
-  }
-
-  getQuotationsForOwnerId(ownerid) {
-    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.ownerid == ownerid);    
-    return quotations;
+    this.http.post('http://zamilrenttruck.com/api.php/updateQuotationForTripAndConfirm',item,this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
   getQuotationsForTripIdOwnerId(tripid, ownerid, callback) {
-    let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.ownerid == ownerid) && (quotation.tripid == tripid)));    
-    if(quotations.length > 0) {
-      callback(quotations[0]);
-    } else {
-      callback(null);
-    }
+    
+    this.http.post('http://zamilrenttruck.com/api.php/get/quotationsfortripidownerid',{tripid:tripid, ownerid:ownerid},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.ownerid == ownerid) && (quotation.tripid == tripid)));    
+    // if(quotations.length > 0) {
+    //   callback(quotations[0]);
+    // } else {
+    //   callback(null);
+    // }
   }
 
-  getQuotationsForTripId(tripid) {
-    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.tripid == tripid);    
-    return quotations;
+  getQuotationsForTripId(tripid, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/get/quotationsfortripid',{tripid:tripid},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.tripid == tripid);    
+    // return quotations;
   }
 
-  getQuotationForId(quotationid) {
-    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == quotationid);    
-    return quotations[0];
+  getQuotationForId(quotationid, callback) {
+    // quotationid
+    // /get/quotationforquoteid
+
+    this.http.post('http://zamilrenttruck.com/api.php/get/quotationforquoteid',{quotationid:quotationid},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+
+    // let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == quotationid);    
+    // return quotations[0];
   }
 
-  // createQuotationForPredefinedTripId(tripid) {
-  //   let quotation = new AppQuotation();
-  //   return quotations;
-  // }
+  getConfirmedQuotationForTripId(tripid, callback){
+  
+    this.http.post('http://zamilrenttruck.com/api.php/get/confirmedquotationsfortripid',{tripid:tripid},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
 
-  getConfirmedQuotationForTripId(tripid){
-    let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.tripid) == tripid && (quotation.status == "confirmed")));    
-    return quotations.length > 0 ? quotations[0] : null;
+    // let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.tripid) == tripid && (quotation.status == "confirmed")));    
+    // return quotations.length > 0 ? quotations[0] : null;
   }
 
-  confirmQuotation(quotationid, callback) {
-    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == quotationid);    
-    let quotation = quotations[0];
-    let trips = this.trips.filter((trip: AppTrip) => trip.tripid == quotation.tripid);    
-    let trip = trips[0];
-    trip.status = "confirmed";
-    quotation.status = "confirmed";
-    trip.cost=quotation.cost;
-    trip.duration=quotation.duration;
-    callback();
+  getCompletedQuotationForTripId(tripid, callback){
+  
+    this.http.post('http://zamilrenttruck.com/api.php/get/completedquotationsfortripid',{tripid:tripid},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let quotations = this.quotations.filter((quotation: AppQuotation) => ((quotation.tripid) == tripid && (quotation.status == "confirmed")));    
+    // return quotations.length > 0 ? quotations[0] : null;
+  }
+
+  confirmQuotation(quotationid, cost, duration, tripid, ownername, ownerid, callback) {
+    
+    this.http.post('http://zamilrenttruck.com/api.php/confirmQuotation',{tripid:tripid, quotationid:quotationid, cost:cost, duration: duration, ownername:ownername, ownerid: ownerid },this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
   }
 
   deleteTrip(trip, callback) {
-    const index: number = this.trips.indexOf(trip);
-  if (index !== -1) {
-      this.trips.splice(index, 1);
-      callback({result: 'success'});
-  } else {
-    callback({result: 'failure', error: 'user not found'});
-  }
+
+    this.http.post('http://zamilrenttruck.com/api.php/app/delete', { id: trip.tripid, type: "trip" }, this.header).toPromise().then(response => {
+      console.log("data: " + response);
+      if (response["error"]) {
+        callback({ result: 'failure', error: response["error"] });
+      } else if (response["message"]) {
+        callback({ result: 'success', message: response["message"] });
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({ result: 'failure', error: "Server Error. Please try after sometime." });
+    });
   }
 
-  completeTripWithId(tripid, quotationid) {
-    let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == quotationid);    
-    let quotation = quotations[0];
-    let trips = this.trips.filter((trip: AppTrip) => trip.tripid == quotation.tripid);    
-    let trip = trips[0];
-    trip.status = "completed";
-    quotation.status = "completed";
+  deleteTruckType(trucktype, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/app/delete', { id: trucktype.trucktypeid, type: "trucktype" }, this.header).toPromise().then(response => {
+      console.log("data: " + response);
+      if (response["error"]) {
+        callback({ result: 'failure', error: response["error"] });
+      } else if (response["message"]) {
+        callback({ result: 'success', message: response["message"] });
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({ result: 'failure', error: "Server Error. Please try after sometime." });
+    });
   }
 
-  addTruck(item) {
-    return this.trucks[this.trucks.push(
-      new AppTruck(item.trucktype, 
-                    item.capacity, 
-                    item.regnum, 
-                    item.photos, 
-                    item.rating, 
-                    item.ownerid, 
-                    item.status, 
-                    String(this.trucks.length+1),
-                    item.color, 
-                    item.modeldate, 
-                    item.trucktypeid,)
-    )-1];
+  deletePlace(place, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/app/delete', { id: place.id, type: "place" }, this.header).toPromise().then(response => {
+      console.log("data: " + response);
+      if (response["error"]) {
+        callback({ result: 'failure', error: response["error"] });
+      } else if (response["message"]) {
+        callback({ result: 'success', message: response["message"] });
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({ result: 'failure', error: "Server Error. Please try after sometime." });
+    });
+  }
+
+  completeTripWithId(tripid, quotationid, qcomments, qcharges, callback) {
+
+    this.http.post('http://zamilrenttruck.com/api.php/completeTripWithId', {tripid:tripid, quotationid:quotationid, comments: qcomments, additionalcharges: qcharges},
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+
+    // let quotations = this.quotations.filter((quotation: AppQuotation) => quotation.quotationid == quotationid);    
+    // let quotation = quotations[0];
+    // let trips = this.trips.filter((trip: AppTrip) => trip.tripid == quotation.tripid);    
+    // let trip = trips[0];
+    // trip.status = "completed";
+    // quotation.status = "completed";
+  }
+
+  addTruck(item, callback) {
+    item.regno = item.regnum;
+    item.photoid = "";
+    this.http.post('http://zamilrenttruck.com/api.php/truck/create',
+    item,
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"], truckid: response["truckid"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  }
+
+  uploadTruckImage(item, callback) {
+    this.http.post('http://zamilrenttruck.com/api.php/truck/imageupload',
+    item,
+    this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
 //custoer admin
 deleteuser(item, callback) {
-  const index: number = this.users.indexOf(item);
-  if (index !== -1) {
-      this.trucks.splice(index, 1);
-      callback({result: 'success'});
-  } else {
-    callback({result: 'failure', error: 'user not found'});
-  }
+  // const index: number = this.users.indexOf(item);
+  // if (index !== -1) {
+  //     this.trucks.splice(index, 1);
+  //     callback({result: 'success'});
+  // } else {
+  //   callback({result: 'failure', error: 'user not found'});
+  // }
+  this.http.post('http://zamilrenttruck.com/api.php/app/delete',{id:item.userid, type:"user"},this.header).toPromise().then(response => {
+    console.log("data: "+response);
+    if(response["error"]){
+      callback({result: 'failure', error: response["error"]});
+    } else if(response["message"]){
+      callback({result: 'success', message: response["message"]});
+    }
+  }).catch(error => {
+    console.log(error);
+    callback({result: 'failure', error: "Server Error. Please try after sometime."});
+  });
 }
 approveuser(item, callback) {
-  let trucks = this.users.filter((user: AppUser) => user.userid == item.userid);    
-  if(trucks.length > 0){
-    let truck = trucks[0];
-    truck.status = "approved";
-    callback({result: "success"});
-  } else {
-    callback({result: "failure", error: "user not found"});
-  }
+  this.http.post('http://zamilrenttruck.com/api.php/app/updatestatus',{id:item.userid, status:"approved", type:"user", email: item.email},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  // let trucks = this.users.filter((user: AppUser) => user.userid == item.userid);    
+  // if(trucks.length > 0){
+  //   let truck = trucks[0];
+  //   truck.status = "approved";
+  //   callback({result: "success"});
+  // } else {
+  //   callback({result: "failure", error: "user not found"});
+  // }
 }
 blockuser(item, callback) {
-  let users = this.users.filter((user: AppUser) => user.userid == item.userid);    
-  if(users.length > 0){
-    let user = users[0];
-    user.status = "blocked";
-    callback({result: "success"});
-  } else {
-    callback({result: "failure", error: "user not found"});
-  }
+  this.http.post('http://zamilrenttruck.com/api.php/app/updatestatus',{id:item.userid, status:"blocked", type:"user"},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  // let users = this.users.filter((user: AppUser) => user.userid == item.userid);    
+  // if(users.length > 0){
+  //   let user = users[0];
+  //   user.status = "blocked";
+  //   callback({result: "success"});
+  // } else {
+  //   callback({result: "failure", error: "user not found"});
+  // }
 }
 
 //Offer CRUD
 //custoer admin
 deleteoffer(item, callback) {
-  const index: number = this.offers.indexOf(item);
-  if (index !== -1) {
-      this.offers.splice(index, 1);
-      callback({result: 'success'});
-  } else {
-    callback({result: 'failure', error: 'offer not found'});
-  }
+  // const index: number = this.offers.indexOf(item);
+  // if (index !== -1) {
+  //     this.offers.splice(index, 1);
+  //     callback({result: 'success'});
+  // } else {
+  //   callback({result: 'failure', error: 'offer not found'});
+  // }
+  this.http.post('http://zamilrenttruck.com/api.php/app/delete',{id:item.offerid, type:"offer"},this.header).toPromise().then(response => {
+    console.log("data: "+response);
+    if(response["error"]){
+      callback({result: 'failure', error: response["error"]});
+    } else if(response["message"]){
+      callback({result: 'success', message: response["message"]});
+    }
+  }).catch(error => {
+    console.log(error);
+    callback({result: 'failure', error: "Server Error. Please try after sometime."});
+  });
 }
 approveoffer(item, callback) {
-  let offers = this.offers.filter((offer: AppOffer) => offer.userid == item.userid);    
-  if(offers.length > 0){
-    let offer = offers[0];
-    offer.status = "approved";
-    callback({result: "success"});
-  } else {
-    callback({result: "failure", error: "offer not found"});
-  }
+  this.http.post('http://zamilrenttruck.com/api.php/app/updatestatus',{id:item.offerid, status:"approved", type:"offer"},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
 }
 rejectoffer(item, callback) {
-  let offers = this.offers.filter((offer: AppOffer) => offer.userid == item.userid);    
-  if(offers.length > 0){
-    let offer = offers[0];
-    offer.status = "rejected";
-    callback({result: "success"});
-  } else {
-    callback({result: "failure", error: "offer not found"});
-  }
+  this.http.post('http://zamilrenttruck.com/api.php/app/updatestatus',{id:item.offerid, status:"rejected", type:"offer"},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
 }
 
 
   // Trucks admin
   deleteTruck(item, callback) {
-    const index: number = this.trucks.indexOf(item);
-    if (index !== -1) {
-        this.trucks.splice(index, 1);
-        callback({result: 'success'});
-    } else {
-      callback({result: 'failure', error: 'truck not found'});
-    }
+    // const index: number = this.trucks.indexOf(item);
+    // if (index !== -1) {
+    //     this.trucks.splice(index, 1);
+    //     callback({result: 'success'});
+    // } else {
+    //   callback({result: 'failure', error: 'truck not found'});
+    // }
+    this.http.post('http://zamilrenttruck.com/api.php/app/delete',{id:item.truckid, type:"truck"},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
   approveTruck(item, callback) {
-    let trucks = this.trucks.filter((truck: AppTruck) => truck.truckid == item.truckid);    
-    if(trucks.length > 0){
-      let truck = trucks[0];
-      truck.status = "approved";
-      callback({result: "success"});
-    } else {
-      callback({result: "failure", error: "truck not found"});
-    }
+    this.http.post('http://zamilrenttruck.com/api.php/app/updatestatus',{id:item.truckid, status:"approved", type:"truck"},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // let trucks = this.trucks.filter((truck: AppTruck) => truck.truckid == item.truckid);    
+    // if(trucks.length > 0){
+    //   let truck = trucks[0];
+    //   truck.status = "approved";
+    //   callback({result: "success"});
+    // } else {
+    //   callback({result: "failure", error: "truck not found"});
+    // }
   }
   blockTruck(item, callback) {
-    let trucks = this.trucks.filter((truck: AppTruck) => truck.truckid == item.truckid);    
-    if(trucks.length > 0){
-      let truck = trucks[0];
-      truck.status = "blocked";
-      callback({result: "success"});
-    } else {
-      callback({result: "failure", error: "truck not found"});
-    }
+    this.http.post('http://zamilrenttruck.com/api.php/app/updatestatus',{id:item.truckid, status:"blocked", type:"truck"},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+    // let trucks = this.trucks.filter((truck: AppTruck) => truck.truckid == item.truckid);    
+    // if(trucks.length > 0){
+    //   let truck = trucks[0];
+    //   truck.status = "blocked";
+    //   callback({result: "success"});
+    // } else {
+    //   callback({result: "failure", error: "truck not found"});
+    // }
   }
 
-  sendForgotPassword(emailid){
+  sendForgotPassword(emailid, callback){
+    this.http.post('http://zamilrenttruck.com/api.php/user/forgotpassword',{email:emailid},this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  }
 
+  submitRatingToCompletedTrip(trip, callback){
+    this.http.post('http://zamilrenttruck.com/api.php/trip/submitrating',trip,this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  }
+
+  updateVAT(vat, callback){
+    this.http.post('http://zamilrenttruck.com/api.php/constants/updatevat',vat,this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["message"]){
+        callback({result: 'success', message: response["message"]});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
+  }
+
+  getAppConstants(callback) {
+    
+    this.http.get('http://zamilrenttruck.com/api.php/get/constants',this.header).toPromise().then(response => {
+      console.log("data: "+response);
+      if(response["error"]){
+        callback({result: 'failure', error: response["error"]});
+      } else if(response["data"]){
+        let offers = response["data"];
+        callback({result: 'success', data: offers});
+      }
+    }).catch(error => {
+      console.log(error);
+      callback({result: 'failure', error: "Server Error. Please try after sometime."});
+    });
   }
 
   //mark - Utility methods
@@ -623,6 +1242,7 @@ export class AppUser {
                 public owneridfordriver: string = "",
                 public licensefordriver: string = "",
                 public nationalidfordriver: string = "",
+                public profilepic: string = "",
                 public token: string = localStorage.getItem("fcmtoken"),
                 public platform: string = localStorage.getItem("platform")) {
     }
@@ -670,11 +1290,17 @@ export class AppUser {
                     public createddate: string = "",
                     public rating: string = "",
                     public ispredefined: string = "",
-                    public quoteidforpretrip: string = "",
+                    public qidpdefinedtrip: string = "",
                     public customerremarks: string = "",
                     public cost: string = "",
                     public duration: string = "",
-                    public ownerid: string = "") {
+                    public ownerid: string = "",
+                    public ownername: string = "",
+                    public offerid: string = "",
+                    public offerdiscount: string = "",
+                    public offerdescription: string = "",
+                    public ostartdate: string = "",
+                    public oenddate: string = "",) {
         }
       
       }
@@ -715,6 +1341,12 @@ export class AppUser {
                   public enddate: string = "",
                   public status: string = "",
                   public userid: string = ""){
+      }
+    }
+
+    export class AppCity {
+      constructor(public id: string = "",
+                  public name: string = ""){
       }
     }
 

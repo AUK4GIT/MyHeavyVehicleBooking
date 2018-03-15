@@ -22,6 +22,7 @@ import { AppModelServiceProvider } from '../providers/app-model-service/app-mode
 import { AutoCompleteSearchPage } from '../pages/auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../components/placespicker/placespicker';
 import {ImgPickerOptionsComponent } from '../components/img-picker-options/img-picker-options'
+import { IonicImageLoader } from 'ionic-image-loader';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {ImgPickerOptionsComponent } from '../components/img-picker-options/img-p
     DriverPageModule,
     CustomerPageModule,
     Ionic2RatingModule,
+    IonicImageLoader.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
