@@ -62,14 +62,15 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="istripcompleted">
-      <ion-col col-12 col-sm>
+    <ion-row>
+      <ion-col col-12 col-sm *ngIf="tripstatus=='confirmed' || tripstatus=='completed'">
         <ion-item margin-top class="item-leave-height">
-          <ion-label>Additional Charges: </ion-label>
-          <ion-input (ionFocus)="focusFunction()" placeholder="Add Charges" name="addcharges" id="comments" type="text" [(ngModel)]="additionalcharges"></ion-input>
+          <ion-label>{{ 'ADDITIONALCHARGES' | translate }} : </ion-label>
+          <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="Add Charges" name="addcharges" id="addcharges" type="number" [(ngModel)]="additionalcharges"></ion-input>
         </ion-item>
       </ion-col>
-      <ion-col col-12 col-sm>
+      <ion-col col-12 col-sm *ngIf="istripcompleted">
+          <ion-label>{{ 'TRIPRATING'| translate }} : </ion-label>
         <ion-item margin-top class="item-leave-height">
           <rating [(ngModel)]="rating" readOnly="true" [max]="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star"
             nullable="false">
@@ -81,7 +82,7 @@
     <ion-row padding-top>
       <ion-col text-center>
         <!-- <button (click)="addQuote()" [disabled]="(tripstatus != 'pending' && tripstatus != 'requested')" ion-button medium>{{ buttontitle }}</button> -->
-        <button (click)="addQuote()" ion-button medium>{{ buttontitle }}</button>
+        <button *ngIf="!istripcompleted" (click)="addQuote()" ion-button medium>{{ buttontitle }}</button>
       </ion-col>
     </ion-row>
   </ion-grid>

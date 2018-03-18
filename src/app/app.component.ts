@@ -21,6 +21,8 @@ export class MyApp {
     platform.ready().then((source) => {
       imageLoaderConfig.setConcurrency(10);
       imageLoaderConfig.setFallbackUrl('assets/logo_transparent.jpg');
+      imageLoaderConfig.enableSpinner(true);
+      // this.imageLoaderConfig.enableDebugMode();
       statusBar.styleBlackTranslucent();
       statusBar.backgroundColorByHexString("#30580f");
       splashScreen.hide();

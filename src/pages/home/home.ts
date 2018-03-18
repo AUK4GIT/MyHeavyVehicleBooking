@@ -17,7 +17,7 @@ export class HomePage {
   trucks : AppTruckType[];
   cities: AppCity[];
   bgclass: any;
-  bgclasses: [string];
+  bgclasses: string[];
   maxdate : string;
   mindate : string;
   dropcity: string;
@@ -308,7 +308,10 @@ export class HomePage {
     if(this.loading){
         this.loading.dismiss();
         this.loading = null;
-        this.popoverbutton._elementRef.nativeElement.click();
+        let self = this;
+        setTimeout(()=>{
+          self.presentPopover(null);
+        },1000);
     }
 }
 }

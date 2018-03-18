@@ -79,7 +79,7 @@
     "CLOSETRIP": "Close Trip",
     "CREATETRIP": "Create A Trip",
     "AVAILABLETRIPS": "Available Trips",
-    "CUSTOMTRIPS": "Custom Trips",
+    "CUSTOMTRIPS": "Quotation Requests",
     "MYTRIPS": "My Trips",
     "MODELDATE": "Model Date",
     "COLOR": "Color",
@@ -100,5 +100,7 @@
     "NATIONALID": "National Id",
     "ADDITIONALCHARGES": "Additional charges",
     "CITIES": "Cities",
-    "TRUCKTYPES": "Truck Types"
+    "TRUCKTYPES": "Truck Types",
+
+    "TRIPRATING" : "Trip Rating"
 }
