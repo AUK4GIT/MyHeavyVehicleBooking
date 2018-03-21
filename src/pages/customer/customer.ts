@@ -34,7 +34,7 @@ export class CustomerPage {
   constructor(private popoverCtrl: PopoverController, private camera: Camera, private imagePicker: ImagePicker, public loadingCtrl: LoadingController, private alertCtrl: AlertController, private platform: Platform, public appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
     this.imgversion = 1.0;
     this.isEdit = false;
-    this.pageIndex = 2;
+    this.pageIndex = 1;
     this.user = this.appService.currentUser;  
     this.phonenumber = this.user.phonenumber;  
     this.serverError = "";

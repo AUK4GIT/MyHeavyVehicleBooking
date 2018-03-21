@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
-import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip } from '../../providers/app-model-service/app-model-service';
+import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip, AppTruck } from '../../providers/app-model-service/app-model-service';
 
 @Component({
   selector: 'page-customer-quotations-details',
@@ -12,6 +12,7 @@ export class CustomerQuotationsDetailsPage {
   trip: AppTrip;
   owner: AppUser;
   driver: AppUser;
+  truck: AppTruck;
   private loading: any;
   constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   this.quotation = this.navParams.get("quotation");
@@ -47,6 +48,21 @@ export class CustomerQuotationsDetailsPage {
         }
       });
     }
+    this.getTruckDetails(this.quotation.truckid);
+  }
+
+  getTruckDetails(truckid){
+    this.appService.getTruckForTruckId(truckid, (resp) => {
+      this.dismissLoading();
+      if (resp.result == "failure") {
+        console.log("resp.error");
+        this.presentAlert(resp.error, ["OK"], null);
+      } else if (resp["data"]) {
+        if(resp["data"].length > 0){
+          this.truck = resp["data"][0];
+        }
+      }
+    });
   }
 
   confirmQuote(){

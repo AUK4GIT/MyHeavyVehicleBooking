@@ -92,6 +92,24 @@
       </h4>
     </ion-card-content>
   </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      {{'TRUCKDETAILS'|translate}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-card-title>
+        {{truck?.trucktype}} ({{truck?.truckid}})
+      </ion-card-title>
+      <h3>
+        {{ truck?.regno }}
+      </h3>
+      <h4>
+        {{ truck?.capacity }}
+      </h4>
+    </ion-card-content>
+  </ion-card>
+
   <ion-row padding-top>
     <ion-col text-center>
       <button (click)="confirmQuote()" ion-button medium>{{ 'CONFIRMQUOTE' | translate }}</button>
