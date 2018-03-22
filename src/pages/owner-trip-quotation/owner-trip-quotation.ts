@@ -172,7 +172,8 @@ quotation: any;
         tripid: this.tripid,
         ownerid: this.appService.currentUser.userid,
         ownername: this.appService.currentUser.name,
-        truckid: this.truckid
+        truckid: this.truckid,
+        userid: this.trip.userid
       }, (resp) => {
         this.dismissLoading();
         if (resp.result == "failure") {

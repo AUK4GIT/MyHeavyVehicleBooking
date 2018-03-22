@@ -111,6 +111,7 @@ export class CustomerAddNewTripPage {
         duration:"",
         ownerid:""
       };
+      this.presentLoadingCustom();
         this.appService.createTripWithCustomerid(this.tempTrip, (resp)=>{
           this.dismissLoading();
           if (resp.result == "failure") {
