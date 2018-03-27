@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { AppModelServiceProvider, AppQuotation, AppTrip } from '../../providers/app-model-service/app-model-service';
 import { CustomerQuotationsDetailsPage } from '../customer-quotations-details/customer-quotations-details'
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'page-customer-view-quotations',
   templateUrl: 'customer-view-quotations.html',
@@ -10,8 +12,12 @@ export class CustomerViewQuotationsPage {
   private loading: any;
   quotations: AppQuotation[];
   trip: AppTrip;
-  constructor(public alertCtrl :AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  constructor(translate: TranslateService, public alertCtrl :AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   this.trip = this.navParams.get("trip");
+  translate.getTranslation(translate.currentLang).subscribe((value)=>{
+    this.transObj = value;
+  });
   }
 
   ionViewDidEnter() {
@@ -21,7 +27,7 @@ export class CustomerViewQuotationsPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.quotations = resp["data"];
       }
@@ -47,12 +53,12 @@ export class CustomerViewQuotationsPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

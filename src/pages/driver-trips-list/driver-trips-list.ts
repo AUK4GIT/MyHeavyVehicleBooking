@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip, AppQuotation } from '../../providers/app-model-service/app-model-service'
 import { DriverTripDetailsPage } from '../driver-trip-details/driver-trip-details'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-driver-trips-list',
@@ -10,7 +11,11 @@ import { DriverTripDetailsPage } from '../driver-trip-details/driver-trip-detail
 export class DriverTripsListPage {
   items: AppQuotation[];
   private loading: any;
-  constructor(public alertCtrl :AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  constructor(translate: TranslateService, public alertCtrl :AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidEnter() {
@@ -20,7 +25,7 @@ export class DriverTripsListPage {
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         // this.items = resp["data"];
         this.items = resp["data"].map((value) => {
@@ -49,12 +54,12 @@ export class DriverTripsListPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

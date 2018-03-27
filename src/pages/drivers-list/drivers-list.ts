@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppUser } from '../../providers/app-model-service/app-model-service'
 import { OwnerAddDriverPage } from '../owner-add-driver/owner-add-driver';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-drivers-list',
@@ -10,7 +11,12 @@ import { OwnerAddDriverPage } from '../owner-add-driver/owner-add-driver';
 export class DriversListPage {
   items: [AppUser];
   private loading: any;
-  constructor(private alertCtrl :AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+
+  constructor(translate: TranslateService, private alertCtrl :AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidLoad() {
@@ -25,7 +31,7 @@ export class DriversListPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.items = resp["data"];
       }
@@ -48,12 +54,12 @@ export class DriversListPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

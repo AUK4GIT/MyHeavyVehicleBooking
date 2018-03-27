@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-searched-trip-modal',
@@ -8,12 +9,17 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 export class SearchedTripModalPage {
   items: any;
   searchedTrip : any;
-  constructor(private viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  
+  constructor(translate: TranslateService, private viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams) {
     let items = this.navParams.get("trips");
     this.searchedTrip = this.navParams.get("searchedTrip");
     this.items = items.filter((item: any) => {
       console.log("item trucktype:- ",item.trucktype);
       return ((item.startlocation == this.searchedTrip.startlocation) && (item.endlocation == this.searchedTrip.endlocation) && (item.trucktype == this.searchedTrip.trucktype));
+    });
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
     });
   }
 

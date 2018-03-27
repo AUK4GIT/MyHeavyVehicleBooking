@@ -11,21 +11,21 @@
 <ion-content padding>
     <ion-row>
         <ion-item margin-top class="item-leave-height">
-            <ion-label>Truck Type</ion-label>
+            <ion-label>{{ "TRUCKTYPE" | translate}}</ion-label>
             <ion-input placeholder="type" name="type" id="type" type="text" [(ngModel)]="trucktype"></ion-input>                        
         </ion-item> 
     </ion-row>
   
     <ion-row>
         <ion-item margin-top class="item-leave-height">
-            <ion-label>Description</ion-label>
+            <ion-label>{{ "DESCRIPTION" | translate }}</ion-label>
             <ion-input placeholder="description" name="description" id="description" type="text" [(ngModel)]="description"></ion-input>                        
         </ion-item> 
     </ion-row>
 
     <ion-row padding-top >
         <ion-col text-center>
-            <button (click)="addTruckType()" ion-button medium >Add Truck type</button>
+            <button (click)="addTruckType()" ion-button medium >{{"ADDTRUCKTYPE" | translate}}</button>
         </ion-col>
     </ion-row>
 </ion-content>

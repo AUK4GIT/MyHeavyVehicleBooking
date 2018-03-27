@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service';
 import { CustomerTripeRatingPage } from '../customer-tripe-rating/customer-tripe-rating'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-customer-bookings-list',
@@ -10,7 +11,11 @@ import { CustomerTripeRatingPage } from '../customer-tripe-rating/customer-tripe
 export class CustomerBookingsListPage {
   items: AppTrip[];
   private loading: any;
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidLoad() {
@@ -20,7 +25,7 @@ export class CustomerBookingsListPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         // this.items = resp["data"];
         this.items = resp["data"].map((value) => {
@@ -36,7 +41,7 @@ export class CustomerBookingsListPage {
     if(trip.status == "completed"){
       this.navCtrl.push(CustomerTripeRatingPage,{trip: trip});
     } else {
-      this.presentAlert("The trip will be available to you for review and rating once it is marked complete. by the owner",["OK"],null);
+      this.presentAlert(this.transObj["TRIPAVAILABLEAFTERCOMPLETE"],[this.transObj["OK"]],null);
     }
   }
 
@@ -52,12 +57,12 @@ export class CustomerBookingsListPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

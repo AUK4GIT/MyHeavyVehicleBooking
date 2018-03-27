@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController  } from 'ionic-angular';
 import { AppModelServiceProvider, AppCity } from '../../providers/app-model-service/app-model-service'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-add-truck-type',
@@ -11,7 +12,11 @@ export class AddTruckTypePage {
   trucktype: string;
   description: string;
   private loading: any;
-  constructor(private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  constructor(private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams, translate: TranslateService) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidLoad() {
@@ -25,15 +30,15 @@ export class AddTruckTypePage {
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error,["OK"],null);
+        this.presentAlert(resp.error,[this.transObj["OK"]],null);
       } else {
-        this.presentAlert(resp.message,["OK"],()=>{
+        this.presentAlert(resp.message,[this.transObj["OK"]],()=>{
           this.navCtrl.pop();
         });
       }
     });
   } else {
-    this.presentAlert("Please fil all the details.",["OK"],null);
+    this.presentAlert(this.transObj["FILLALLDETAILS"],[this.transObj["OK"]],null);
   }
   }
 
@@ -55,8 +60,8 @@ export class AddTruckTypePage {
   presentConfirm(message, callback) {
     var buttons = [
       {
-        text: "NO",
-        role: 'cancel',
+        text: this.transObj["NO"],
+        role: this.transObj["CANCEL"],
         handler: () => {
           // this.navCtrl.pop();
         }
@@ -64,13 +69,13 @@ export class AddTruckTypePage {
     ];
     if(callback){
       buttons.push({
-        text: "YES",
-        role: 'cancel',
+        text:this.transObj["YES"],
+        role: this.transObj["CANCEL"],
         handler: callback
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });
@@ -95,12 +100,12 @@ presentAlert(message, buttontexts, callback) {
   for(var i=0; i<buttontexts.length ; i++){
     buttons.push({
       text: buttontexts[i],
-      role: 'cancel',
+      role: this.transObj["CANCEL"],
       handler: createCallback(i)
     });
   }
   let alert = this.alertCtrl.create({
-    title: 'Rent a Truck',
+    title: this.transObj["RENTATRUCK"],
     message: message,
     buttons: buttons
   });

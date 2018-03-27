@@ -3,6 +3,7 @@ import { NavController, NavParams, LoadingController, ModalController, Modal, Po
 import { AppModelServiceProvider, AppTrip, AppTruck, AppTruckType } from '../../providers/app-model-service/app-model-service'
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-owner-create-trip',
@@ -21,8 +22,9 @@ export class OwnerCreateTripPage {
   cost: string;
   duration: string;
   private loading: any;
-
-  constructor(public alertCtrl :AlertController, public loadingCtrl: LoadingController, private popoverCtrl: PopoverController, public modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  
+  constructor(translate: TranslateService, public alertCtrl :AlertController, public loadingCtrl: LoadingController, private popoverCtrl: PopoverController, public modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -30,6 +32,9 @@ export class OwnerCreateTripPage {
     var c = new Date(year + 1, month, day)
     this.maxdate = c.getFullYear().toString();
     this.mindate = this.getMinDate(day, month+1, year);
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
   private getMinDate(day: number, month: number, year: number): string {
     return year.toString() + "-" + (month.toString().length==1 ? "0"+month.toString() : month.toString()) + "-" + (day.toString().length==1 ? "0"+day.toString() : day.toString());
@@ -43,7 +48,7 @@ export class OwnerCreateTripPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.trucks = resp["data"]["trucktypes"];
         this.appService.predefinedlistofplaces = resp["data"]["places"];
@@ -85,15 +90,15 @@ export class OwnerCreateTripPage {
         this.dismissLoading();
         if (resp.result == "failure") {
           console.log("resp.error");
-          this.presentAlert(resp.error, ["OK"], null);
+          this.presentAlert(resp.error, [this.transObj["OK"]], null);
         } else if (resp["message"]) {
-          this.presentAlert("Trip created successfully.",["OK"],()=>{
+          this.presentAlert(this.transObj["TRIPCREATESUCCESS"],[this.transObj["OK"]],()=>{
             this.navCtrl.pop();
           });
         }
       });
     } else {
-      this.presentAlert("Please fill all the details.",["OK"],null);
+      this.presentAlert(this.transObj["FILLALLDETAILS"],[this.transObj["OK"]],null);
     }      
   }
 
@@ -110,20 +115,20 @@ export class OwnerCreateTripPage {
         } else {
           if(type == 'pickup'){
             if(_data == this.dropcity && _data != ""){
-              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+              this.presentAlert(this.transObj["PICKDROPSAME"],[this.transObj["OK"]],null);
             } else {
               this.pickupcity = _data;
             }
           } else {
             if(_data == this.pickupcity && _data != ""){
-              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+              this.presentAlert(this.transObj["PICKDROPSAME"],[this.transObj["OK"]],null);
             } else {
               this.dropcity = _data;
             }
           }
         }
       },
-      currentSelection: 'login'
+      currentSelection: this.transObj["LOGIN"]
     });
 
     popover.present({
@@ -159,12 +164,12 @@ export class OwnerCreateTripPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

@@ -19,8 +19,12 @@ export class OwnerAddDriverPage {
   OK: string;
   APPTITLE: string;
   ADDDRIVERMESSAGE: string;
-
+  transObj: any;
+  
   constructor(private loadingCtrl: LoadingController, private translate: TranslateService, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
     this.translate.get('OK').subscribe(
       value => {
         this.OK = value;
@@ -48,9 +52,9 @@ export class OwnerAddDriverPage {
       }, (resp)=>{
         if(resp.result == "failure"){
           console.log("resp.error");
-          this.presentAlert(resp.error, ["OK"], null);
+          this.presentAlert(resp.error, [this.transObj["OK"]], null);
         } else if (resp["message"]) {
-          // this.presentAlert(resp.message, ["OK"], null);
+          // this.presentAlert(resp.message, [this.transObj["OK"]], null);
           this.presentConfirm();
         }
         this.dismissLoading();
@@ -66,12 +70,12 @@ export class OwnerAddDriverPage {
 
   presentConfirm() {
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
-      message: 'Driver added Successful. Pending approval from Admin.',
+      title: this.transObj["RENTATRUCK"],
+      message: this.transObj["DRIVERADDSUCCESS"],
       buttons: [
         {
           text: this.OK,
-          role: 'cancel',
+          role: this.transObj["CANCEL"],
           handler: () => {
             this.navCtrl.pop();
           }
@@ -93,12 +97,12 @@ export class OwnerAddDriverPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

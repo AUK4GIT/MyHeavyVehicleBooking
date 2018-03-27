@@ -15,9 +15,14 @@ export class LoginPage {
   loginForm;
   private serverError: String;
   private loading: any;
+  transObj: any;
+  
   constructor(private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, translate: TranslateService, public viewCtrl: ViewController,public navCtrl: NavController, public navParams: NavParams) {
     // translate.setDefaultLang('ar-sa');
     this.serverError = "";
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ngOnInit() {
@@ -37,23 +42,23 @@ export class LoginPage {
 
   forgotPassword() {
     let prompt = this.alertCtrl.create({
-      title: 'Rent A Truck',
-      message: "Enter your EmailId to receive the password.",
+      title: this.transObj["RENTATRUCK"],
+      message: this.transObj["ENTEREMAILRECEIVEPWD"],
       inputs: [
         {
-          name: 'EmailId',
-          placeholder: 'Email id'
+          name: this.transObj["EMAILID"],
+          placeholder: this.transObj["EMAILID"]
         },
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.transObj["CANCEL"],
           handler: data => {
             console.log('Cancel clicked');
           }
         },
         {
-          text: 'Send',
+          text: this.transObj["SEND"],
           handler: data => {
             console.log('Saved clicked: '+data.EmailId);
             this.presentLoadingCustom();
@@ -61,9 +66,9 @@ export class LoginPage {
               this.dismissLoading();
               if(resp.result == "failure"){
                 console.log("resp.error");
-                this.presentAlert(resp.error,["OK"],null);
+                this.presentAlert(resp.error,[this.transObj["OK"]],null);
               } else {
-                this.presentAlert(resp.message,["OK"],null);
+                this.presentAlert(resp.message,[this.transObj["OK"]],null);
               }
             });
           }
@@ -164,12 +169,12 @@ export class LoginPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

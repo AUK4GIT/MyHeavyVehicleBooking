@@ -3,6 +3,7 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AppModelServiceProvider, AppOffer } from '../../providers/app-model-service/app-model-service'
 import { LoadingCmp } from 'ionic-angular/components/loading/loading-component';
 import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-admin-offers-list',
@@ -13,7 +14,11 @@ export class AdminOffersListPage {
   offerGroups: any[];
   offers: any[];
   loading: any;
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidEnter() {
@@ -36,7 +41,7 @@ export class AdminOffersListPage {
   }
 
   deleteItem(item, gindex, iindex) {
-    this.presentConfirm('Do you want to delete this item ?.', () => {
+    this.presentConfirm(this.transObj["DOYOUDELETE"], () => {
       this.presentLoadingCustom();
       this.appService.deleteoffer(item, (response) => {
         this.dismissLoading();
@@ -44,7 +49,7 @@ export class AdminOffersListPage {
           let group = this.offerGroups[gindex].list;
           group.splice(iindex,1);
         } else {
-          this.presentConfirm('Error deleting item', null);
+          this.presentConfirm(this.transObj["ERRORDELETING"], null);
         }
       })
     });
@@ -59,7 +64,7 @@ export class AdminOffersListPage {
         item.status = "approved";
         this.groupItems(this.offers);
       } else {
-        this.presentConfirm('Error updating item', null);
+        this.presentConfirm(this.transObj["ERRORUPDATING"], null);
       }
     })
   }
@@ -73,7 +78,7 @@ export class AdminOffersListPage {
         item.status = "rejected";
         this.groupItems(this.offers);
       } else {
-        this.presentConfirm('Error updating item', null);
+        this.presentConfirm(this.transObj["ERRORUPDATING"], null);
       }
     })
   }
@@ -81,8 +86,8 @@ export class AdminOffersListPage {
     presentConfirm(message, callback) {
       var buttons = [
         {
-          text: "NO",
-          role: 'cancel',
+          text: this.transObj["NO"],
+          role: this.transObj["CANCEL"],
           handler: () => {
             // this.navCtrl.pop();
           }
@@ -90,13 +95,13 @@ export class AdminOffersListPage {
       ];
       if(callback){
         buttons.push({
-          text: "YES",
-          role: 'cancel',
+          text:this.transObj["YES"],
+          role: this.transObj["CANCEL"],
           handler: callback
         });
       }
       let alert = this.alertCtrl.create({
-        title: 'Rent a Truck',
+        title: this.transObj["RENTATRUCK"],
         message: message,
         buttons: buttons
       });

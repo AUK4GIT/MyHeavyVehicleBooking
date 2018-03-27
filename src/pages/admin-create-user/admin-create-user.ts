@@ -5,6 +5,7 @@ import { AppModelServiceProvider } from '../../providers/app-model-service/app-m
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ImgPickerOptionsComponent } from '../../components/img-picker-options/img-picker-options';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-admin-create-user',
@@ -18,8 +19,9 @@ export class AdminCreateUserPage {
   profileImage: any;
   isWeb: boolean;
   imageData: any;
-
-  constructor(private platform: Platform, private popoverCtrl: PopoverController, private camera: Camera, private imagePicker: ImagePicker, public loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  
+  constructor(translate: TranslateService, private platform: Platform, private popoverCtrl: PopoverController, private camera: Camera, private imagePicker: ImagePicker, public loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.serverError = "";
     // if (this.platform.is('cordova') == false) {
       if(this.platform.is('core') || this.platform.is('mobileweb')) {
@@ -27,6 +29,9 @@ export class AdminCreateUserPage {
       } else {
         this.isWeb = false;
       }
+      translate.getTranslation(translate.currentLang).subscribe((value)=>{
+        this.transObj = value;
+      });
   }  
   
     ngOnInit() {
@@ -151,7 +156,7 @@ export class AdminCreateUserPage {
         return;
       }
       if(this.imageData == "" || this.imageData == null){
-        this.presentAlert("Please upload a profile picture.",["OK"],null);
+        this.presentAlert(this.transObj["UPLOADPROFILEPIC"],[this.transObj["OK"]],null);
         return;
       }
       this.presentLoadingCustom();
@@ -161,7 +166,7 @@ export class AdminCreateUserPage {
           this.presentConfirm();
          } else {
           //  this.serverError = response.error;
-          this.presentAlert(response.error,["OK"],null);
+          this.presentAlert(response.error,[this.transObj["OK"]],null);
          }
          this.dismissLoading();
      });
@@ -192,12 +197,12 @@ export class AdminCreateUserPage {
       for(var i=0; i<buttontexts.length ; i++){
         buttons.push({
           text: buttontexts[i],
-          role: 'cancel',
+          role: this.transObj["CANCEL"],
           handler: createCallback(i)
         });
       }
       let alert = this.alertCtrl.create({
-        title: 'Rent a Truck',
+        title: this.transObj["RENTATRUCK"],
         message: message,
         buttons: buttons
       });
@@ -207,12 +212,12 @@ export class AdminCreateUserPage {
 
     presentConfirm() {
       let alert = this.alertCtrl.create({
-        title: 'Rent a Truck',
-        message: 'Registration Successful. A verification link has been sent to your mailid. Please verify the link and then login.',
+        title: this.transObj["RENTATRUCK"],
+        message: this.transObj["REGSUCCESS"],
         buttons: [
           {
-            text: 'Login',
-            role: 'cancel',
+            text: this.transObj["LOGIN"],
+            role: this.transObj["CANCEL"],
             handler: () => {
               console.log('Login alert clicked');
               // this.navCtrl.pop();

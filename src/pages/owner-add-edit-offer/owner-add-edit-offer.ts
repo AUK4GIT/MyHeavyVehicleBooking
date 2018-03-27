@@ -4,7 +4,7 @@ import { AppModelServiceProvider, AppTrip, AppTruck, AppTruckType, AppOffer } fr
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
 import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-owner-add-edit-offer',
@@ -21,7 +21,12 @@ export class OwnerAddEditOfferPage {
   private loading: any;
   isEdit: boolean;
   tripDetails: string;
-  constructor(public alertCtrl :AlertController, public loadingCtrl: LoadingController, private popoverCtrl: PopoverController, public modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  
+  constructor(translate: TranslateService, public alertCtrl :AlertController, public loadingCtrl: LoadingController, private popoverCtrl: PopoverController, public modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -50,7 +55,7 @@ export class OwnerAddEditOfferPage {
     //   this.dismissLoading();
     //   if (resp.result == "failure") {
     //     console.log("resp.error");
-    //     this.presentAlert(resp.error, ["OK"], null);
+    //     this.presentAlert(resp.error, [this.transObj["OK"]], null);
     //   } else if (resp["data"]) {
     //     this.trucks = resp["data"]["trucktypes"];
     //     this.appService.predefinedlistofplaces = resp["data"]["places"];
@@ -65,7 +70,7 @@ export class OwnerAddEditOfferPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.trips = resp["data"];
         // this.searchItems = this.items; 
@@ -97,9 +102,9 @@ export class OwnerAddEditOfferPage {
         this.dismissLoading();
         if (resp.result == "failure") {
           console.log("resp.error");
-          this.presentAlert(resp.error, ["OK"], null);
+          this.presentAlert(resp.error, [this.transObj["OK"]], null);
         } else if (resp["message"]) {
-          this.presentAlert(resp["message"], ["OK"], ()=>{
+          this.presentAlert(resp["message"], [this.transObj["OK"]], ()=>{
             this.navCtrl.pop();
           });           
         }
@@ -119,20 +124,20 @@ export class OwnerAddEditOfferPage {
         } else {
           if(type == 'pickup'){
             if(_data == this.offer.tolocation && _data != ""){
-              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+              this.presentAlert(this.transObj["PICKDROPSAME"],[this.transObj["OK"]],null);
             } else {
               this.offer.fromlocation = _data;
             }
           } else {
             if(_data == this.offer.fromlocation && _data != ""){
-              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+              this.presentAlert(this.transObj["PICKDROPSAME"],[this.transObj["OK"]],null);
             } else {
               this.offer.tolocation = _data;
             }
           }
         }
       },
-      currentSelection: 'login'
+      currentSelection: this.transObj["LOGIN"]
     });
 
     popover.present({
@@ -168,12 +173,12 @@ export class OwnerAddEditOfferPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

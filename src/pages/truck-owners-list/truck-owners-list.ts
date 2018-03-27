@@ -4,6 +4,7 @@ import { AppModelServiceProvider, AppUser } from '../../providers/app-model-serv
 import { DatePipe } from '@angular/common';
 import { DateToIsoPipe } from '../../pipes/date-to-iso/date-to-iso'
 import { AdminOwnerTripsListPage } from '../admin-owner-trips-list/admin-owner-trips-list'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-truck-owners-list',
@@ -14,8 +15,13 @@ export class TruckOwnersListPage {
   users: any[];
   private loading: any;
   sortIsAscending: boolean;
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, public appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.sortIsAscending = true;
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidEnter() {
@@ -24,7 +30,7 @@ export class TruckOwnersListPage {
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         var usrs = resp["data"];
         // Split timestamp into [ Y, M, D, h, m, s ]
@@ -84,13 +90,13 @@ export class TruckOwnersListPage {
   }
 
   deleteItem(item, gindex, iindex) {
-    this.presentConfirm('Do you want to delete this item ?.', () => {
+    this.presentConfirm(this.transObj["DOYOUDELETE"], () => {
       this.appService.deleteuser(item, (response) => {
         if(response.result == "success"){
           let group = this.userGroups[gindex].list;
           group.splice(iindex,1);
         } else {
-          this.presentConfirm('Error deleting item', null);
+          this.presentConfirm(this.transObj["ERRORDELETING"], null);
         }
       })
     });
@@ -103,7 +109,7 @@ export class TruckOwnersListPage {
         user.status = "approved";
         this.groupItems();
       } else {
-        this.presentConfirm('Error updating item', null);
+        this.presentConfirm(this.transObj["ERRORUPDATING"], null);
       }
     })
   }
@@ -115,7 +121,7 @@ export class TruckOwnersListPage {
         user.status = "blocked";
         this.groupItems();
       } else {
-        this.presentConfirm('Error updating item', null);
+        this.presentConfirm(this.transObj["ERRORUPDATING"], null);
       }
     })
   }
@@ -123,8 +129,8 @@ export class TruckOwnersListPage {
     presentConfirm(message, callback) {
       var buttons = [
         {
-          text: "NO",
-          role: 'cancel',
+          text: this.transObj["NO"],
+          role: this.transObj["CANCEL"],
           handler: () => {
             // this.navCtrl.pop();
           }
@@ -132,13 +138,13 @@ export class TruckOwnersListPage {
       ];
       if(callback){
         buttons.push({
-          text: "YES",
-          role: 'cancel',
+          text:this.transObj["YES"],
+          role: this.transObj["CANCEL"],
           handler: callback
         });
       }
       let alert = this.alertCtrl.create({
-        title: 'Rent a Truck',
+        title: this.transObj["RENTATRUCK"],
         message: message,
         buttons: buttons
       });
@@ -157,12 +163,12 @@ export class TruckOwnersListPage {
       for(var i=0; i<buttontexts.length ; i++){
         buttons.push({
           text: buttontexts[i],
-          role: 'cancel',
+          role: this.transObj["CANCEL"],
           handler: createCallback(i)
         });
       }
       let alert = this.alertCtrl.create({
-        title: 'Rent a Truck',
+        title: this.transObj["RENTATRUCK"],
         message: message,
         buttons: buttons
       });

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTruckType } from '../../providers/app-model-service/app-model-service'
 import { AddTruckTypePage } from '../add-truck-type/add-truck-type'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-truck-types',
@@ -11,7 +12,12 @@ export class TruckTypesPage {
 
   items: AppTruckType[];
   private loading: any;
-  constructor(private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+
+  constructor(translate: TranslateService, private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidEnter() {
@@ -20,7 +26,7 @@ export class TruckTypesPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.items = resp["data"];
       }
@@ -33,14 +39,14 @@ export class TruckTypesPage {
   }
 
   deleteItem(item, index) {
-    this.presentConfirm('Do you want to delete this item ?.', () => {
+    this.presentConfirm(this.transObj["DOYOUDELETE"], () => {
       this.presentLoadingCustom();
       this.appService.deleteTruckType(item, (response) => {
         this.dismissLoading();
         if(response.result == "success"){
           this.items.splice(index,1);
         } else {
-          this.presentConfirm('Error deleting item', null);
+          this.presentConfirm(this.transObj["ERRORDELETING"], null);
         }
       })
     });
@@ -63,8 +69,8 @@ export class TruckTypesPage {
   presentConfirm(message, callback) {
     var buttons = [
       {
-        text: "NO",
-        role: 'cancel',
+        text: this.transObj["NO"],
+        role: this.transObj["CANCEL"],
         handler: () => {
           // this.navCtrl.pop();
         }
@@ -72,13 +78,13 @@ export class TruckTypesPage {
     ];
     if(callback){
       buttons.push({
-        text: "YES",
-        role: 'cancel',
+        text:this.transObj["YES"],
+        role: this.transObj["CANCEL"],
         handler: callback
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });
@@ -103,12 +109,12 @@ presentAlert(message, buttontexts, callback) {
   for(var i=0; i<buttontexts.length ; i++){
     buttons.push({
       text: buttontexts[i],
-      role: 'cancel',
+      role: this.transObj["CANCEL"],
       handler: createCallback(i)
     });
   }
   let alert = this.alertCtrl.create({
-    title: 'Rent a Truck',
+    title: this.transObj["RENTATRUCK"],
     message: message,
     buttons: buttons
   });

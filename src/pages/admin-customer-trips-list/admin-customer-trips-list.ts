@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTruck, AppTrip, AppOffer } from '../../providers/app-model-service/app-model-service'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-admin-customer-trips-list',
@@ -15,8 +16,13 @@ export class AdminCustomerTripsListPage {
   offerIds: string[];
   private loading: any;
   user : any;
+  transObj: any;
 
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
     
     this.user = this.navParams.get("user");
     // if(this.appService.customTripCreated == true){
@@ -57,7 +63,7 @@ export class AdminCustomerTripsListPage {
 
   getOfferMessage(trip) {
     var offers = this.offers.filter((item: AppOffer) => (item.tripid == trip.tripid));
-    return offers[0].discount+"% discount";
+    return offers[0].discount+"% "+this.transObj["DISCOUNT"];
   }
 
   // segmentChanged(event) {
@@ -75,7 +81,7 @@ export class AdminCustomerTripsListPage {
   //     this.dismissLoading();
   //     if (resp.result == "failure") {
   //       console.log("resp.error");
-  //       this.presentAlert(resp.error, ["OK"], null);
+  //       this.presentAlert(resp.error, [this.transObj["OK"]], null);
   //     } else if (resp["data"]) {
   //       this.items = resp["data"];
   //       this.searchItems = this.items;           
@@ -89,7 +95,7 @@ export class AdminCustomerTripsListPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         // this.items = resp["data"];
         this.items = resp["data"].map((value) => {
@@ -131,7 +137,7 @@ export class AdminCustomerTripsListPage {
 
   // cancelCustomTrip(trip) {
   //   let self = this;
-  //   this.presentAlert("Do you want to Cancel the trip ?", ["No","Yes"], (type) => {
+  //   this.presentAlert(this.transObj["WANTCANCELTRIP"], [this.transObj["NO"],"Yes"], (type) => {
   //     if(type == 0){
   //       console.log("Delete Cancelled");
   //     } else {
@@ -141,7 +147,7 @@ export class AdminCustomerTripsListPage {
   //           const index: number = self.items.indexOf(trip);
   //           self.items.splice(index,1);
   //         } else {
-  //           self.presentAlert("Delete UnSuccessful! Try again", ["OK"], null);
+  //           self.presentAlert(this.transObj["DELETEFAILEDTRYAGAIN"], [this.transObj["OK"]], null);
   //         }
   //       });
   //     }
@@ -160,12 +166,12 @@ export class AdminCustomerTripsListPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

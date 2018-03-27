@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppTrip, AppQuotation, AppTruck, AppUser } from '../../providers/app-model-service/app-model-service'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-driver-trip-details',
@@ -15,9 +16,13 @@ export class DriverTripDetailsPage {
   comments: string;
   charges: string;
   private loading: any;
+  transObj: any;
 
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.trip = this.navParams.get('trip');
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidEnter() {
@@ -27,7 +32,7 @@ export class DriverTripDetailsPage {
        this.dismissLoading();
        if (resp.result == "failure") {
          console.log("resp.error");
-         this.presentAlert(resp.error, ["OK"], null);
+         this.presentAlert(resp.error, [this.transObj["OK"]], null);
        } else if (resp["data"]) {
          if(resp["data"].length > 0){
           this.quotation = resp["data"][0];
@@ -41,7 +46,7 @@ export class DriverTripDetailsPage {
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if(resp["data"].length > 0){
          this.customer = resp["data"][0];
@@ -55,7 +60,7 @@ export class DriverTripDetailsPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if(resp["data"].length > 0){
           this.truckdetails = resp["data"][0];
@@ -89,7 +94,7 @@ export class DriverTripDetailsPage {
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["message"]) {
         this.presentConfirm();
       }
@@ -98,12 +103,12 @@ export class DriverTripDetailsPage {
 
   presentConfirm() {
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
-      message: 'Trip Completed Successfully',
+      title: this.transObj["RENTATRUCK"],
+      message: this.transObj["TRIPCOMPLETED"],
       buttons: [
         {
-          text: "OK",
-          role: 'cancel',
+          text: this.transObj["OK"],
+          role: this.transObj["CANCEL"],
           handler: () => {
             this.navCtrl.pop();
           }
@@ -125,12 +130,12 @@ export class DriverTripDetailsPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

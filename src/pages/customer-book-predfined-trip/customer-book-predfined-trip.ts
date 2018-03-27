@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip, AppOffer } from '../../providers/app-model-service/app-model-service';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-customer-book-predfined-trip',
@@ -17,8 +17,12 @@ export class CustomerBookPredfinedTripPage {
   mindate: string;
   private loading: any;
   offer: AppOffer;
-
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
     this.trip = this.navParams.get("trip");
     this.offer = this.navParams.get("offer");
     var d = new Date();
@@ -41,7 +45,7 @@ export class CustomerBookPredfinedTripPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.quotation = resp["data"][0];
         this.getOwnerDetailsForQuotationId(this.quotation.ownerid);
@@ -55,7 +59,7 @@ export class CustomerBookPredfinedTripPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.owner = resp["data"][0];
       }
@@ -85,7 +89,7 @@ export class CustomerBookPredfinedTripPage {
           this.trip.offerdiscount = "";
           this.trip.ostartdate = "";
           this.trip.oenddate = "";
-          this.presentAlert("The Offer is not applicable for the trip date selected. You will be charged " + this.quotation.cost + " SR + VAT. Would you like to continue ?", ["No", "Yes"], (index) => {
+          this.presentAlert("The Offer is not applicable for the trip date selected. You will be charged " + this.quotation.cost + " SR + VAT. Would you like to continue ?", [this.transObj["NO"],this.transObj["YES"]], (index) => {
             if (index == 1) {
               this.book();
             }
@@ -100,7 +104,7 @@ export class CustomerBookPredfinedTripPage {
         this.book();
       }
     } else {
-      this.presentAlert("Please fill the mandatory fields 'Schedule Date' & 'Freight'", ["OK"], null);
+      this.presentAlert(this.transObj["FILLMANDATORYFIELDS"], [this.transObj["OK"]], null);
     }
   }
 
@@ -110,9 +114,9 @@ export class CustomerBookPredfinedTripPage {
       this.loading.dismiss();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["message"]) {
-        this.presentAlert("Your booking is registered successfully. Please track the status in 'Booking History' or 'Requested Trips'", ["OK"], () => {
+        this.presentAlert(this.transObj["BOOKINGREGSUCCESS"], [this.transObj["OK"]], () => {
           this.navCtrl.pop();
         });
       }
@@ -144,12 +148,12 @@ export class CustomerBookPredfinedTripPage {
     for (var i = 0; i < buttontexts.length; i++) {
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

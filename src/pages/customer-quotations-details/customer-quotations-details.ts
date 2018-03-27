@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip, AppTruck } from '../../providers/app-model-service/app-model-service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-customer-quotations-details',
@@ -14,9 +15,13 @@ export class CustomerQuotationsDetailsPage {
   driver: AppUser;
   truck: AppTruck;
   private loading: any;
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
   this.quotation = this.navParams.get("quotation");
   this.trip = this.navParams.get("trip");  
+  translate.getTranslation(translate.currentLang).subscribe((value)=>{
+    this.transObj = value;
+  });
   }
 
   ionViewDidEnter() {
@@ -28,7 +33,7 @@ export class CustomerQuotationsDetailsPage {
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if(resp["data"].length>0){
           this.owner = resp["data"][0];
@@ -40,7 +45,7 @@ export class CustomerQuotationsDetailsPage {
         this.dismissLoading();
         if (resp.result == "failure") {
           console.log("resp.error");
-          this.presentAlert(resp.error, ["OK"], null);
+          this.presentAlert(resp.error, [this.transObj["OK"]], null);
         } else if (resp["data"]) {
           if (resp["data"].length > 0) {
             this.driver = resp["data"][0];
@@ -56,7 +61,7 @@ export class CustomerQuotationsDetailsPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if(resp["data"].length > 0){
           this.truck = resp["data"][0];
@@ -67,7 +72,7 @@ export class CustomerQuotationsDetailsPage {
 
   confirmQuote(){
     if(this.trip.status == 'requested'){
-      this.presentAlert("You can book this trip once the owner accepts and the status is changed to confirmed.",["OK"],null);
+      this.presentAlert(this.transObj["BOOKAFTERACCEPTANCE"],[this.transObj["OK"]],null);
       return;
     } 
     this.presentLoadingCustom();
@@ -75,7 +80,7 @@ export class CustomerQuotationsDetailsPage {
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["message"]) {
         this.presentConfirm();
       }
@@ -97,12 +102,12 @@ export class CustomerQuotationsDetailsPage {
   
   presentConfirm() {
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
-      message: 'ThankYou for choosing a quotation. You can contact the truck provider for proceedings.',
+      title: this.transObj["RENTATRUCK"],
+      message: this.transObj["THANKCHOOSEQUOTE"],
       buttons: [
         {
-          text: "OK",
-          role: 'cancel',
+          text: this.transObj["OK"],
+          role: this.transObj["CANCEL"],
           handler: () => {
             this.navCtrl.pop();
           }
@@ -125,12 +130,12 @@ export class CustomerQuotationsDetailsPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

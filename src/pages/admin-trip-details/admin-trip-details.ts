@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip } from '../../providers/app-model-service/app-model-service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-admin-trip-details',
@@ -16,11 +17,15 @@ export class AdminTripDetailsPage {
   driver: AppUser;
   customer: AppUser;
   private loading: any;
+  transObj: any;
 
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     let trip = this.navParams.get("trip");;
     trip.startdate = trip.startdate.replace(/\s/g, "T");
     this.trip = trip;
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   getTotalAmount(trip?: any, quotation?: any, offer?: any) {
@@ -43,7 +48,7 @@ export class AdminTripDetailsPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        self.presentAlert(resp.error, ["OK"], null);
+        self.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if (resp["data"].length > 0) {
           self.quotation = resp["data"][0];
@@ -53,7 +58,7 @@ export class AdminTripDetailsPage {
               self.dismissLoading();
               if (resp.result == "failure") {
                 console.log("resp.error");
-                self.presentAlert(resp.error, ["OK"], null);
+                self.presentAlert(resp.error, [this.transObj["OK"]], null);
               } else if (resp["data"]) {
                 if (resp["data"].length > 0) {
                   self.driver = resp["data"][0];
@@ -66,7 +71,7 @@ export class AdminTripDetailsPage {
             self.dismissLoading();
             if (resp.result == "failure") {
               console.log("resp.error");
-              self.presentAlert(resp.error, ["OK"], null);
+              self.presentAlert(resp.error, [this.transObj["OK"]], null);
             } else if (resp["data"]) {
               if (resp["data"].length > 0) {
                 self.owner = resp["data"][0];
@@ -81,7 +86,7 @@ export class AdminTripDetailsPage {
       self.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        self.presentAlert(resp.error, ["OK"], null);
+        self.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if (resp["data"].length > 0) {
           let cust = resp["data"][0];
@@ -95,12 +100,12 @@ export class AdminTripDetailsPage {
 
   presentConfirm() {
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
-      message: 'ThankYou for choosing a quotation. You can contact the truck provider for proceedings.',
+      title: this.transObj["RENTATRUCK"],
+      message: this.transObj["THANKCHOOSEQUOTE"],
       buttons: [
         {
-          text: "OK",
-          role: 'cancel',
+          text: this.transObj["OK"],
+          role: this.transObj["CANCEL"],
           handler: () => {
             this.navCtrl.pop();
           }
@@ -123,12 +128,12 @@ export class AdminTripDetailsPage {
     for (var i = 0; i < buttontexts.length; i++) {
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

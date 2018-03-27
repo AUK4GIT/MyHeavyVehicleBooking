@@ -4,6 +4,7 @@ import { AppModelServiceProvider, AppTrip, AppTruck, AppTruckType } from '../../
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
 import { SearchedTripModalPage } from "../searched-trip-modal/searched-trip-modal"
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-customer-add-new-trip',
@@ -24,8 +25,12 @@ export class CustomerAddNewTripPage {
   private loading: any;
   searchTrip: any;
   trips: any[];
+  transObj: any;
 
-  constructor(public events: Events, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(translate: TranslateService, public events: Events, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -57,7 +62,7 @@ export class CustomerAddNewTripPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.trucks = resp["data"];
         if(this.searchTrip){
@@ -116,9 +121,9 @@ export class CustomerAddNewTripPage {
           this.dismissLoading();
           if (resp.result == "failure") {
             console.log("resp.error");
-            this.presentAlert(resp.error, ["OK"], null);
+            this.presentAlert(resp.error, [this.transObj["OK"]], null);
           } else if (resp["message"]) {
-            this.presentAlert("Trip created successfully. Wait for the quotations from the Truck providers.",["OK"],()=>{
+            this.presentAlert(this.transObj["CUSTOMERTRIPCREATESUCCESS"],[this.transObj["OK"]],()=>{
               this.navCtrl.pop();
               this.tempTrip = {};
             });
@@ -164,12 +169,12 @@ export class CustomerAddNewTripPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });
@@ -204,20 +209,20 @@ export class CustomerAddNewTripPage {
         } else {
           if(type == 'pickup'){
             if(_data == this.dropcity && _data != ""){
-              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+              this.presentAlert(this.transObj["PICKDROPSAME"],[this.transObj["OK"]],null);
             } else {
               this.pickupcity = _data;
             }
           } else {
             if(_data == this.pickupcity && _data != ""){
-              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+              this.presentAlert(this.transObj["PICKDROPSAME"],[this.transObj["OK"]],null);
             } else {
               this.dropcity = _data;
             }
           }
         }
       },
-      currentSelection: 'login'
+      currentSelection: this.transObj["LOGIN"]
     });
 
     popover.present({

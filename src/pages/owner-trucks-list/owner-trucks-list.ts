@@ -4,6 +4,7 @@ import { AppModelServiceProvider, AppTruck } from '../../providers/app-model-ser
 import { OwnerAddTruckPage } from '../owner-add-truck/owner-add-truck';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-owner-trucks-list',
@@ -12,7 +13,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class OwnerTrucksListPage {
   items: AppTruck[];
   private loading: any;
-  constructor(private alertCtrl: AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  
+  constructor(translate: TranslateService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidEnter() {
@@ -20,7 +26,7 @@ export class OwnerTrucksListPage {
     this.appService.getTrucksForOwnerid(this.appService.currentUser.userid, (resp)=>{
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.items = resp["data"];
       }
@@ -44,7 +50,7 @@ getImage(truckid){
 
   deleteTruck(truck) {
     let self = this;
-    this.presentAlert("Do you want to Delete the truck ?", ["No", "Yes"], (type) => {
+    this.presentAlert(this.transObj["WANTTODELETETRUCK"], [this.transObj["NO"],this.transObj["YES"]], (type) => {
       if (type == 0) {
         console.log("Delete Cancelled");
       } else {
@@ -54,7 +60,7 @@ getImage(truckid){
             const index: number = self.items.indexOf(truck);
             self.items.splice(index, 1);
           } else {
-            self.presentAlert("Delete UnSuccessful! Try again", ["OK"], null);
+            self.presentAlert(this.transObj["DELETEFAILEDTRYAGAIN"], [this.transObj["OK"]], null);
           }
         });
       }
@@ -73,12 +79,12 @@ getImage(truckid){
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

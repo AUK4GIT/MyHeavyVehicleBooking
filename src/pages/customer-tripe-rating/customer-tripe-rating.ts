@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppQuotation, AppUser, AppTrip } from '../../providers/app-model-service/app-model-service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-customer-tripe-rating',
@@ -13,9 +14,13 @@ export class CustomerTripeRatingPage {
   owner: AppUser;
   driver: AppUser;
   private loading: any;
+  transObj: any;
 
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.trip = this.navParams.get("trip");  
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidEnter() {
@@ -25,7 +30,7 @@ export class CustomerTripeRatingPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if(resp["data"].length > 0){
          this.quotation = resp["data"][0];
@@ -45,7 +50,7 @@ export class CustomerTripeRatingPage {
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if(resp["data"].length > 0){
           this.owner = resp["data"][0];
@@ -60,7 +65,7 @@ export class CustomerTripeRatingPage {
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if(resp["data"].length > 0){
           this.driver = resp["data"][0];
@@ -77,9 +82,9 @@ export class CustomerTripeRatingPage {
         this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["message"]) {
-        this.presentAlert("Thank You for submitting the review.", ["OK"], ()=>{
+        this.presentAlert(this.transObj["THANKSREVIEWSUBMIT"], [this.transObj["OK"]], ()=>{
           this.navCtrl.pop();
         });
       }
@@ -112,12 +117,12 @@ export class CustomerTripeRatingPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

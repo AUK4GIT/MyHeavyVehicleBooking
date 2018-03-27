@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController  } from 'ionic-angular';
 import { AppModelServiceProvider, AppCity } from '../../providers/app-model-service/app-model-service'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-cities',
@@ -10,7 +11,11 @@ export class CitiesPage {
 
   items: AppCity[];
   private loading: any;
-  constructor(private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  constructor(translate: TranslateService, private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
 
@@ -26,7 +31,7 @@ export class CitiesPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.items = resp["data"];
       }
@@ -34,14 +39,14 @@ export class CitiesPage {
   }
 
   deleteItem(item, index) {
-    this.presentConfirm('Do you want to delete this item ?.', () => {
+    this.presentConfirm(this.transObj["DOYOUDELETE"], () => {
       this.presentLoadingCustom();
       this.appService.deletePlace(item, (response) => {
         this.dismissLoading();
         if(response.result == "success"){
           this.items.splice(index,1);
         } else {
-          this.presentConfirm('Error deleting item', null);
+          this.presentConfirm(this.transObj["ERRORDELETING"], null);
         }
       })
     });
@@ -49,23 +54,23 @@ export class CitiesPage {
 
   addNewPlace(){
     let prompt = this.alertCtrl.create({
-      title: 'Rent A Truck',
-      message: "Add new city.",
+      title: this.transObj["RENTATRUCK"],
+      message: this.transObj["ADDNEWCITY"],
       inputs: [
         {
-          name: 'city',
-          placeholder: 'Enter new city'
+          name: this.transObj["CITY"],
+          placeholder: this.transObj["ENTERNEWCITY"]
         },
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.transObj["CANCEL"],
           handler: data => {
             console.log('Cancel clicked');
           }
         },
         {
-          text: 'Send',
+          text: this.transObj["SEND"],
           handler: data => {
             console.log('Saved clicked: '+data.city);
             this.presentLoadingCustom();
@@ -73,10 +78,10 @@ export class CitiesPage {
               this.dismissLoading();
               if(resp.result == "failure"){
                 console.log("resp.error");
-                this.presentAlert(resp.error,["OK"],null);
+                this.presentAlert(resp.error,[this.transObj["OK"]],null);
               } else {
                 this.loadPlaces();
-                this.presentAlert(resp.message,["OK"],null);
+                this.presentAlert(resp.message,[this.transObj["OK"]],null);
               }
             });
           }
@@ -103,8 +108,8 @@ export class CitiesPage {
   presentConfirm(message, callback) {
     var buttons = [
       {
-        text: "NO",
-        role: 'cancel',
+        text: this.transObj["NO"],
+        role: this.transObj["CANCEL"],
         handler: () => {
           // this.navCtrl.pop();
         }
@@ -112,13 +117,13 @@ export class CitiesPage {
     ];
     if(callback){
       buttons.push({
-        text: "YES",
-        role: 'cancel',
+        text:this.transObj["YES"],
+        role: this.transObj["CANCEL"],
         handler: callback
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });
@@ -143,12 +148,12 @@ presentAlert(message, buttontexts, callback) {
   for(var i=0; i<buttontexts.length ; i++){
     buttons.push({
       text: buttontexts[i],
-      role: 'cancel',
+      role: this.transObj["CANCEL"],
       handler: createCallback(i)
     });
   }
   let alert = this.alertCtrl.create({
-    title: 'Rent a Truck',
+    title: this.transObj["RENTATRUCK"],
     message: message,
     buttons: buttons
   });

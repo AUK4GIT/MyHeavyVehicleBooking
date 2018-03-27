@@ -18,6 +18,21 @@ export class MyApp {
 
   constructor(private imageLoaderConfig: ImageLoaderConfig, private fcm: FCM, translate: TranslateService, public events: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
 
+    let lang = localStorage.getItem("lang");
+
+      if (lang == "en") {
+        translate.setDefaultLang('en');
+        translate.use('en');
+        // this.platform.setDir('ltr', true);
+      } else if (lang == "ar-sa") {
+        translate.setDefaultLang('ar-sa');
+        translate.use('ar-sa');
+        // this.platform.setDir('rtl', true);
+      } else {
+        translate.setDefaultLang('ar-sa');
+        translate.use('ar-sa');
+        // this.platform.setDir('rtl', true);
+      }
     platform.ready().then((source) => {
       imageLoaderConfig.setConcurrency(10);
       imageLoaderConfig.setFallbackUrl('assets/logo_transparent.jpg');
@@ -29,16 +44,21 @@ export class MyApp {
       this.platform = platform;
       this.translate = translate;
       let lang = localStorage.getItem("lang");
+
       if (lang == "en") {
         translate.setDefaultLang('en');
+        translate.use('en');
         this.platform.setDir('ltr', true);
       } else if (lang == "ar-sa") {
         translate.setDefaultLang('ar-sa');
+        translate.use('ar-sa');
         this.platform.setDir('rtl', true);
       } else {
         translate.setDefaultLang('ar-sa');
+        translate.use('ar-sa');
         this.platform.setDir('rtl', true);
       }
+      console.log("translate.currentLang "+translate.currentLang);
 
       console.log(source, );
       if (this.platform.is('android')) {

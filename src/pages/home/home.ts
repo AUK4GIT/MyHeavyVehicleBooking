@@ -5,6 +5,7 @@ import { AppModelServiceProvider, AppTruckType, AppOffer, AppCity } from '../../
 import { Popover } from 'ionic-angular/components/popover/popover';
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-home',
@@ -29,12 +30,15 @@ export class HomePage {
   offers: AppOffer[];
   hideSlide: boolean;
   private loading: any;
+  transObj: any;
+  translate: any;
 
-  constructor(public alertCtrl :AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public appCtrl: App, public events: Events, private popoverCtrl: PopoverController, public navCtrl: NavController, private modal: ModalController) {
+  constructor(translate: TranslateService, public alertCtrl :AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public appCtrl: App, public events: Events, private popoverCtrl: PopoverController, public navCtrl: NavController, private modal: ModalController) {
+
     this.segment = 'aboutus';
     this.bgclasses = ["truckbgone", "truckbgtwo", "truckbgthree"];
     this.cities = []; 
-
+    this.translate = translate;
     // this.bgclass = this.bgclasses[0];
     this.bgclass = { 'truckbgone': true, 'truckbgtwo': false, 'truckbgthree': false };
     var i = 0;
@@ -58,11 +62,16 @@ export class HomePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad tabsparent');
     this.presentLoadingCustom();
+       
+    this.translate.getTranslation(this.translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+      console.log('trx: '+value);
+    });
     this.appService.getTruckTypesAndPlaces((resp) => {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.trucks = resp["data"]["trucktypes"];
         this.appService.predefinedlistofplaces = resp["data"]["places"];
@@ -164,7 +173,7 @@ export class HomePage {
       //   this.dismissLoading();
       //   if (resp.result == "failure") {
       //     console.log("resp.error");
-      //     this.presentAlert(resp.error, ["OK"], null);
+      //     this.presentAlert(resp.error, [this.transObj["OK"]], null);
       //   } else if (resp["message"]) {
       //     this.tempTrip = {};
       //     this.navigateToRolebasedModule(user.role);
@@ -194,20 +203,20 @@ export class HomePage {
         } else {
           if(type == 'pickup'){
             if(_data == this.dropcity && _data != ""){
-              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+              this.presentAlert(this.transObj["PICKDROPSAME"],[this.transObj["OK"]],null);
             } else {
               this.pickupcity = _data;
             }
           } else {
             if(_data == this.pickupcity && _data != ""){
-              this.presentAlert("Pickup and Drop locations cannot be same.",["OK"],null);
+              this.presentAlert(this.transObj["PICKDROPSAME"],[this.transObj["OK"]],null);
             } else {
               this.dropcity = _data;
             }
           }
         }
       },
-      currentSelection: 'login'
+      currentSelection: "login"
     });
 
     popover.present({
@@ -220,7 +229,7 @@ export class HomePage {
     let popover = this.popoverCtrl.create(HomepopoverComponent, {
       callback: (_data) => {
         console.log(JSON.stringify(_data+" - "+this))
-        if(_data == 'login'){
+        if(_data == "login"){
           this.presentLoginView();
         } else if (_data == 'english'){
           this.events.publish('language:changed', 'english');
@@ -228,7 +237,7 @@ export class HomePage {
           this.events.publish('language:changed', 'arabic');
         }
       },
-      currentSelection: 'login'
+      currentSelection: "login"
     });
 
     popover.present({
@@ -278,12 +287,12 @@ export class HomePage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

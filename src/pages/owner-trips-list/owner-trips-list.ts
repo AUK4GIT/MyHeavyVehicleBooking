@@ -3,6 +3,7 @@ import { NavController, NavParams, AlertController, LoadingController } from 'io
 import { AppModelServiceProvider, AppTrip } from '../../providers/app-model-service/app-model-service'
 import { OwnerTripQuotationPage } from '../owner-trip-quotation/owner-trip-quotation';
 import { OwnerCreateTripPage } from '../owner-create-trip/owner-create-trip'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-owner-trips-list',
@@ -22,8 +23,9 @@ export class OwnerTripsListPage {
   pickupcity: string;
   dropcity: string;
   truck: string;
-
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.segment = 'availabletrips';
     this.search = {
       query: ''
@@ -35,6 +37,10 @@ export class OwnerTripsListPage {
     this.pickupcity = "";
     this.dropcity = "";
     this.truck = "";
+
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidEnter() {
@@ -91,7 +97,7 @@ export class OwnerTripsListPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.items = resp["data"];
         this.searchItems = this.items;
@@ -106,7 +112,7 @@ export class OwnerTripsListPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.items = resp["data"];
         this.searchItems = this.items; 
@@ -150,7 +156,7 @@ export class OwnerTripsListPage {
   deleteAvailableTrip(trip) {
     {
       let self = this;
-      this.presentAlert("Do you want to Delete this trip ?", ["No","Yes"], (type) => {
+      this.presentAlert(this.transObj["WANTTODELETETRIP"], [this.transObj["NO"],"Yes"], (type) => {
         if(type == 0){
           console.log("Delete Cancelled");
         } else {
@@ -160,7 +166,7 @@ export class OwnerTripsListPage {
               const index: number = self.items.indexOf(trip);
               self.items.splice(index,1);
             } else {
-              self.presentAlert("Delete UnSuccessful! Try again", ["OK"], null);
+              self.presentAlert(this.transObj["DELETEFAILEDTRYAGAIN"], [this.transObj["OK"]], null);
             }
           });
         }
@@ -184,12 +190,12 @@ export class OwnerTripsListPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

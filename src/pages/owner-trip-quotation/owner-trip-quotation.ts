@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AppModelServiceProvider, AppUser, AppTruck } from '../../providers/app-model-service/app-model-service'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-owner-trip-quotation',
@@ -30,8 +31,9 @@ rating: string;
 
 trip: any;
 quotation: any;
+transObj: any;
 
-  constructor(private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     let trip = this.navParams.get("trip");
     this.trip = trip;
     this.tripid = trip.tripid;
@@ -42,6 +44,9 @@ quotation: any;
     this.rating = trip.rating;
     this.updatemode = false;
     this.istripcompleted = false;
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidLoad() {
@@ -51,7 +56,7 @@ quotation: any;
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.drivers = resp["data"];
       }
@@ -64,7 +69,7 @@ quotation: any;
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         if(resp["data"].length > 0){
           var quotation = resp["data"][0];
@@ -76,7 +81,7 @@ quotation: any;
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.trucks = resp["data"];
       }
@@ -147,7 +152,7 @@ quotation: any;
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["message"]) {
         this.presentConfirm();
       }
@@ -178,15 +183,15 @@ quotation: any;
         this.dismissLoading();
         if (resp.result == "failure") {
           console.log("resp.error");
-          this.presentAlert(resp.error, ["OK"], null);
+          this.presentAlert(resp.error, [this.transObj["OK"]], null);
         } else if (resp["message"]) {
-          this.presentAlert("Your quotation is recorded and available to the customer. You will be intimated when the customer confirms your quotation.", ["OK"], () => {
+          this.presentAlert(this.transObj["QUOTATIONRECORDED"], [this.transObj["OK"]], () => {
             this.navCtrl.pop();
           });
         }
       });
     } else {
-      this.presentAlert("Please fill all the details.", ["OK"], () => {});
+      this.presentAlert(this.transObj["FILLALLDETAILS"], [this.transObj["OK"]], () => {});
     }     
   }
 
@@ -213,9 +218,9 @@ quotation: any;
       this.dismissLoading();
       if(resp.result == "failure"){
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["message"]) {
-        this.presentAlert("You have confirmed the trip. The user will be intimated and can communicate with the driver.", ["OK"], ()=>{
+        this.presentAlert(this.transObj["OWNERCONFIRMEDTRIP"], [this.transObj["OK"]], ()=>{
             this.navCtrl.pop();
         });
       }
@@ -235,12 +240,12 @@ quotation: any;
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });
@@ -263,12 +268,12 @@ quotation: any;
 
   presentConfirm() {
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
-      message: 'Trip Completed Successfully',
+      title: this.transObj["RENTATRUCK"],
+      message: this.transObj["TRIPCOMPLETED"],
       buttons: [
         {
-          text: "OK",
-          role: 'cancel',
+          text: this.transObj["OK"],
+          role: this.transObj["CANCEL"],
           handler: () => {
             this.navCtrl.pop();
           }

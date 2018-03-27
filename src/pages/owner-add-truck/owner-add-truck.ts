@@ -27,7 +27,12 @@ export class OwnerAddTruckPage {
   truckimage: any;
   isWeb: boolean;
   imageData: any;
+  transObj: any;
+
   constructor(private platform: Platform, private popoverCtrl: PopoverController, private camera: Camera, private imagePicker: ImagePicker, public loadingCtrl: LoadingController, private translate: TranslateService, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth();
@@ -79,7 +84,7 @@ export class OwnerAddTruckPage {
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
-        this.presentAlert(resp.error, ["OK"], null);
+        this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.trucks = resp["data"];
       }
@@ -199,7 +204,7 @@ export class OwnerAddTruckPage {
         }
       });     
     } else {
-      this.presentAlert("Please fill all the details.",["OK"],null);
+      this.presentAlert(this.transObj["FILLALLDETAILS"],[this.transObj["OK"]],null);
     }
   }
 
@@ -210,12 +215,12 @@ export class OwnerAddTruckPage {
 
   presentConfirm() {
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
-      message: 'Truck added Successful. Pending approval from Admin.',
+      title: this.transObj["RENTATRUCK"],
+      message: this.transObj["TRUCKADDSUCCESS"],
       buttons: [
         {
           text: this.OK,
-          role: 'cancel',
+          role: this.transObj["CANCEL"],
           handler: () => {
             this.navCtrl.pop();
           }
@@ -236,12 +241,12 @@ export class OwnerAddTruckPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

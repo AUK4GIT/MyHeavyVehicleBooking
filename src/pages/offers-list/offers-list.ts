@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams , LoadingController, AlertController} from 'ionic-angular';
 import { AppModelServiceProvider, AppOffer } from '../../providers/app-model-service/app-model-service'
 import { OwnerAddEditOfferPage } from '../owner-add-edit-offer/owner-add-edit-offer'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-offers-list',
@@ -10,7 +11,12 @@ import { OwnerAddEditOfferPage } from '../owner-add-edit-offer/owner-add-edit-of
 export class OffersListPage {
   items: AppOffer[];
   private loading: any;
-  constructor(private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+  transObj: any;
+  
+  constructor(translate: TranslateService, private alertCtrl: AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
   }
 
   ionViewDidEnter() {
@@ -31,12 +37,12 @@ export class OffersListPage {
   }
 
   deleteItem(offer, iindex) {
-    this.presentConfirm('Do you want to delete this item ?.', () => {
+    this.presentConfirm(this.transObj["DOYOUDELETE"], () => {
       this.appService.deleteoffer(offer, (response) => {
         if(response.result == "success"){
           this.items.splice(iindex,1);
         } else {
-          this.presentConfirm('Error deleting item', null);
+          this.presentConfirm(this.transObj["ERRORDELETING"], null);
         }
       })
     });
@@ -51,8 +57,8 @@ export class OffersListPage {
   presentConfirm(message, callback) {
     var buttons = [
       {
-        text: "NO",
-        role: 'cancel',
+        text: this.transObj["NO"],
+        role: this.transObj["CANCEL"],
         handler: () => {
           // this.navCtrl.pop();
         }
@@ -60,13 +66,13 @@ export class OffersListPage {
     ];
     if(callback){
       buttons.push({
-        text: "YES",
-        role: 'cancel',
+        text:this.transObj["YES"],
+        role: this.transObj["CANCEL"],
         handler: callback
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });

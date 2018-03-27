@@ -32,11 +32,15 @@ export class TruckOwnerPage {
   isWeb: boolean;
   imageData: any;
   phonenumber: string;
+  transObj: any;
 
   @ViewChild(Nav) nav: Nav;
 
   constructor(private popoverCtrl: PopoverController, private camera: Camera, private imagePicker: ImagePicker, public loadingCtrl: LoadingController, private alertCtrl: AlertController, private platform: Platform, public appService: AppModelServiceProvider, public events: Events, translate: TranslateService, public navCtrl: NavController, public navParams: NavParams) {
-   this.imgversion = 1.0;
+    translate.getTranslation(translate.currentLang).subscribe((value)=>{
+      this.transObj = value;
+    });
+    this.imgversion = 1.0;
     this.isEdit = false;
     this.pageIndex = 2;
     this.user = this.appService.currentUser;  
@@ -218,10 +222,10 @@ export class TruckOwnerPage {
        if(response.result == 'success') {
          this.user.phonenumber = this.phonenumber;
          this.getProfileImage();
-        this.presentAlert("Profile updated successfully.",["OK"],null);
+        this.presentAlert(this.transObj["PROFILEUPDATESUCCESS"],[this.transObj["OK"]],null);
        } else {
         //  this.serverError = response.error;
-        this.presentAlert(response.error,["OK"],null);
+        this.presentAlert(response.error,[this.transObj["OK"]],null);
        }
        this.dismissLoading();
    });
@@ -240,12 +244,12 @@ export class TruckOwnerPage {
     for(var i=0; i<buttontexts.length ; i++){
       buttons.push({
         text: buttontexts[i],
-        role: 'cancel',
+        role: this.transObj["CANCEL"],
         handler: createCallback(i)
       });
     }
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
+      title: this.transObj["RENTATRUCK"],
       message: message,
       buttons: buttons
     });
@@ -255,12 +259,12 @@ export class TruckOwnerPage {
 
   presentConfirm() {
     let alert = this.alertCtrl.create({
-      title: 'Rent a Truck',
-      message: 'Registration Successful. A verification link has been sent to your mailid. Please verify the link and then login.',
+      title: this.transObj["RENTATRUCK"],
+      message: this.transObj["REGSUCCESS"],
       buttons: [
         {
-          text: 'Login',
-          role: 'cancel',
+          text: this.transObj["LOGIN"],
+          role: this.transObj["CANCEL"],
           handler: () => {
             console.log('Login alert clicked');
             // this.navCtrl.pop();

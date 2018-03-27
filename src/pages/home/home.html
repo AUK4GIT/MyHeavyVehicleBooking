@@ -45,7 +45,7 @@
                 <ion-col col-12 col-sm>
                     <ion-item margin-top class="item-leave-height">
                         <ion-label stacked>{{'PICKUPCITY' | translate}}</ion-label>
-                        <ion-input placeholder="Search pickup location" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
+                        <ion-input placeholder="{{'SEARCHPICKUPLOCATION'|translate}}" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
                         </ion-input>
                     </ion-item>
                 </ion-col>
@@ -53,7 +53,7 @@
 
                     <ion-item margin-top class="item-leave-height">
                         <ion-label stacked>{{'DROPCITY' | translate}}</ion-label>
-                        <ion-input placeholder="Search drop location" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
+                        <ion-input placeholder="{{'SEARCHDROPLOCATION'|translate}}" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
                         </ion-input>
                     </ion-item>
                 </ion-col>
