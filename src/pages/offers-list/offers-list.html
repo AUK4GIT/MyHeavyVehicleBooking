@@ -37,13 +37,13 @@
           {{item.startdate  | date:'dd/MM/yy'}} - {{item.enddate  | date:'dd/MM/yy'}}
         </h3>
         <div class="hint_more_options">
-          <ion-icon icon-start name="arrow-round-back">Swipe left to see more options</ion-icon>
+          <ion-icon icon-start name="arrow-round-back">{{"SWIPELEFTTEXT" | translate}}</ion-icon>
         </div>
       </ion-item>
       <ion-item-options side="end">
         <button ion-button color="danger" (click)="deleteItem(item, iindex)">
           <ion-icon name="delete"></ion-icon>
-          Delete
+          {{"OPTIONDELETE"| translate}}
         </button>
       </ion-item-options>
     </ion-item-sliding>

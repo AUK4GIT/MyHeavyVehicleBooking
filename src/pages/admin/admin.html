@@ -9,10 +9,10 @@
                 <ion-card class="profile-card">
                         <ion-row float-right>
                                 <button (click)="editClicked()" *ngIf="!isEdit" ion-button small icon-end>
-                                    Edit
+                                    {{'PROFILEEDIT'|translate}}
                                 </button>
                                 <button (click)="saveClicked()" *ngIf="isEdit" ion-button small icon-end>
-                                    Save
+                                    {{'PROFILESAVE'|translate}}
                                 </button>
                         </ion-row>
                         <ion-item>
@@ -21,26 +21,26 @@
                                 <ion-col *ngIf="isEdit" align="center" style="max-width: 150px; margin: auto;">
                                     <img [src]="profileImage" class="avatar" />
                                     <button *ngIf="!isWeb" ion-button color="normal" (tap)="addImage()">
-                                        Add Image
+                                        {{'PROFILEADDIMAGE'|translate}}
                                     </button>
                                     <div *ngIf="isWeb" class="fileUpload btn btn-primary">
-                                        <span>Add Image</span>
+                                        <span>{{'PROFILEADDIMAGE'|translate}}</span>
                                         <input type="file" class="upload" (change)="fileUpload($event)" #fileInp/>
                                     </div>
                                 </ion-col>
-                            </ion-row>
+                            </ion-row>ß
                         </ion-item>
                         <ion-card-content *ngIf="!isEdit">
-                            <h2>Name:
+                            <h2>{{'PROFILENAME'|translate}}:
                                 <b>{{user.name}}</b>
                             </h2>
-                            <h2>Ref Id:
+                            <h2>{{'PROFILEID'|translate}}:
                                 <i>{{user.userid}}</i>
                             </h2>
-                            <h3>Phone No:
+                            <h3>{{'PROFILEPHONENO'|translate}}:
                                 <b>{{user.phonenumber}}</b>
                             </h3>
-                            <h3>Email:
+                            <h3>{{'PROFILEEMAIL'|translate}}:
                                 <b>{{user.email}}</b>
                             </h3>
                         </ion-card-content>

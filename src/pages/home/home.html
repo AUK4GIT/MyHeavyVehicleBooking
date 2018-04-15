@@ -33,7 +33,7 @@
         <ion-grid>
             <ion-row>
                 <ion-col>
-                    <ion-item margin-top class="item-leave-height">
+                    <ion-item item-start margin-top class="item-leave-height">
                         <ion-label>{{'TRUCKTYPE' | translate}}</ion-label>
                         <ion-select name="trucktypes" [(ngModel)]="truckid">
                             <ion-option value="{{truck.trucktypeid}}" *ngFor="let truck of trucks">{{ truck.type }}</ion-option>
@@ -43,7 +43,7 @@
             </ion-row>
             <ion-row>
                 <ion-col col-12 col-sm>
-                    <ion-item margin-top class="item-leave-height">
+                    <ion-item item-start margin-top class="item-leave-height">
                         <ion-label stacked>{{'PICKUPCITY' | translate}}</ion-label>
                         <ion-input placeholder="{{'SEARCHPICKUPLOCATION'|translate}}" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'pickup')" name="pickupcity" [(ngModel)]="pickupcity">
                         </ion-input>
@@ -51,7 +51,7 @@
                 </ion-col>
                 <ion-col col-12 col-sm>
 
-                    <ion-item margin-top class="item-leave-height">
+                    <ion-item item-start margin-top class="item-leave-height">
                         <ion-label stacked>{{'DROPCITY' | translate}}</ion-label>
                         <ion-input placeholder="{{'SEARCHDROPLOCATION'|translate}}" [readonly]=true (ionFocus)="presentPredefinedPlaces($event, 'drop')" name="dropcity" [(ngModel)]="dropcity">
                         </ion-input>
@@ -60,13 +60,13 @@
             </ion-row>
             <ion-row>
                 <ion-col col-12 col-sm>
-                    <ion-item margin-top class="item-leave-height">
+                    <ion-item item-start margin-top class="item-leave-height">
                         <ion-label stacked>{{'STARTDATE' | translate}}</ion-label>
                         <ion-datetime placeholder="{{'STARTDATE' | translate}}" [max]="maxdate" [min]="mindate" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="startdate"></ion-datetime>
                     </ion-item>
                 </ion-col>
                 <ion-col col-12 col-sm>
-                    <ion-item margin-top class="item-leave-height" style="height: 82%;">
+                    <ion-item item-start margin-top class="item-leave-height" style="height: 82%;">
                         <ion-label stacked>{{'MATERIAL' | translate}}</ion-label>
                         <ion-input (ionFocus)="focusFunction()" placeholder="{{'MATERIAL' | translate}}" name="material" id="material" type="text" [(ngModel)]="frieght"></ion-input>
                     </ion-item>

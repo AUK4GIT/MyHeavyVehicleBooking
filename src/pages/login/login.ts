@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { AppModelServiceProvider } from '../../providers/app-model-service/app-model-service'
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { ResetPasswordPage } from '../reset-password/reset-password';
 
 @IonicPage()
 @Component({
@@ -105,6 +106,10 @@ export class LoginPage {
       }
     }
     // this.closeLogin();
+  }
+
+  resetPassword() {
+    this.navCtrl.push(ResetPasswordPage);
   }
 
   closeLogin() {

@@ -12,8 +12,7 @@
 
 
 <ion-content padding>
-  <h5 style="white-space: normal; word-wrap: break-word; color: #555;">Your search for the trip returned the following available list. You can select any trip suitable based on the trucks or
-    skip the selection by closing this and proceed to create a new trip and wait for quotations from multiple vendors.</h5>
+  <h5 style="white-space: normal; word-wrap: break-word; color: #555;">{{'SEARCHRESULTSTEXT'|translate}}</h5>
   <ion-list id="page-list2">
     <ion-item *ngFor="let item of items" (click)="selectPredefinedTrip(item)" color="none" id="page-list-item">
       <ion-thumbnail item-left>

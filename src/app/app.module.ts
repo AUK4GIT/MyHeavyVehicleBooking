@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicPage, IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 // import { IonicStorageModule } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -23,12 +23,14 @@ import { AutoCompleteSearchPage } from '../pages/auto-complete-search/auto-compl
 import { PlacespickerComponent } from '../components/placespicker/placespicker';
 import {ImgPickerOptionsComponent } from '../components/img-picker-options/img-picker-options'
 import { IonicImageLoader } from 'ionic-image-loader';
+import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    AutoCompleteSearchPage
+    AutoCompleteSearchPage,
+    ResetPasswordPage
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ import { IonicImageLoader } from 'ionic-image-loader';
     HomepopoverComponent,
     AutoCompleteSearchPage,
     PlacespickerComponent,
-    ImgPickerOptionsComponent
+    ImgPickerOptionsComponent,
+    ResetPasswordPage
   ],
   providers: [
     StatusBar,

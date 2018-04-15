@@ -39,21 +39,21 @@
            Owner: {{item.ownername}} (Ref- {{ item.userid }})
           </h4>
           <div class="hint_more_options">
-            <ion-icon icon-start name="arrow-round-back">Swipe left to see more options</ion-icon>
+            <ion-icon icon-start name="arrow-round-back">{{"SWIPELEFTTEXT" | translate}}</ion-icon>
           </div>
         </ion-item>
         <ion-item-options side="end">
           <button ion-button color="danger" (click)="deleteItem(item, gindex, iindex)">
             <ion-icon name="delete"></ion-icon>
-            Delete
+            {{"OPTIONDELETE"| translate}}
           </button>
           <button *ngIf="group.group != 'approved'" ion-button color="primary" (click)="approveItem(item, gindex, iindex)">
             <ion-icon name="approve"></ion-icon>
-            Approve
+            {{"OPTIONAPPROVE"| translate}}
           </button>
           <button *ngIf="group.group != 'blocked'" ion-button color="secondary" (click)="rejectItem(item, gindex, iindex)">
             <ion-icon name="block"></ion-icon>
-            Reject
+            {{"OPTIONREJECT" | translate}}
           </button>
         </ion-item-options>
       </ion-item-sliding>

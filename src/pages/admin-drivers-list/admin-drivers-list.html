@@ -39,21 +39,21 @@
                 Owner: {{ customer.ownername }} (Ref: {{ customer.owneridfordriver }})
               </h2>
               <div class="hint_more_options">
-                <ion-icon icon-start name="arrow-round-back">Swipe left to see more options</ion-icon>
+                <ion-icon icon-start name="arrow-round-back">{{"SWIPELEFTTEXT" | translate}}</ion-icon>
               </div>
           </ion-item>
           <ion-item-options side="end">
               <button ion-button color="danger" (click)="deleteItem(customer, gindex, iindex)">
                 <ion-icon name="delete"></ion-icon>
-                Delete
+                {{"OPTIONDELETE"| translate}}
               </button>
               <button *ngIf="group.group != 'approved'" ion-button color="primary" (click)="approveItem(customer, gindex, iindex)">
                   <ion-icon name="approve"></ion-icon>
-                  Approve
+                  {{"OPTIONAPPROVE"| translate}}
               </button>
               <button *ngIf="group.group != 'blocked'" ion-button color="secondary" (click)="blockItem(customer, gindex, iindex)">
                     <ion-icon name="block"></ion-icon>
-                    Block
+                    {{"OPTIONBLOCK" | translate}}
               </button>
             </ion-item-options>
           </ion-item-sliding>

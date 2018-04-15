@@ -13,10 +13,10 @@
         <ion-col align="center" style="max-width: 150px; margin: auto;">
             <img [src]="truckimage" class="avatar" />
             <button *ngIf="!isWeb" ion-button color="normal" (tap)="addImage()">
-                Add Image
+                {{'PROFILEADDIMAGE'|translate}}
             </button>
             <div *ngIf="isWeb" class="fileUpload btn btn-primary">
-                <span>Add Image</span>
+                <span>{{'PROFILEADDIMAGE'|translate}}</span>
                 <input type="file" class="upload" (change)="fileUpload($event)" #fileInp/>
             </div>
             <!-- <input class="cordova-camera-select" type="file" name="files[]"> -->

@@ -152,6 +152,28 @@ export class AppModelServiceProvider {
     */
   }
 
+  resetPwdService(item, callback) {
+    this.http.post('http://zamilrenttruck.com/api.php/resetpassword',
+      {
+        username: item.email,
+        oldpassword: item.oldpassword,
+        newpassword: item.newpassword
+      }, this.header).toPromise().then(response => {
+        console.log("data: " + response);
+        if (response["error"]) {
+          callback({ result: 'failure', error: response["error"] });
+        } else if (response["data"]) {
+          let data = response["data"];
+          callback({ result: 'success', data: data });
+        } else {
+          callback({ result: 'failure', error: "Unkown error." });
+        }
+      }).catch(error => {
+        console.log(error);
+        callback({ result: 'failure', error: "Server Error. Please try after sometime." });
+      });
+  }
+
   registrationService(item, callback) {
 
     this.http.post('http://zamilrenttruck.com/api.php/user/create',

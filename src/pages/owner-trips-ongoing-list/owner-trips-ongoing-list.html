@@ -20,7 +20,7 @@
 
   <ion-segment padding-top padding-left padding-right [(ngModel)]="segment" color="primary" (ionChange)="segmentChanged($event)">
     <ion-segment-button value="mytrips">
-      My Trips
+      {{'MYTRIPS'|translate}}
     </ion-segment-button>
     <ion-segment-button value="customtrips">
       {{'CUSTOMTRIPS'|translate}}
@@ -28,22 +28,22 @@
   </ion-segment>
   <ion-row>
     <ion-col>
-      <ion-label>Filter By:
-        <button ion-button color="light" small icon-end (click)="clearFilters()">clear
+      <ion-label>{{"FILTERBY"|translate}}:
+        <button ion-button color="light" small icon-end (click)="clearFilters()">{{'CLEAR'|translate}}
           <ion-icon name="close"></ion-icon>
         </button>
       </ion-label>
       <ion-item margin-top class="item-leave-height">
 
-        <ion-select (ionChange)="filterSelected(1)" name="pickupcities" placeholder="pickup" [(ngModel)]="pickupcity">
+        <ion-select (ionChange)="filterSelected(1)" name="pickupcities" placeholder="{{'PICKUPFILTER'|translate}}" [(ngModel)]="pickupcity">
           <ion-option value="{{city}}" *ngFor="let city of pickupcities">{{ city }}</ion-option>
         </ion-select>
 
-        <ion-select (ionChange)="filterSelected(2)" name="dropcities" placeholder="drop" [(ngModel)]="dropcity">
+        <ion-select (ionChange)="filterSelected(2)" name="dropcities" placeholder="{{'DROPFILTER'|translate}}" [(ngModel)]="dropcity">
           <ion-option value="{{city}}" *ngFor="let city of dropcities">{{ city }}</ion-option>
         </ion-select>
 
-        <ion-select (ionChange)="filterSelected(3)" name="trucks" placeholder="trucktype" [(ngModel)]="truck">
+        <ion-select (ionChange)="filterSelected(3)" name="trucks" placeholder="{{'TRUCKTYPEFILTER'|translate}}" [(ngModel)]="truck">
           <ion-option value="{{truck}}" *ngFor="let truck of trucks">{{ truck }}</ion-option>
         </ion-select>
       </ion-item>
