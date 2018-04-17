@@ -6,6 +6,8 @@ import { Popover } from 'ionic-angular/components/popover/popover';
 import { AutoCompleteSearchPage } from '../auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../../components/placespicker/placespicker';
 import { TranslateService } from '@ngx-translate/core';
+import { AboutUsEnglishComponent } from '../../components/about-us-english/about-us-english'
+import { AboutUsArabicComponent } from '../../components/about-us-arabic/about-us-arabic'
 
 @Component({
   selector: 'page-home',
@@ -14,7 +16,6 @@ import { TranslateService } from '@ngx-translate/core';
 export class HomePage {
 @ViewChild("popoverbutton") popoverbutton: any;
 
-  segment: string;
   trucks : AppTruckType[];
   cities: AppCity[];
   bgclass: any;
@@ -35,7 +36,6 @@ export class HomePage {
 
   constructor(translate: TranslateService, public alertCtrl :AlertController, public loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public appCtrl: App, public events: Events, private popoverCtrl: PopoverController, public navCtrl: NavController, private modal: ModalController) {
 
-    this.segment = 'aboutus';
     this.bgclasses = ["truckbgone", "truckbgtwo", "truckbgthree"];
     this.cities = []; 
     this.translate = translate;
@@ -189,9 +189,6 @@ export class HomePage {
   }
 
   focusFunction() {
-  }
-
-  segmentChanged() {
   }
 
   presentPredefinedPlaces(ev, type) {

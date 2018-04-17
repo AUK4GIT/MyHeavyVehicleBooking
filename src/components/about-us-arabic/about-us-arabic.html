@@ -1,0 +1,137 @@
+<ion-segment padding [(ngModel)]="segment" color="primary">
+  <ion-segment-button value="aboutus">
+      {{ 'ABOUTUS' | translate }}
+  </ion-segment-button>
+  <ion-segment-button value="overview">
+      {{ 'COMPANYOVERVIEW' | translate }}
+  </ion-segment-button>
+</ion-segment>
+<div margin [ngSwitch]="segment">
+  <div padding-top *ngSwitchCase="'aboutus'">
+      <ion-row>
+          <h4> معلومات عنا </h4>
+          <p>
+              <img class="logoimg" margin-bottom margin-end float-start src="assets/imgs/logo.png" /> 
+              Zamilrenttruck.com بوابة عبر الانترنت سهلة وبسيطة وحديثة بين الشاحنين وشركات النقل في المملكة العربية السعودية في صناعة لوجستية غير منظمة على نطاق واسع. لقد فهمنا احتياجات ومتطلبات الأشخاص الرئيسيين المشاركين في هذه الصناعة وقد أحدثنا ثورة في ذلك من خلال تقديم منتج خالٍ من المتاعب من دون توقف وبأسلوب أكثر فاعلية. Zamilrenttruck.com عبارة عن سوق على الإنترنت تقدم فيه شركات الشحن خدمات توصيل الشحنات وشركات نقل مختارة لتسليم هذه الشحنات بكفاءة.
+              <br/>
+              <br/>
+              <b> ماذا نفعل؟ </b>
+              <br/>
+              <br/> جعلت تنسيقات التطبيق المتعددة تجربة المستخدم بسيطة وسهلة. لقد تحققنا من قاعدة العملاء مما نتج عنه كفاءة أعلى في معاملات الأعمال، وتخدم بشكل رئيسي أسواق B2B - الشحن التجاري والمركبات. نقوم بربط العملاء بسلاسة بوسطاء الشحن وشركات الشحن والمستهلكين بسلاسة: من خلال شركات النقل ذات الأسعار الاسترجاعية. نعم، كل شيء في الوقت الحقيقي وعبر الإنترنت. تبسيط الخدمات اللوجستية.
+              <br/>
+              <br/>
+              <b>لماذا نحن</b>
+              <br/>
+              <br/>نقدم تجربة عالية الجودة في شكل بسيط من خلال هذه البوابة لجميع عملائنا وأصحاب المصلحة. لا شيء يضاهي البساطة ويجلب كفاءة عالية في عالم الخدمات اللوجستية المتين ومسعانا هو جعله أفضل، معًا.
+              <br/>
+              <br/>
+              <strong>كيف نقوم بذلك؟
+مشاركتنا أو قيودنا:</strong>
+              <br/>
+              <br/> Zamilrenttruck.com ليست شركة شحن أو وكيل شحن أو وسيط. يعمل موقعنا zamilrenttruck.com كمكان محايد حيث يمكن أن يلتقي "المرسل" "المرسل إليه" "العميل" (المشار إليه فيما بعد بـ "الشاحن" 0 ومقدم خدمة النقل (المشار إليهما فيما يلي باسم "TSP" و / أو "الناقلون") والدخول في اتفاقات.
+              نحن لسنا ولن نشارك في المعاملة الفعلية بين المستخدمين وTSPs. وبالتالي، ليس لدينا رقابة على جودة أو سلامة أو قانونية المعاملات نفسها. على الرغم من الرعاية الكاملة للتحقق من هوية TSPs، فإن Zamilrenttruck.com لا تضمن، أو تؤهل مسبقا أو تتحقق من صحة مطالبات السائقين المتعلقة بترخيصهم أو تأمينهم أو تصديقهم.
+              لذلك، نوصي بشدة المستخدمين بالتحقق من التراخيص والتأمين وأية شهادات مهنية أخرى مطلوب من TSPs أنها بحوزتها بمجرد قبول العرض، ولكن قبل الاستلام.
+              
+              بالإضافة إلى  ... Zamilrenttuck.com 
+              ومن المهم ان تضع كل ما سبق في الاعتبار عندما تفكر في الدخول في صفقة مع عضو آخر في الموقع. إذا كانت لديك أسئلة إضافية، يرجى الاتصال بفريق دعم العملاء.
+              <br/>
+          </p>
+      </ion-row>
+
+      <ion-row>
+          <h4>{{"CONTACTUS" | translate}} :</h4>
+          <p>
+            للاتصال بنا: البريد الإلكتروني: support@zamilrenttruck.com العنوان: مجموعة الزامل ، الدمام ، المملكة العربية السعودية.
+          </p>
+      </ion-row>
+  </div>
+  <div padding-top *ngSwitchCase="'overview'">
+      <ion-row>
+          <h4>{{"COMPANYOVERVIEW" | translate}} :</h4>
+          <p>
+              Zamil Group Holding Company is a global investment company with diverse interests and capabilities. Across the continents
+              we provide innovative, high quality and price competitive products and services as well as investment
+              opportunities for investors, partners and stakeholders in the industrial, petrochemicals and services
+              sectors.
+              <br/>
+              <br/> Our range of products and services is expansive and spans air-conditioning manufacturing to plastics
+              to steel fabrication and paints and cranes to heavy process equipment. We are also engaged in shipbuilding
+              and repair, port operations and maintenance, petrochemicals and chemicals, industrial investment and
+              general construction.
+              <br/>
+              <br/> The energy driving our more than 60 sector businesses is our 21,000 strong workforce in more than 60
+              countries, vast manufacturing facilities and strong affiliations with numerous international partners
+              <br/>
+              <br/> Zamil Group has always been a pioneer and a leader within the business community in the Kingdom of Saudi
+              Arabia. With a carefully planned and actively implemented entrepreneurial and diversification strategy
+              we have capitalized upon the Kingdom’s favorable economic conditions and the government’s support for
+              the private sector, to harness new and promising opportunities.
+              <br/>
+              <br/> Zamil Group began investing in the plastics industry nearly three decades ago. Our strategic path heralded
+              our entry into capital intensive chemical and petrochemical projects in the early 1990s. These continue
+              to provide rewarding growth opportunities.
+              <br/>
+              <br/> Zamil Group continues to build successful ventures with technology and market leaders, as well as with
+              regional private companies. Our expertise, experience and strengths ensure we are well placed to continue
+              offering our partners very exciting investment prospects.
+          </p>
+      </ion-row>
+      <ion-row>
+          <h4>{{"HISTORY" | translate}}</h4>
+          <p>
+              Zamil Group Holding Company was founded by the late Sheikh Abdullah Al-Hamad Al Zamil (1897-1961), an aspiring Saudi Arabian
+              entrepreneur, who established a modest trading entity selling food items and textiles in the Kingdom
+              of Bahrain in the 1930s. Later, he expanded his business successfully into real estate investments in
+              Saudi Arabia.
+              <br/>
+              <br/> The start of the industrialization program of Saudi Arabia in the early 1970’s, the Kingdom’s favorable
+              economic conditions and the government’s support for the private sector provided an ideal environment
+              for his sons to further their father’s pioneering spirit . A carefully planned strategic program to establish
+              the core industrial base of the Zamil Group and accelerate the diversification of its activities was
+              implemented and included harnessing opportunities in new and promising areas poised for sustainable growth.
+              <br/>
+              <br/> Meticulous planning and sound management practices have made Zamil Group Holding Company a renowned
+              and internationally respected, multi-million dollar global investment company known for its diversified
+              industrial operations and commercial interests.
+              <br/>
+              <br/> Through more than 60 sector businesses a range of industrial, commercial, services and consumer solutions
+              meet the needs of worldwide operators in the industrial, commercial petrochemical and services sectors.
+              These solutions range from air-conditioning manufacturing to food processing, plastics to steel fabrication and
+              travel services. The Group is also involved in banking and industrial investment, paint, fencing systems
+              and packaging.
+              <br/>
+              <br/> A vast network of manufacturing facilities, joint ventures, affiliations, alliances and strategic acquisitions
+              combined with a 21,000 strong workforce in more than 60 countries enables the consistent delivery of
+              innovative high quality products and services and ensures investment opportunities for investors, partners
+              and stakeholders.
+          </p>
+      </ion-row>
+      <ion-row>
+          <h4>Founder</h4>
+          <p>
+              The origins of Zamil Group can be traced back to the small agricultural town of Onaiza in the Central Region of Saudi Arabia,
+              where our founder Sheikh Abdullah Al-Hamad Al Zamil was born (1897 – 1961). An aspiring businessman,
+              he operated his first commercial business in Bahrain at the age of 19. By the 1920s he had established
+              a successful trading entity in the Kingdom of Bahrain. His successes were followed by investments in
+              real estate, and in 1959 to the construction of the tallest building of its time in Al Khobar in the
+              Kingdom of Saudi Arabia.
+              <br/>
+              <br/> Favourable economic conditions in the Kingdom, government support for the private sector and a well
+              entrenched industrialization program provided the foundation for Zamil Group to establish a core industrial
+              base in the 1970s. Strategic programs were subsequently implemented to accelerate and diversify activities
+              into new areas poised for sustainable growth. This pace continues unabated today through an ever increasing
+              program of diversification into petrochemical and chemical industries and international expansion.
+              <br/>
+              <br/> Today a vast network of manufacturing facilities, joint ventures, affiliations, alliances and strategic
+              acquisitions ensure our presence in more than 60 countries on six continents. The consistent delivery
+              of innovative high quality products and services and the creation of investment opportunities for investors,
+              partners and stakeholders is the legacy instilled within us by our founder and is the spirit that drives
+              each of our more than 60 sector businesses.
+              <br/>
+              <br/> Zamil Group Holding Company’s Board of Directors comprises 12 sons who – in continuing the legacy of
+              their father – are actively involved in charting the ongoing strategic expansion, diversification and
+              international presence and leadership of the Group.
+          </p>
+      </ion-row>
+  </div>
+</div>

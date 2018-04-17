@@ -21,6 +21,9 @@ import { HomepopoverComponent } from '../components/homepopover/homepopover';
 import { AppModelServiceProvider } from '../providers/app-model-service/app-model-service';
 import { AutoCompleteSearchPage } from '../pages/auto-complete-search/auto-complete-search'
 import { PlacespickerComponent } from '../components/placespicker/placespicker';
+import { AboutUsEnglishComponent } from '../components/about-us-english/about-us-english'
+import { AboutUsArabicComponent } from '../components/about-us-arabic/about-us-arabic'
+
 import {ImgPickerOptionsComponent } from '../components/img-picker-options/img-picker-options'
 import { IonicImageLoader } from 'ionic-image-loader';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
@@ -59,7 +62,9 @@ import { ResetPasswordPage } from '../pages/reset-password/reset-password';
     AutoCompleteSearchPage,
     PlacespickerComponent,
     ImgPickerOptionsComponent,
-    ResetPasswordPage
+    ResetPasswordPage,
+    AboutUsEnglishComponent,
+    AboutUsArabicComponent
   ],
   providers: [
     StatusBar,
