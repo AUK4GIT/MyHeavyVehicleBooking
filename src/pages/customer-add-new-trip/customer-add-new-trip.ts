@@ -16,6 +16,10 @@ export class CustomerAddNewTripPage {
   mindate : string;
   dropcity: string;
   pickupcity: string;
+  dropcity_en:string;
+  dropcity_ab:string;
+  pickupcity_en:string;
+  pickupcity_ab:string;
   truckid: string;
   frieght: string;
   startdate: string;
@@ -26,6 +30,7 @@ export class CustomerAddNewTripPage {
   searchTrip: any;
   trips: any[];
   transObj: any;
+  currentLang:string;
 
   constructor(translate: TranslateService, public events: Events, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private popoverCtrl: PopoverController, private modal: ModalController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     translate.getTranslation(translate.currentLang).subscribe((value)=>{
@@ -42,6 +47,7 @@ export class CustomerAddNewTripPage {
 
     this.searchTrip = this.navParams.get("trip");
     this.trips = this.navParams.get("trips");
+    this.currentLang = translate.currentLang;
 
     if(this.searchTrip != null){
       this.dropcity = this.searchTrip.endlocation;
@@ -51,7 +57,7 @@ export class CustomerAddNewTripPage {
     }
   }
 
-  private getMinDate(day: number, month: number, year: number): string {
+  private getMinDate(day: number, month: number, year: number): string { 
     return year.toString() + "-" + (month.toString().length==1 ? "0"+month.toString() : month.toString()) + "-" + (day.toString().length==1 ? "0"+day.toString() : day.toString());
   }
 
@@ -102,6 +108,10 @@ export class CustomerAddNewTripPage {
         trucktype: trucks[0].type,
         startlocation: this.pickupcity,
         endlocation: this.dropcity,
+        startlocation_en:this.pickupcity_en,
+        startlocation_ab: this.pickupcity_ab,
+        endlocation_en:this.dropcity_en,
+        endlocation_ab:this.dropcity_ab,
         status: "pending",
         startdate: this.startdate,
         comments: "",
@@ -114,7 +124,8 @@ export class CustomerAddNewTripPage {
         remarks: "",
         cost:"",
         duration:"",
-        ownerid:""
+        ownerid:"",
+
       };
       this.presentLoadingCustom();
         this.appService.createTripWithCustomerid(this.tempTrip, (resp)=>{
@@ -203,6 +214,7 @@ export class CustomerAddNewTripPage {
   presentPredefinedPlaces(ev, type) {
     let popover = this.popoverCtrl.create(PlacespickerComponent, {
       callback: (_data) => {
+        console.log('In callback:',JSON.stringify(_data));
         console.log(JSON.stringify(_data+" - "+this))
         if(_data == 'others'){
           this.presentAutoComplete(type)
@@ -211,6 +223,7 @@ export class CustomerAddNewTripPage {
             if(_data == this.dropcity && _data != ""){
               this.presentAlert(this.transObj["PICKDROPSAME"],[this.transObj["OK"]],null);
             } else {
+              console.log('Pickup city:',JSON.stringify(_data));
               this.pickupcity = _data;
             }
           } else {
@@ -237,11 +250,17 @@ export class CustomerAddNewTripPage {
       ispopover: true,
     });
     autoCompleteModal.present();
+    
     autoCompleteModal.onDidDismiss((data) => {
+
       if(type == 'pickup'){
-        this.pickupcity = data ? data.description : '';
+        this.pickupcity = (this.currentLang === 'en') ? data.structured_formatting.main_text : data.structed_formatting_secondary_text;
+        this.pickupcity_en = data ? data.structured_formatting.main_text: '';
+        this.pickupcity_ab = data ? data.structured_formatting.secondary_text: '';
       } else {
-        this.dropcity = data ? data.description : '';
+        this.dropcity = (this.currentLang === 'en') ? data.structured_formatting.main_text : data.structed_formatting_secondary_text;
+        this.dropcity_en = data ? data.structured_formatting.main_text: '';
+        this.dropcity_ab = data? data.structured_formatting.secondary_text: '';
       }
     });
     

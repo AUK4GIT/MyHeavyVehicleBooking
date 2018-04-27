@@ -33,12 +33,14 @@ export class CustomerTripsOngoingListPage  {
   dropcity: string;
   truck: string;
   transObj: any;
+  currentLang: string;
 
   constructor(translate: TranslateService, private modal: ModalController, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
 
     translate.getTranslation(translate.currentLang).subscribe((value)=>{
       this.transObj = value;
     });
+    this.currentLang = translate.currentLang;
     let tripSearched = localStorage.getItem("tripSearch");
 
 
@@ -209,6 +211,9 @@ export class CustomerTripsOngoingListPage  {
         // this.items = resp["data"];
         this.items = resp["data"].map((value) => {
           value.startdate = value.startdate.replace(/\s/g, "T");
+          value.startlocation = this.currentLang === 'en' ? value.startlocation_en : value.startlocation_ab;
+          value.endlocation = this.currentLang === 'en' ? value.endlocation_en : value.endlocation_ab;
+          console.log(value.startlocation +':::::'+value.endlocation);
           return value;
         });
         this.searchItems = this.items;

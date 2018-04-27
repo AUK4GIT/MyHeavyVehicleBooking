@@ -22,9 +22,10 @@ export class PlacespickerComponent {
   changeSelection() {
     if(this.itemSelected){
       this.viewCtrl.dismiss();
+      console.log('Came to callback');
       this.callback(this.itemSelected);
     }
-    
+    console.log('Selection:', JSON.stringify(this.itemSelected));
     console.log("Selection: "+this.itemSelected);
   }
 
