@@ -9,6 +9,7 @@ import { ImgPickerOptionsComponent } from '../../components/img-picker-options/i
 import { CustomerTripsListPage } from '../customer-trips-list/customer-trips-list';
 import { CustomerBookingsListPage } from '../customer-bookings-list/customer-bookings-list';
 import { CustomerTripsOngoingListPage } from "../customer-trips-ongoing-list/customer-trips-ongoing-list"
+import { ResetPasswordPage } from "../reset-password/reset-password";
 
 @IonicPage()
 @Component({
@@ -89,9 +90,14 @@ export class CustomerPage {
     this.nav.setRoot(CustomerBookingsListPage);  
   }
 
+  go_to_ResetPassWord(){
+    this.pageIndex=4;
+    this.nav.setRoot(ResetPasswordPage);
+  }
+
   logout_go_to_App(){
     console.log("logout_go_to_App");
-    this.pageIndex = 4;
+    this.pageIndex = 5;
     this.events.publish('logout', 'logout');    
   }
 

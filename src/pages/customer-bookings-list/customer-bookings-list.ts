@@ -12,6 +12,11 @@ export class CustomerBookingsListPage {
   items: AppTrip[];
   private loading: any;
   transObj: any;
+
+  order: number=1;
+  column: string = 'startdate';
+  arrow: string = 'down';
+
   constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     translate.getTranslation(translate.currentLang).subscribe((value)=>{
       this.transObj = value;
@@ -30,11 +35,24 @@ export class CustomerBookingsListPage {
         // this.items = resp["data"];
         this.items = resp["data"].map((value) => {
           value.startdate = value.startdate.replace(/\s/g, "T");
+          value.duration = Number(value.duration);
+          value.cost = Number(value.cost);
           return value;
         });
       }
     });        
     console.log('ionViewDidLoad CustomerBookingsListPage');
+  }
+
+  changeSort(ele) {
+    if(this.column === ele){
+      this.arrow = this.arrow=='up' ? 'down' : 'up';
+      this.order = this.order==-1  ? 1: -1;
+    }else{
+      this.order = 1;
+      this.arrow = 'down';
+    }
+    this.column = ele;    
   }
 
   reviewandRate(trip){

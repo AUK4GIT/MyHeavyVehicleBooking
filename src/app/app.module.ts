@@ -26,7 +26,9 @@ import { AboutUsArabicComponent } from '../components/about-us-arabic/about-us-a
 
 import {ImgPickerOptionsComponent } from '../components/img-picker-options/img-picker-options'
 import { IonicImageLoader } from 'ionic-image-loader';
-import { ResetPasswordPage } from '../pages/reset-password/reset-password';
+import { ResetPasswordPage } from '../pages/reset-password/reset-password'; 
+
+
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { ResetPasswordPage } from '../pages/reset-password/reset-password';
     HomePage,
     AutoCompleteSearchPage,
     ResetPasswordPage
-  ],
+
+      ],
   imports: [
     BrowserModule,
     ComponentsModule,

@@ -18,6 +18,8 @@ import { OwnerAddEditOfferPage } from '../owner-add-edit-offer/owner-add-edit-of
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Camera } from '@ionic-native/camera';
 import { OwnerTripsOngoingListPage } from '../owner-trips-ongoing-list/owner-trips-ongoing-list';
+import { PipesModule } from '../../pipes/pipes.module';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { OwnerTripsOngoingListPage } from '../owner-trips-ongoing-list/owner-tri
     IonicPageModule.forChild(TruckOwnerPage),
     TranslateModule,
     Ionic2RatingModule,
-    IonicImageLoader
+    IonicImageLoader,
+    PipesModule
   ],
   entryComponents: [
     TruckOwnerPage,

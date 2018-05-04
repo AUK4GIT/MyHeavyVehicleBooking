@@ -162,5 +162,9 @@
     "PROFILEEMAIL" : "البريد الإلكتروني",
     "PROFILEEDIT" : "تصحيح",
     "PROFILESAVE" : "حفظ",
-    "PROFILEADDIMAGE" : "إضافة صورة"
+    "PROFILEADDIMAGE" : "إضافة صورة",
+    "PASSWORDUPDATESUCCESS":"Password updated successfully",
+    "CURRENTPASSWORD":"Current Password",
+    "NEWPASSWORD":"New Password",
+    "CONFIRMPASSWORD":"Confirm Password"
 }

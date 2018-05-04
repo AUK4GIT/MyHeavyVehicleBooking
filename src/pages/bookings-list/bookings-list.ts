@@ -16,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'page-bookings-list',
   templateUrl: 'bookings-list.html',
 })
+
 export class BookingsListPage {
   items: AppTrip[];
   private loading: any;
@@ -45,6 +46,7 @@ export class BookingsListPage {
   }
 
   giveQuotationsForTrip(trip) {
+    console.log(JSON.stringify(trip));
     this.navCtrl.push(OwnerTripQuotationPage, { tripid: trip.tripid, trucktype: trip.trucktype, status: trip.status});    
   }
 

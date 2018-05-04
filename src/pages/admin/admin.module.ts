@@ -20,6 +20,8 @@ import { AdminTripDetailsPage } from '../admin-trip-details/admin-trip-details'
 import { AdminUpdateVatPage } from '../admin-update-vat/admin-update-vat'
 import { AdminCreateUserPage } from '../admin-create-user/admin-create-user'
 import { IonicImageLoader } from 'ionic-image-loader';
+import { PipesModule } from '../../pipes/pipes.module';
+
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { IonicImageLoader } from 'ionic-image-loader';
     IonicPageModule.forChild(AdminPage),
     TranslateModule,
     Ionic2RatingModule,
-    IonicImageLoader
+    IonicImageLoader,
+    PipesModule
   ],
   entryComponents: [
     AdminPage,

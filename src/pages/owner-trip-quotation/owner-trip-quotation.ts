@@ -167,7 +167,7 @@ transObj: any;
         driver: this.driver,
         duration: this.duration,
         cost: this.cost,
-        status: "",
+        status: "pending",
         starttime: this.starttime,
         closetime: this.closetime,
         // additionalcharges: this.charges,

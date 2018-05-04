@@ -132,6 +132,7 @@ export class LoginPage {
     this.presentLoadingCustom();
     this.appService.loginService({email: loginItem.username, password: loginItem.password},
        (response) => {
+        console.log(response);
         if(response.result == 'success') {
           this.viewCtrl.dismiss({ result: 'success', user: response.data });          
         } else {

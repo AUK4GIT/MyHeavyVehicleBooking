@@ -73,7 +73,10 @@
                 <ion-item detail-push (click)="go_to_BookingsListPage()" [class.activeHighlight]="checkActivated(3)" menuClose>
                     {{'BOOKINGSHISTORY' | translate}}
                 </ion-item>
-                <ion-item (click)="logout_go_to_App()" [class.activeHighlight]="checkActivated(4)" menuClose>
+                <ion-item (click)="go_to_ResetPassWord()" [class.activeHighlight]="checkActivated(4)" menuClose>
+                    {{'RESETPASSWORD' | translate}}
+                </ion-item>
+                <ion-item (click)="logout_go_to_App()" [class.activeHighlight]="checkActivated(5)" menuClose>
                     {{'LOGOUT' | translate}}
                 </ion-item>
             </ion-list>

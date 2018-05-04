@@ -9,10 +9,23 @@
       {{'BOOKINGS' | translate}}
     </ion-title>
   </ion-navbar>
+  <ion-grid color="primary">
+    <ion-row>
+      <ion-col (click)="changeSort('startdate')"><div text-center>Date
+          <ion-icon *ngIf="column=='startdate'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('cost')"><div text-center>Cost
+          <ion-icon *ngIf="column=='cost'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('duration')"><div text-center>Duration
+          <ion-icon *ngIf="column=='duration'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
 <ion-content  id="page1">
   <ion-list id="page-list1">
-      <ion-item *ngFor="let item of items" (click)="reviewandRate(item)" color="none" id="page-list-item" >
+      <ion-item *ngFor="let item of items | sort : {property: column, order: order}" (click)="reviewandRate(item)" color="none" id="page-list-item" >
           <ion-thumbnail item-left>
             <img src="assets/imgs/logo_transparent.jpg"/>
           </ion-thumbnail>

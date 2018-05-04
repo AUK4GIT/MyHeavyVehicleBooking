@@ -8,6 +8,8 @@ import { ImgPickerOptionsComponent } from '../../components/img-picker-options/i
 
 import { DriverTripsListPage } from '../driver-trips-list/driver-trips-list';
 import { DriverBookingsListPage } from '../driver-bookings-list/driver-bookings-list';
+import { ResetPasswordPage } from "../reset-password/reset-password";
+
 
 @IonicPage()
 @Component({
@@ -79,6 +81,11 @@ export class DriverPage {
   logout_go_to_App(){
     console.log("logout_go_to_App");
     this.events.publish('logout', 'logout');    
+  }
+
+  go_to_ResetPassWord(){
+    this.pageIndex=4;
+    this.nav.setRoot(ResetPasswordPage);
   }
 
 

@@ -14,8 +14,10 @@ import { AdminOffersListPage } from '../admin-offers-list/admin-offers-list';
 import { AdminDriversListPage } from '../admin-drivers-list/admin-drivers-list';
 import { CitiesPage } from '../cities/cities';
 import { TruckTypesPage } from '../truck-types/truck-types';
-import { AdminUpdateVatPage } from '../admin-update-vat/admin-update-vat'
-import { AdminCreateUserPage } from '../admin-create-user/admin-create-user'
+import { AdminUpdateVatPage } from '../admin-update-vat/admin-update-vat';
+import { AdminCreateUserPage } from '../admin-create-user/admin-create-user';
+import { ResetPasswordPage } from "../reset-password/reset-password";
+
 
 @IonicPage()
 @Component({
@@ -127,9 +129,13 @@ export class AdminPage {
     this.pageIndex = 10;
     this.nav.setRoot(AdminCreateUserPage);
   }
+  go_to_ResetPassWord(){
+    this.pageIndex=11;
+    this.nav.setRoot(ResetPasswordPage);
+  }
 
   logout_go_to_App() {
-    this.pageIndex = 11;
+    this.pageIndex = 12;
     console.log("logout_go_to_App");
     this.events.publish('logout', 'logout');
   }

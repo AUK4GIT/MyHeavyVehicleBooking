@@ -47,7 +47,7 @@ export class OwnerAddDriverPage {
         password: this.password,
         phonenumber: this.phonenumber,
         role: "driver",
-        status: "pending",
+        status: "approved",
         ownerid: this.appService.currentUser.userid
       }, (resp)=>{
         if(resp.result == "failure"){

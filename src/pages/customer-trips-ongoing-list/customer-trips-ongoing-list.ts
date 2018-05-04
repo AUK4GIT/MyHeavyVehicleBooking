@@ -34,6 +34,10 @@ export class CustomerTripsOngoingListPage  {
   truck: string;
   transObj: any;
   currentLang: string;
+  descending: boolean = false;
+  order: number;
+  column: string = 'startdate';
+  arrow: string = 'down';
 
   constructor(translate: TranslateService, private modal: ModalController, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
 
@@ -86,7 +90,6 @@ export class CustomerTripsOngoingListPage  {
         var offers = resp.data;
         for (var i = 0; i < offers.length; i++) {
           var offer = new AppOffer();
-          // this.offers.push(offer.copyInto(offers[i]));
           this.offers.push(offers[i]);
         }
         this.tripidsofoffer = this.offers.map((value) => value.tripid);
@@ -200,6 +203,18 @@ export class CustomerTripsOngoingListPage  {
     });
   }
 
+  changeSort(ele) {
+    console.log('came to here',ele);
+    if(this.column === ele){
+      this.arrow = this.arrow=='up' ? 'down' : 'up';
+      this.order = this.order==-1  ? 1: -1;
+    }else{
+      this.order = 1;
+      this.arrow = 'down';
+    }
+    this.column = ele;    
+  }
+
   loadCustomTrips() {
     this.presentLoadingCustom();
     this.appService.getTripsForCustomerid(this.appService.currentUser.userid, (resp) => {
@@ -213,7 +228,8 @@ export class CustomerTripsOngoingListPage  {
           value.startdate = value.startdate.replace(/\s/g, "T");
           value.startlocation = this.currentLang === 'en' ? value.startlocation_en : value.startlocation_ab;
           value.endlocation = this.currentLang === 'en' ? value.endlocation_en : value.endlocation_ab;
-          console.log(value.startlocation +':::::'+value.endlocation);
+          value.duration = Number(value.duration);
+          value.cost = Number(value.cost);
           return value;
         });
         this.searchItems = this.items;

@@ -10,10 +10,37 @@
       </ion-title>
     </ion-navbar>
   </ion-header>
-  <ion-content  id="page1">
 
-      <ion-list id="page-list1">
-        <ion-item id="page-list-item10" (click)="showTripDetails(item)" *ngFor="let item of items">
+  <ion-content  id="page1">
+    <ion-segment padding-top padding-left padding-right [(ngModel)]="segment" color="primary" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="pendingtrips">
+      {{'PENDING'|translate}}
+    </ion-segment-button>
+    <ion-segment-button value="confirmedtrips">
+      {{'CONFIRMED'|translate}}
+    </ion-segment-button>
+  </ion-segment>
+
+
+  <div [ngSwitch]="segment">
+
+
+        <div padding-top *ngSwitchCase="'pendingtrips'">
+    <ion-grid color="primary">
+    <ion-row>
+      <ion-col (click)="changeSort('startdate')"><div text-center>Date
+          <ion-icon *ngIf="column=='startdate'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('startlocation')"><div text-center>Name
+          <ion-icon *ngIf="column=='startlocation'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('tripid')"><div text-center>RefId
+          <ion-icon *ngIf="column=='tripid'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list id="page-list1">
+        <ion-item id="page-list-item10" (click)="showTripDetails(item)" *ngFor="let item of pendingitems | sort : {property: column, order: order}">
           <ion-thumbnail item-left>
             <img src="assets/imgs/logo_transparent.jpg"/>
             <!-- <div class="icon-road" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
@@ -38,5 +65,55 @@
           <button class="status_trip" ion-button outline item-end>{{item.status}}</button>
         </ion-item>
       </ion-list>
+        </div>
+  </div>
+  <div [ngSwitch]="segment">
+
+
+        <div padding-top *ngSwitchCase="'confirmedtrips'">
+            <ion-grid color="primary">
+    <ion-row>
+      <ion-col (click)="changeSort('startdate')"><div text-center>Date
+          <ion-icon *ngIf="column=='startdate'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('cost')"><div text-center>Cost
+          <ion-icon *ngIf="column=='cost'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('duration')"><div text-center>Duration
+          <ion-icon *ngIf="column=='duration'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+           <ion-list id="page-list1">
+        <ion-item id="page-list-item10" (click)="showTripDetails(item)" *ngFor="let item of confirmeditems | sort : {property: column, order: order}">
+          <ion-thumbnail item-left>
+            <img src="assets/imgs/logo_transparent.jpg"/>
+            <!-- <div class="icon-road" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
+          </ion-thumbnail>
+          <h6>( <i>Ref id: {{ item.tripid }}</i> )</h6>
+          <h2><b>
+              {{item.startlocation}} - {{item.endlocation}}
+              </b>
+          </h2>
+          <h3>
+            {{ item.trucktype }}
+          </h3>
+          <h4>
+              {{ item.startdate  | date:'dd/MM/yy' }}
+          </h4>
+          <h5>
+              {{ item.freight }}  
+          </h5>
+          <h5 *ngIf="item?.offerdiscount">
+            Discount: {{ item?.offerdiscount }} %
+          </h5>
+          <button class="status_trip" ion-button outline item-end>{{item.status}}</button>
+        </ion-item>
+      </ion-list>
+        </div>
+  </div>
+
+
+     
     </ion-content>
   

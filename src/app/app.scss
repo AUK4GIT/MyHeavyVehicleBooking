@@ -136,3 +136,21 @@ ion-item i {
  .cordova-camera-select {
   visibility: hidden;
 }
+
+
+.sort-grid {
+  
+    background: #f5f5f5;
+    color: #7d7878;
+    font-weight: bold;
+
+    ion-row{
+      background: #f5f5f5;
+    }
+
+    ion-column{
+
+      border-right: 1px #7d7878 solid;
+      font-weight: bold;
+    }
+  }

@@ -4,13 +4,28 @@
   <ion-navbar>
     <ion-title>{{ 'QUOTATIONS' | translate}}</ion-title>
   </ion-navbar>
+  <ion-grid color="primary">
+    <ion-row>
+      <ion-col (click)="changeSort('cost')">
+        <div text-center>Cost
+          <ion-icon *ngIf="column=='cost'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('duration')">
+        <div text-center>Duration
+          <ion-icon *ngIf="column=='duration'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('discount')"> <div text-center>Discount
+          <ion-icon *ngIf="column=='discount'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-header>
 
 
 <ion-content  id="pageQuotations">
     <ion-list id="pageQuotations-list">
-      <ion-item (click)="navigateToQuotationDetails(quotation)" id="page-list-item10" *ngFor="let quotation of quotations">
+      <ion-item (click)="navigateToQuotationDetails(quotation)" id="page-list-item10" *ngFor="let quotation of quotations | sort : {property: column, order: order}">
         <ion-thumbnail item-left>
           <img src="assets/imgs/logo_transparent.jpg"/>
         </ion-thumbnail>

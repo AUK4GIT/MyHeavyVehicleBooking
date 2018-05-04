@@ -14,7 +14,9 @@ import { CustomerQuotationsDetailsPage } from '../customer-quotations-details/cu
 import { CustomerBookPredfinedTripPage } from '../customer-book-predfined-trip/customer-book-predfined-trip'
 import { CustomerTripeRatingPage } from '../customer-tripe-rating/customer-tripe-rating'
 import { SearchedTripModalPage } from "../searched-trip-modal/searched-trip-modal"
-import { CustomerTripsOngoingListPage } from "../customer-trips-ongoing-list/customer-trips-ongoing-list"
+import { CustomerTripsOngoingListPage } from "../customer-trips-ongoing-list/customer-trips-ongoing-list";
+import { PipesModule } from '../../pipes/pipes.module';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { CustomerTripsOngoingListPage } from "../customer-trips-ongoing-list/cus
     IonicPageModule.forChild(CustomerPage),
     TranslateModule,
     Ionic2RatingModule,
-    IonicImageLoader
+    IonicImageLoader,
+    PipesModule
   ],
   entryComponents: [
     CustomerTripsListPage,

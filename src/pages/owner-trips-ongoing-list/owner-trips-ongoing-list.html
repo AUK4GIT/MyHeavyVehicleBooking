@@ -15,7 +15,9 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+
 </ion-header>
+
 <ion-content id="page">
 
   <ion-segment padding-top padding-left padding-right [(ngModel)]="segment" color="primary" (ionChange)="segmentChanged($event)">
@@ -48,18 +50,35 @@
         </ion-select>
       </ion-item>
     </ion-col>
-  </ion-row>
+  </ion-row>  
+
   <div [ngSwitch]="segment">
     <div padding-top *ngSwitchCase="'mytrips'">
+    <div padding-top *ngSwitchCase="'customtrips'">
+    <ion-grid color="primary">
+    <ion-row>
+      <ion-col (click)="changeSort('startdate')"><div text-center>Date
+          <ion-icon *ngIf="column=='startdate'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('cost')"><div text-center>Cost
+          <ion-icon *ngIf="column=='cost'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('duration')"><div text-center>Duration
+          <ion-icon *ngIf="column=='duration'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
       <ion-list id="page-list2">
-        <ion-item-sliding *ngFor="let item of searchItems">
+        <ion-item-sliding *ngFor="let item of searchItems | sort : {property: column, order: order}">
           <ion-item (click)="giveQuotationsForTrip(item)" color="none" id="page-list-item">
             <ion-thumbnail item-left>
-              <img src="assets/imgs/logo_transparent.jpg" />
+              <img [src]="item.imagepath" />
               <!-- <div class="icon-road" style="font-size: 3em; color: green;" src1="assets/imgs/logo_transparent.jpg"></div> -->
             </ion-thumbnail>
             <h6>(
               <i>Ref id: {{ item.tripid }}</i> )</h6>
+            <h2>{{name}}</h2>
             <h2>
               <b>
                 {{item.startlocation}} - {{item.endlocation}}
@@ -84,12 +103,26 @@
       </ion-list>
     </div>
   </div>
+</div>
 
   <div [ngSwitch]="segment">
     <div padding-top *ngSwitchCase="'customtrips'">
+    <ion-grid color="primary">
+    <ion-row>
+      <ion-col (click)="changeSort('startdate')"><div text-center>Date
+          <ion-icon *ngIf="column=='startdate'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('name')"><div text-center>Name
+          <ion-icon *ngIf="column=='name'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+      <ion-col (click)="changeSort('tripid')"><div text-center>RefId
+          <ion-icon *ngIf="column=='tripid'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
       <ion-list id="page-list2">
-        <ion-item-sliding *ngFor="let item of searchItems">
+        <ion-item-sliding *ngFor="let item of searchItems | sort : {property: column, order: order}">
           <ion-item (click)="giveQuotationsForTrip(item)" color="none" id="page-list-item">
             <ion-thumbnail item-left>
               <img src="assets/imgs/logo_transparent.jpg" />
@@ -97,6 +130,7 @@
             </ion-thumbnail>
             <h6>(
               <i>Ref id: {{ item.tripid }}</i> )</h6>
+            <h2>{{item.name}}</h2>
             <h2>
               <b>
                 {{item.startlocation}} - {{item.endlocation}}
@@ -111,6 +145,7 @@
             <h5>
               {{ item.freight }}
             </h5>
+            <h5>{{item.phonenumber}}</h5>
             <h5 *ngIf="item.offerid != null" style="white-space: normal; word-wrap: break-word">
               <b style="color: green;">Discount: {{ item.offerdiscount }} % </b> (
               <i>exp dt: {{ item.oenddate | date:'dd/MM/yy' }} </i> )

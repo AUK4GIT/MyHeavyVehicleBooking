@@ -12,11 +12,18 @@ export class TripsListPage {
   items: AppTrip[];
   private loading: any;
   transObj: any;
-  
+  pendingitems: AppTrip[];
+  confirmeditems: AppTrip[];
+  segment: string;
+  order: number=1;
+  column: string = 'startdate';
+  arrow: string = 'down';
+
   constructor(translate: TranslateService, public alertCtrl :AlertController, private loadingCtrl: LoadingController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     translate.getTranslation(translate.currentLang).subscribe((value)=>{
       this.transObj = value;
     });
+    this.segment = 'pendingtrips';
   }
 
   ionViewDidEnter() {
@@ -28,10 +35,14 @@ export class TripsListPage {
         this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         // this.items = resp["data"];
-        this.items = resp["data"].map((value) => {
+        resp.data = resp["data"].map((value) => {
           value.startdate = value.startdate.replace(/\s/g, "T");
           return value;
         });
+        this.pendingitems = resp['data'].filter(item => item.status === 'pending');
+        this.confirmeditems = resp['data'].filter(item => item.status === 'confirmed');
+        console.log(this.pendingitems);
+        console.log(this.confirmeditems);
       }
     });           
   }
@@ -84,5 +95,24 @@ export class TripsListPage {
         this.loading.dismiss();
         this.loading = null;
     }
-}
+  }
+
+  segmentChanged(event) {
+
+      this.column = 'startdate';
+      this.arrow = 'down';
+
+    
+  }
+
+  changeSort(ele) {
+    if(this.column === ele){
+      this.arrow = this.arrow=='up' ? 'down' : 'up';
+      this.order = this.order==-1  ? 1: -1;
+    }else{
+      this.order = 1;
+      this.arrow = 'down';
+    }
+    this.column = ele;    
+  }
 }

@@ -184,7 +184,7 @@ export class OwnerAddTruckPage {
         photos: null,
         rating: "0",
         ownerid: this.appService.currentUser.userid,
-        status: 'pending',
+        status: 'approved',
         color: this.color,
         modeldate: this.modeldate
       },(resp)=>{

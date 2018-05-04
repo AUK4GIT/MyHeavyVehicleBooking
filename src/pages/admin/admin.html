@@ -97,7 +97,10 @@
                 <ion-item detail-push [class.activeHighlight]="checkActivated(10)" (click)="go_to_CreateUser()" menuClose>
                         Create User
                     </ion-item>
-                <ion-item detail-push [class.activeHighlight]="checkActivated(11)" (click)="logout_go_to_App()" menuClose>
+                 <ion-item (click)="go_to_ResetPassWord()" [class.activeHighlight]="checkActivated(11)"  menuClose>
+                    {{'RESETPASSWORD' | translate}}
+                </ion-item>
+                <ion-item detail-push [class.activeHighlight]="checkActivated(12)" (click)="logout_go_to_App()" menuClose>
                     {{'LOGOUT' | translate}}
                 </ion-item>
             </ion-list>

@@ -24,6 +24,12 @@ export class OwnerTripsOngoingListPage {
   dropcity: string;
   truck: string;
   transObj: any;
+  currentLang: string;
+
+  order: number=1;
+  column: string = 'startdate';
+  arrow: string = 'down';
+
 
   constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.segment = 'mytrips';
@@ -41,6 +47,7 @@ export class OwnerTripsOngoingListPage {
     translate.getTranslation(translate.currentLang).subscribe((value)=>{
       this.transObj = value;
     });
+    this.currentLang = translate.currentLang;
   }
 
   ionViewDidEnter() {
@@ -50,6 +57,17 @@ export class OwnerTripsOngoingListPage {
     }  else {
       this.loadCustomTrips();      
     } 
+  }
+
+  changeSort(ele) {
+    if(this.column === ele){
+      this.arrow = this.arrow=='up' ? 'down' : 'up';
+      this.order = this.order==-1  ? 1: -1;
+    }else{
+      this.order = 1;
+      this.arrow = 'down';
+    }
+    this.column = ele;    
   }
 
   makeFilters() {
@@ -94,6 +112,7 @@ export class OwnerTripsOngoingListPage {
   loadAvailableTrips() {
     this.presentLoadingCustom();
     this.appService.getRequestedTripsForOwnerid(this.appService.currentUser.userid, (resp) => {
+      console.log('Owner requested trips and accepted trips');
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
@@ -102,6 +121,11 @@ export class OwnerTripsOngoingListPage {
         // this.items = resp["data"];
         this.items = resp["data"].map((value) => {
           value.startdate = value.startdate.replace(/\s/g, "T");
+          value.startlocation = (this.currentLang === 'en') ? value.startlocation_en : value.startlocation_ab;
+          value.endlocation = (this.currentLang === 'en') ? value.endlocation_en : value.endlocation_ab;
+          value.imagepath = "http://zamilrenttruck.com/images/profiles/user_"+value.userid+"/thumb_"+value.userid+".jpeg";
+          value.cost = Number(value.cost);
+          value.duration = Number(value.duration);
           return value;
         });
         this.searchItems = this.items;
@@ -113,6 +137,7 @@ export class OwnerTripsOngoingListPage {
   loadCustomTrips() {
     this.presentLoadingCustom();
     this.appService.getCustomPendingTrips((resp) => {
+      console.log('Customer pending requests');
       this.dismissLoading();
       if (resp.result == "failure") {
         console.log("resp.error");
@@ -121,6 +146,11 @@ export class OwnerTripsOngoingListPage {
         // this.items = resp["data"];
         this.items = resp["data"].map((value) => {
           value.startdate = value.startdate.replace(/\s/g, "T");
+          value.startlocation = (this.currentLang === 'en') ? value.startlocation_en : value.startlocation_ab;
+          value.endlocation = (this.currentLang === 'en') ? value.endlocation_en : value.endlocation_ab;
+          value.imagepath = "http://zamilrenttruck.com/images/profiles/user_"+value.userid+"/thumb_"+value.userid+".jpeg";
+          value.cost = Number(value.cost);
+          value.duration = Number(value.duration);
           return value;
         });
         this.searchItems = this.items; 
@@ -133,8 +163,14 @@ export class OwnerTripsOngoingListPage {
     this.clearFilters();
     if(event.value == "mytrips") {
       this.loadAvailableTrips();
+      this.column = 'date';
+      this.arrow = 'down';
+      this.order = 1;
     } else {
       this.loadCustomTrips();
+      this.column = 'date';
+      this.arrow = 'down';
+      this.order = 1;
     }
     console.log('segmentChanged CustomerTripsListPage');    
   }

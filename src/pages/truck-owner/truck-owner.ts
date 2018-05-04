@@ -12,6 +12,8 @@ import { OffersListPage } from '../offers-list/offers-list';
 import { OwnerTripsListPage } from '../owner-trips-list/owner-trips-list';
 import { BookingsListPage } from '../bookings-list/bookings-list';
 import { OwnerTripsOngoingListPage } from '../owner-trips-ongoing-list/owner-trips-ongoing-list';
+import { ResetPasswordPage } from "../reset-password/reset-password";
+
 
 @IonicPage()
 @Component({
@@ -108,9 +110,14 @@ export class TruckOwnerPage {
     this.nav.setRoot(BookingsListPage);    
   }
 
+  go_to_ResetPassWord(){
+    this.pageIndex=7;
+    this.nav.setRoot(ResetPasswordPage);
+  }
+
   logout_go_to_App(){
     console.log("logout_go_to_App");
-    this.pageIndex = 7;
+    this.pageIndex = 8;
     this.events.publish('logout', 'logout');    
   }
 
@@ -213,6 +220,8 @@ export class TruckOwnerPage {
     console.log("onFocus");
     this.serverError = "";
   }
+
+
 
   saveChanges() {
     
