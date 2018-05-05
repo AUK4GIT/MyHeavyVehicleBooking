@@ -51,7 +51,7 @@ export class ResetPasswordPage {
       console.log('Going to login service');
       this.appService.resetPwdService({email:this.appService.currentUser.email,newpassword:loginItem.newpassword,oldpassword:loginItem.currentpassword},(response) => {
           console.log(response);
-          if(response.result === 'successs'){
+          if(response.result === 'success'){
             this.presentAlert(this.transObj["PASSWORDUPDATESUCCESS"],[this.transObj["OK"]],null);
           }else{
             this.presentAlert(response.error,[this.transObj["OK"]],null);
@@ -83,6 +83,7 @@ export class ResetPasswordPage {
         handler: createCallback(i)
       });
     }
+    console.log("Message:",message);
     let alert = this.alertCtrl.create({
       title: this.transObj["RENTATRUCK"],
       message: message,

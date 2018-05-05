@@ -47,7 +47,7 @@ export class BookingsListPage {
 
   giveQuotationsForTrip(trip) {
     console.log(JSON.stringify(trip));
-    this.navCtrl.push(OwnerTripQuotationPage, { tripid: trip.tripid, trucktype: trip.trucktype, status: trip.status});    
+    this.navCtrl.push(OwnerTripQuotationPage, { trip:trip,tripid: trip.tripid, trucktype: trip.trucktype, status: trip.status});    
   }
 
 

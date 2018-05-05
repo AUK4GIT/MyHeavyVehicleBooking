@@ -163,8 +163,9 @@
     "PROFILEEDIT" : "تصحيح",
     "PROFILESAVE" : "حفظ",
     "PROFILEADDIMAGE" : "إضافة صورة",
-    "PASSWORDUPDATESUCCESS":"Password updated successfully",
-    "CURRENTPASSWORD":"Current Password",
-    "NEWPASSWORD":"New Password",
-    "CONFIRMPASSWORD":"Confirm Password"
+    "PASSWORDUPDATESUCCESS":"تمت اعادة ظبط كلمة المرور نجاح",
+    "CURRENTPASSWORD":"كلمة المرور الحالية",
+    "NEWPASSWORD":"كلمة المرور الجديدة ",
+    "CONFIRMPASSWORD":"تأكيد كلمة المرور",
+    "RESETPASSWORD":"اعادة ظبط كلمة المرور"
 }

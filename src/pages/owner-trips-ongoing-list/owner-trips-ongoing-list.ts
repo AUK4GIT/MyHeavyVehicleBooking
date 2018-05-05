@@ -129,6 +129,7 @@ export class OwnerTripsOngoingListPage {
           return value;
         });
         this.searchItems = this.items;
+        console.log('Came to search Items:::::',this.searchItems.length);
         this.makeFilters();           
       }
     });
