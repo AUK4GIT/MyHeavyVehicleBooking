@@ -167,5 +167,7 @@
     "CURRENTPASSWORD":"كلمة المرور الحالية",
     "NEWPASSWORD":"كلمة المرور الجديدة ",
     "CONFIRMPASSWORD":"تأكيد كلمة المرور",
-    "RESETPASSWORD":"اعادة ظبط كلمة المرور"
+    "RESETPASSWORD":"اعادة ظبط كلمة المرور",
+    "REFID":"RefId",
+    "FILLCOST":"Fill cost details"
 }

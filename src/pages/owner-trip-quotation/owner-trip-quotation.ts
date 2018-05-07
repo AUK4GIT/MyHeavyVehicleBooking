@@ -160,7 +160,7 @@ transObj: any;
   }
 
   addQuotation() {
-    if (this.cost && this.trucktype && this.driver && true) {
+    if (this.cost ) {
       this.presentLoadingCustom();
       this.appService.addQuotationForTrip({
         truck: this.trucktype,
@@ -191,7 +191,7 @@ transObj: any;
         }
       });
     } else {
-      this.presentAlert(this.transObj["FILLALLDETAILS"], [this.transObj["OK"]], () => {});
+      this.presentAlert(this.transObj["FILLCOST"], [this.transObj["OK"]], () => {});
     }     
   }
 

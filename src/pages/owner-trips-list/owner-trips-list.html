@@ -37,11 +37,27 @@
                   <ion-select (ionChange)="filterSelected(3)" name="trucks" placeholder="{{'TRUCKTYPEFILTER'|translate}}" [(ngModel)]="truck">
                     <ion-option value="{{truck}}" *ngFor="let truck of trucks">{{ truck }}</ion-option>
                   </ion-select>
+                   <ion-select (ionChange)="filterSelected(4)" name="refIds" placeholder="{{'REFID'|translate}}" [(ngModel)]="refId">
+                    <ion-option value="{{refId}}" *ngFor="let refId of refIds">{{ refId }}</ion-option>
+                  </ion-select>
                 </ion-item>
               </ion-col>
             </ion-row>
             <ion-list id="page-list1">
-                <ion-item-sliding *ngFor="let item of searchItems">                 
+               <ion-grid color="primary">
+                <ion-row>
+                  <ion-col (click)="changeSort('cost')"><div text-center>Cost
+                      <ion-icon *ngIf="column=='cost'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+                  </ion-col>
+                  <ion-col (click)="changeSort('duration')"><div text-center>Hours
+                      <ion-icon *ngIf="column=='duration'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+                  </ion-col>
+                  <ion-col (click)="changeSort('tripid')"><div text-center>RefId
+                      <ion-icon *ngIf="column=='tripid'" ios="ios-arrow-drop{{arrow}}" md="md-arrow-drop{{arrow}}" float-right></ion-icon></div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+                <ion-item-sliding *ngFor="let item of searchItems | sort : {property: column, order: order}">                 
                 <ion-item (click)="editTrip(item)" color="none" id="page-list-item" >
                   <ion-thumbnail item-left>
                     <img src="assets/imgs/logo_transparent.jpg"/>

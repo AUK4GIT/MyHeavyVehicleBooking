@@ -167,5 +167,7 @@
     "PASSWORDUPDATESUCCESS":"Password updated successfully",
     "CURRENTPASSWORD":"Current Password",
     "NEWPASSWORD":"New Password",
-    "CONFIRMPASSWORD":"Confirm Password"
+    "CONFIRMPASSWORD":"Confirm Password",
+    "REFID":"RefId",
+    "FILLCOST":"Fill cost details"
 }

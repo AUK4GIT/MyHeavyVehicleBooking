@@ -19,11 +19,16 @@ export class OwnerTripsListPage {
   pickupcities: any[];
   dropcities: any[];
   trucks: any[];
+  refIds: any[];
 
   pickupcity: string;
   dropcity: string;
   truck: string;
   transObj: any;
+
+   order: number=1;
+    column: string = 'cost';
+    arrow: string = 'down';
   
   constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.segment = 'availabletrips';
@@ -33,10 +38,14 @@ export class OwnerTripsListPage {
     this.pickupcities = [];
     this.dropcities = [];
     this.trucks = [];
+    this.refIds = [];
 
     this.pickupcity = "";
     this.dropcity = "";
     this.truck = "";
+    this.order = 1;
+
+   
 
     translate.getTranslation(translate.currentLang).subscribe((value)=>{
       this.transObj = value;
@@ -56,6 +65,7 @@ export class OwnerTripsListPage {
     this.pickupcities = this.getUniqueArray(this.items.map((value) => value.startlocation));
     this.dropcities = this.getUniqueArray(this.items.map((value) => value.endlocation));
     this.trucks = this.getUniqueArray(this.items.map((value) => value.trucktype));
+    this.refIds = this.getUniqueArray(this.items.map((value) => value.tripid));    
   }
 
   getUniqueArray(array){
@@ -64,11 +74,25 @@ export class OwnerTripsListPage {
     });
   };
 
+
+
+  changeSort(ele) {
+    if(this.column === ele){
+      this.arrow = this.arrow=='up' ? 'down' : 'up';
+      this.order = this.order==-1  ? 1: -1;
+    }else{
+      this.order = 1;
+      this.arrow = 'down';
+    }
+    this.column = ele;    
+  }
+
   clearFilters() {
     this.pickupcity = "";
     this.dropcity = "";
     this.truck = "";
     this.searchItems = this.items;
+    this.refId = "";
   }
 
   filterSelected(index){
@@ -83,6 +107,11 @@ export class OwnerTripsListPage {
       }
       case 3: {
         this.searchItems = this.searchItems.filter((item: AppTrip) => ((item.trucktype.toLowerCase().indexOf(this.truck.toLowerCase()) > -1)));
+        break;
+      }
+
+      case 4: {
+        this.searchItems = this.searchItems.filter((item: AppTrip) => ((item.tripid.toLowerCase().indexOf(this.refId.toLowerCase()) > -1)));
         break;
       }
       default: {
@@ -100,6 +129,12 @@ export class OwnerTripsListPage {
         this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.items = resp["data"];
+        this.items = this.items.map((value) => {
+         value.tripid = Number(value.tripid);
+         value.cost = Number(value.cost);
+         return value;
+        });
+        
         this.searchItems = this.items;
         this.makeFilters();           
       }
@@ -115,6 +150,13 @@ export class OwnerTripsListPage {
         this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
         this.items = resp["data"];
+
+        this.items = this.items.map((value) => {
+         value.cost = Number(this.cost);
+         value.tripid = Number(this.tripid);
+         return value;
+        });
+
         this.searchItems = this.items; 
         this.makeFilters();          
       }
