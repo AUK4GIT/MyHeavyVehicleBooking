@@ -66,7 +66,7 @@
       <ion-col col-12 col-sm *ngIf="tripstatus=='confirmed' || tripstatus=='completed'">
         <ion-item margin-top class="item-leave-height">
           <ion-label>{{ 'ADDITIONALCHARGES' | translate }} : </ion-label>
-          <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="Add Charges" name="addcharges" id="addcharges" type="number" [(ngModel)]="additionalcharges"></ion-input>
+          <ion-input class="currency" (ionFocus)="focusFunction()" placeholder="Add Charges" name="addcharges" id="addcharges" type="number" [(ngModel)]="charges"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col col-12 col-sm *ngIf="istripcompleted">

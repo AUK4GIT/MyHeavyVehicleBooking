@@ -116,7 +116,7 @@ transObj: any;
       this.cost = quotation.cost,
       this.starttime = quotation.starttime,
       this.closetime = quotation.closetime,
-      // this.charges = quotation.additionalcharges,
+      this.charges = quotation.additionalcharges,
       this.comments = quotation.comments,
       this.appService.currentUser.userid = quotation.ownerid,
       this.quotationid = quotation.quotationid;

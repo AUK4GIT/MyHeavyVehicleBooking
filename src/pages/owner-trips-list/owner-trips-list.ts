@@ -25,10 +25,12 @@ export class OwnerTripsListPage {
   dropcity: string;
   truck: string;
   transObj: any;
+  refId: string;
 
    order: number=1;
     column: string = 'cost';
     arrow: string = 'down';
+
   
   constructor(translate: TranslateService, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private appService: AppModelServiceProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.segment = 'availabletrips';
@@ -128,11 +130,13 @@ export class OwnerTripsListPage {
         console.log("resp.error");
         this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
-        this.items = resp["data"];
-        this.items = this.items.map((value) => {
+        //this.items = resp["data"];
+        this.items = resp.data.map((value) => {
+
          value.tripid = Number(value.tripid);
          value.cost = Number(value.cost);
          return value;
+
         });
         
         this.searchItems = this.items;
@@ -149,11 +153,11 @@ export class OwnerTripsListPage {
         console.log("resp.error");
         this.presentAlert(resp.error, [this.transObj["OK"]], null);
       } else if (resp["data"]) {
-        this.items = resp["data"];
+       // this.items = resp["data"];
 
-        this.items = this.items.map((value) => {
-         value.cost = Number(this.cost);
-         value.tripid = Number(this.tripid);
+        this.items = resp.data.map((value) => {
+         value.cost = Number(value.cost);
+         value.tripid = Number(value.tripid);
          return value;
         });
 
