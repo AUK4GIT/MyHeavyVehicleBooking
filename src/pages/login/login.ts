@@ -47,7 +47,7 @@ export class LoginPage {
       message: this.transObj["ENTEREMAILRECEIVEPWD"],
       inputs: [
         {
-          name: this.transObj["EMAILID"],
+          name: 'EmailId',
           placeholder: this.transObj["EMAILID"]
         },
       ],
@@ -61,6 +61,7 @@ export class LoginPage {
         {
           text: this.transObj["SEND"],
           handler: data => {
+            console.log(data);
             console.log('Saved clicked: '+data.EmailId);
             this.presentLoadingCustom();
             this.appService.sendForgotPassword(data.EmailId, (resp)=>{
